@@ -1,0 +1,112 @@
+---
+title: "DAX avançado: Time Intelligence além do básico"
+date: "2025-02-15"
+excerpt: "Dominando cálculos temporais complexos em DAX: YTD customizado, comparações flexíveis e análise de cohort para dashboards executivos."
+tags: ["DAX", "Power BI", "Modelagem de Dados"]
+author: "Evanilson Freitas"
+---
+
+# DAX avançado: Time Intelligence além do básico
+
+Se você já usa `TOTALYTD`, `SAMEPERIODLASTYEAR` e `DATEADD`, parabéns — você domina o básico de Time Intelligence em DAX. Mas e quando o cenário exige mais? Quando o calendário fiscal não começa em janeiro? Quando você precisa comparar períodos dinâmicos? Quando o stakeholder pede "últimos 12 meses rolantes excluindo o mês atual"?
+
+É aqui que o DAX avançado separa o analista júnior do sênior.
+
+## O calendário: sua arma secreta
+
+Tudo começa com uma **tabela calendário robusta**. Não use o auto-date/time do Power BI — crie a sua:
+
+```dax
+dim_Calendario = 
+VAR _inicio = DATE(2020, 1, 1)
+VAR _fim = TODAY()
+RETURN
+ADDCOLUMNS(
+    CALENDAR(_inicio, _fim),
+    "Ano", YEAR([Date]),
+    "Mes", MONTH([Date]),
+    "MesNome", FORMAT([Date], "MMMM"),
+    "AnoMes", FORMAT([Date], "YYYY-MM"),
+    "Trimestre", "Q" & QUARTER([Date]),
+    "AnoFiscal", IF(MONTH([Date]) >= 4, YEAR([Date]), YEAR([Date]) - 1),
+    "MesFiscal", IF(MONTH([Date]) >= 4, MONTH([Date]) - 3, MONTH([Date]) + 9),
+    "DiaSemana", WEEKDAY([Date], 2),
+    "DiaSemanaAbrev", FORMAT([Date], "DDD"),
+    "EhDiaUtil", IF(WEEKDAY([Date], 2) <= 5, TRUE(), FALSE())
+)
+```
+
+A coluna `AnoFiscal` e `MesFiscal` são cruciais quando a empresa opera com calendário fiscal diferente do gregoriano (muito comum em multinacionais com ano fiscal iniciando em Abril).
+
+## Padrões avançados
+
+### 1. Últimos N meses rolantes (excluindo mês atual)
+
+```dax
+Vendas L12M = 
+VAR _ultimaDataCompleta = EOMONTH(TODAY(), -1)
+VAR _inicioL12M = EOMONTH(TODAY(), -13) + 1
+RETURN
+CALCULATE(
+    SUM(fato_vendas[valor]),
+    dim_Calendario[Date] >= _inicioL12M,
+    dim_Calendario[Date] <= _ultimaDataCompleta
+)
+```
+
+### 2. Comparação período-a-período dinâmica
+
+```dax
+Vendas Periodo Anterior = 
+VAR _diasSelecionados = COUNTROWS(VALUES(dim_Calendario[Date]))
+VAR _ultimaData = MAX(dim_Calendario[Date])
+VAR _inicioAtual = MIN(dim_Calendario[Date])
+VAR _fimAnterior = _inicioAtual - 1
+VAR _inicioAnterior = _fimAnterior - _diasSelecionados + 1
+RETURN
+CALCULATE(
+    SUM(fato_vendas[valor]),
+    dim_Calendario[Date] >= _inicioAnterior,
+    dim_Calendario[Date] <= _fimAnterior
+)
+```
+
+Essa medida é poderosa porque **se adapta automaticamente** ao período selecionado pelo usuário no slicer. Selecionou 7 dias? Compara com os 7 dias anteriores. Selecionou 3 meses? Compara com os 3 meses anteriores.
+
+### 3. Análise de Cohort (Retenção de Clientes)
+
+```dax
+Cohort Retenção = 
+VAR _mesAtual = MAX(dim_Calendario[AnoMes])
+VAR _clientesMes = 
+    CALCULATETABLE(
+        VALUES(fato_vendas[cliente_id]),
+        dim_Calendario[AnoMes] = _mesAtual
+    )
+VAR _clientesPrimeiraCompra =
+    FILTER(
+        _clientesMes,
+        CALCULATE(
+            MIN(dim_Calendario[AnoMes]),
+            ALLEXCEPT(fato_vendas, fato_vendas[cliente_id])
+        ) = _mesAtual
+    )
+RETURN
+DIVIDE(
+    COUNTROWS(_clientesMes) - COUNTROWS(_clientesPrimeiraCompra),
+    COUNTROWS(_clientesMes)
+)
+```
+
+## Otimização de Performance
+
+Medidas de Time Intelligence podem ficar lentas em datasets grandes. Algumas dicas:
+
+1. **Evite `FILTER` sobre a tabela fato inteira** — use `CALCULATE` com filtros na dimensão calendário
+2. **Pré-calcule períodos em variáveis** — `VAR` é avaliado uma vez e reutilizado
+3. **Use `TREATAS` em vez de relações físicas** quando precisar de filtros virtuais
+4. **Monitore com DAX Studio** — identifique storage engine vs formula engine bottlenecks
+
+## Conclusão
+
+Time Intelligence em DAX é onde a análise de dados ganha profundidade temporal. Dominar esses padrões permite criar dashboards que não apenas mostram "o que aconteceu", mas respondem "como isso se compara" e "qual é a tendência". É a diferença entre um relatório estático e uma ferramenta de decisão.

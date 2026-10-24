@@ -1,0 +1,13 @@
+{
+  "name": "portfolio-resume-tools",
+  "private": true,
+  "type": "module",
+  "description": "Gera o currículo (DOCX e PDF) a partir de src/content. Não faz parte do site.",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "docx": "^9.5.0",
+    "pdfjs-dist": "^6.4.299"
+  }
+}

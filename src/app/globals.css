@@ -1,0 +1,349 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ==========================================================================
+   Design tokens — o tema claro é a referência; o escuro é uma variante neutra
+   (grafite). A identidade é monocromática; o contraste é o único destaque.
+   ========================================================================== */
+:root {
+  --bg: #ffffff;
+  --bg-alt: #fafafa;
+  --surface: #f6f8fa;
+  --surface-2: #eef1f4;
+  --text: #1f2328;
+  --text-2: #59636e;
+  --border: #d1d9e0;
+  --rule: #d1d9e0;
+  /* Identidade monocromática: o destaque é o próprio contraste do texto. */
+  --accent: #1f2328;
+  --accent-ink: #1f2328;
+  --accent-soft: rgb(31 35 40 / 0.08);
+  /* Uso analítico discreto: apenas para distinguir séries em gráficos. */
+  --series-alt: #57606a;
+  --code-bg: #f6f8fa;
+  --header-bg: rgb(255 255 255 / 0.92);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #0d1117;
+  --bg-alt: #0d1117;
+  --surface: #161b22;
+  --surface-2: #21262d;
+  --text: #e6edf3;
+  --text-2: #8b949e;
+  --border: #30363d;
+  --rule: #30363d;
+  --accent: #e6edf3;
+  --accent-ink: #e6edf3;
+  --accent-soft: rgb(230 237 243 / 0.1);
+  --series-alt: #9da7b3;
+  --code-bg: #161b22;
+  --header-bg: rgb(13 17 23 / 0.92);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-paper: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface-2);
+  --color-alt: var(--bg-alt);
+  --color-ink: var(--text);
+  --color-muted: var(--text-2);
+  --color-line: var(--border);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), Georgia, serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+html {
+  scroll-padding-top: 5rem;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 0.875rem;
+  border-radius: 2px;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* ==========================================================================
+   Tipografia e layout
+   ========================================================================== */
+.display {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+.display em {
+  font-style: italic;
+  color: var(--text-2);
+}
+
+.eyebrow {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+.section {
+  padding-block: clamp(4rem, 9vw, 7.5rem);
+  border-top: 1px solid var(--border);
+}
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--rule);
+}
+
+/* Botões e links */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.65rem 1.15rem;
+  border: 1px solid var(--text);
+  border-radius: 3px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: var(--text);
+  color: var(--bg);
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.btn:hover {
+  background: transparent;
+  color: var(--text);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--rule);
+}
+.btn-ghost:hover {
+  border-color: var(--text);
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1px;
+  transition: border-color 0.15s ease, gap 0.15s ease;
+}
+.link-arrow:hover {
+  border-color: var(--accent-ink);
+  gap: 0.65rem;
+}
+
+.tag {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.84rem;
+  color: var(--text-2);
+}
+
+/* ==========================================================================
+   Movimento — curto e discreto. Nada oculta conteúdo por mais de ~0,5 s.
+   ========================================================================== */
+.reveal-pending {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.reveal {
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+
+@keyframes beacon {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.beacon {
+  animation: beacon 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal-pending {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   Prosa editorial (artigos)
+   ========================================================================== */
+.prose-editorial {
+  max-width: 44rem;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.prose-editorial h2 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 2rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 2.75rem 0 1rem;
+}
+.prose-editorial h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 2rem 0 0.75rem;
+}
+.prose-editorial p {
+  margin: 0 0 1.25rem;
+  color: var(--text);
+}
+.prose-editorial a {
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-editorial ul,
+.prose-editorial ol {
+  margin: 0 0 1.25rem;
+  padding-left: 1.4rem;
+}
+.prose-editorial ul {
+  list-style: disc;
+}
+.prose-editorial ol {
+  list-style: decimal;
+}
+.prose-editorial li {
+  margin-bottom: 0.4rem;
+}
+.prose-editorial blockquote {
+  margin: 2rem 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--accent);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.4rem;
+  line-height: 1.35;
+  color: var(--text-2);
+}
+.prose-editorial blockquote p {
+  margin: 0;
+  color: inherit;
+}
+.prose-editorial :not(pre) > code {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.86em;
+  background: var(--surface-2);
+  padding: 0.12em 0.4em;
+  border-radius: 3px;
+}
+.prose-editorial figure[data-rehype-pretty-code-figure] {
+  margin: 1.75rem 0;
+}
+.prose-editorial pre {
+  overflow-x: auto;
+  padding: 1.1rem 1.25rem;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  line-height: 1.65;
+}
+.prose-editorial pre code {
+  font-family: var(--font-mono), monospace;
+  background: none;
+  padding: 0;
+}
+code[data-theme] span,
+code span[style*="--shiki-light"] {
+  color: var(--shiki-light);
+}
+[data-theme="dark"] code span[style*="--shiki-dark"] {
+  color: var(--shiki-dark);
+}
+.prose-editorial .table-scroll {
+  overflow-x: auto;
+  margin: 1.75rem 0;
+}
+.prose-editorial table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.prose-editorial th,
+.prose-editorial td {
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+}
+.prose-editorial th {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  border-bottom-color: var(--rule);
+}

@@ -1,0 +1,118 @@
+---
+title: "Pricing inteligente: como a análise de dados revoluciona a precificação logística"
+date: "2025-03-22"
+excerpt: "Da planilha ao modelo preditivo: como técnicas de data analytics transformam o processo de pricing em operações logísticas de grande escala."
+tags: ["Pricing", "Logística", "Python", "Estatística"]
+author: "Evanilson Freitas"
+---
+
+# Pricing inteligente: como a análise de dados revoluciona a precificação logística
+
+A precificação no setor logístico é um dos desafios mais complexos da cadeia de suprimentos. Diferente do varejo — onde o preço é relativamente estático — no transporte, **cada cotação é única**: a rota, o veículo, a carga, o prazo e o cliente formam uma combinação que exige cálculo dinâmico.
+
+## O problema da precificação tradicional
+
+Na maioria das operações logísticas, o pricing funciona assim:
+
+1. O comercial recebe um pedido de cotação
+2. Abre uma planilha Excel com a última tabela de custos
+3. Aplica um markup "padrão" de 15-20%
+4. Envia a proposta
+
+Parece funcional? O problema é que esse processo:
+
+- **Ignora variáveis dinâmicas**: preço do diesel, pedágios atualizados, sazonalidade
+- **Não considera o histórico competitivo**: qual preço o mercado pratica para aquela rota?
+- **Padroniza o que deveria ser personalizado**: clientes de alto volume recebem o mesmo markup que clientes spot
+
+O resultado? Margens erodidas em rotas competitivas e preços fora do mercado em rotas de baixa concorrência.
+
+## A abordagem data-driven
+
+### Decomposição de Custos (Cost-Plus Dinâmico)
+
+O primeiro passo é decompor o custo em componentes granulares:
+
+```python
+class CustoRodoviario:
+    def __init__(self, rota):
+        self.km = rota.distancia
+        self.pedagios = self.calcular_pedagios(rota)
+        self.combustivel = self.km * CONSUMO_MEDIO * PRECO_DIESEL_ATUAL
+        self.motorista = self.calcular_custo_motorista(rota.tempo_estimado)
+        self.depreciacao = self.calcular_depreciacao(rota.veiculo)
+        self.manutencao = self.km * CUSTO_MANUT_POR_KM
+        
+    @property
+    def custo_total(self):
+        return sum([
+            self.combustivel,
+            self.pedagios,
+            self.motorista,
+            self.depreciacao,
+            self.manutencao
+        ])
+    
+    def preco_sugerido(self, margem_desejada=0.15):
+        return self.custo_total / (1 - margem_desejada)
+```
+
+### Análise de Competitividade
+
+Com o histórico de BIDs e cotações, podemos mapear o **price positioning** por rota:
+
+```python
+import pandas as pd
+from scipy import stats
+
+def analisar_competitividade(rota_id, historico_bids):
+    bids_rota = historico_bids[historico_bids['rota'] == rota_id]
+    
+    # Distribuição de preços do mercado
+    media = bids_rota['preco_km'].mean()
+    desvio = bids_rota['preco_km'].std()
+    
+    # Percentil do nosso último preço
+    nosso_preco = bids_rota[bids_rota['empresa'] == 'nossa']['preco_km'].iloc[-1]
+    percentil = stats.percentileofscore(bids_rota['preco_km'], nosso_preco)
+    
+    return {
+        'media_mercado': media,
+        'nosso_percentil': percentil,
+        'recomendacao': 'agressivo' if percentil > 70 else 'competitivo'
+    }
+```
+
+### Elasticidade e Otimização
+
+O passo mais avançado é modelar a **elasticidade preço-demanda** por segmento:
+
+- Clientes de alto volume são mais sensíveis a preço
+- Rotas exclusivas (sem concorrência direta) suportam margens maiores
+- Contratos de longo prazo justificam descontos em troca de previsibilidade
+
+## Um exemplo ilustrativo
+
+Ao implementar essa abordagem em uma operação com +500 rotas ativas:
+
+| Métrica (hipotética) | Antes | Depois | Δ |
+|---------|-------|--------|---|
+| Tempo de cotação | 4h | 30min | -87% |
+| Margem média | 12% | 18% | +50% |
+| Win rate em BIDs | 22% | 35% | +59% |
+| Propostas/mês | 120 | 340 | +183% |
+
+## Tecnologias utilizadas
+
+A stack que suporta essa transformação:
+
+- **Python** (pandas, scipy, scikit-learn) para modelagem e automação
+- **SQL Server** para o data warehouse de custos e histórico
+- **Power BI** para a interface de simulação e dashboards executivos
+- **Databricks** para processamento em escala quando o volume exige
+
+## Conclusão
+
+Pricing não é arte — é ciência. E como toda ciência, requer dados, modelos e iteração contínua. A diferença entre uma empresa que "chuta" preços e uma que otimiza pricing com dados pode ser a diferença entre operar no vermelho e liderar o mercado.
+
+> "O preço certo não é o mais baixo. É aquele que maximiza valor para ambas as partes."
