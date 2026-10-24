@@ -59,5 +59,6 @@ test('os currículos (texto extraído de PDF e DOCX) não afirmam atribuições 
 
 test('o guarda reconhece as atribuições incorretas (sanidade do teste)', () => {
   assert.deepEqual(findIncorrectClaims('Trabalhou na Red Cargas Logística').length, 1);
+  assert.equal(findIncorrectClaims('Mestrado em  Engenharia de Software').length, 1);
   assert.equal(findIncorrectClaims('Analista de BI e desenvolvedor').length, 0);
 });

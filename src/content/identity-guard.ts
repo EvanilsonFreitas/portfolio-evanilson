@@ -6,6 +6,7 @@
 export const incorrectClaims: { id: string; pattern: RegExp }[] = [
   { id: 'empresa-expresso', pattern: /Expresso\s+Rio\s+Vermelho/i },
   { id: 'empresa-red-cargas', pattern: /Red\s+Cargas/i },
+  { id: 'mestrado-engenharia-software', pattern: /Mestrado\s+em\s+Engenharia\s+de\s+Software/i },
   { id: 'cargo-analista-controladoria', pattern: /Analista\s+de\s+Controladoria/i },
 ];
 

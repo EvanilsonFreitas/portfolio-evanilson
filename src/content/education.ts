@@ -30,14 +30,4 @@ export const education: Education[] = [
       'Este portfólio, desenvolvido em TypeScript, React e Next.js.',
     ],
   },
-  {
-    id: 'masters',
-    kind: 'masters',
-    title: 'Mestrado em Engenharia de Software',
-    status: 'Matriculado',
-    dates: [],
-    summary:
-      'Formação stricto sensu em andamento. Instituição, tema e previsão de conclusão não são divulgados neste momento.',
-    appliedIn: [],
-  },
 ];

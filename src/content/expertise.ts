@@ -29,7 +29,6 @@ export const expertise: ExpertisePillar[] = [
     evidence: [
       { label: 'EasyPrice', kind: 'applied', href: '/projetos/simulador-preco-rodoviario/' },
       { label: 'Marivan Finance', kind: 'personal', href: '/projetos/marivan-finance/' },
-      { label: 'Mestrado em Engenharia de Software', kind: 'academic', href: '/educacao/' },
     ],
   },
   {

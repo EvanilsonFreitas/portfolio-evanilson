@@ -13,7 +13,7 @@ export interface Education {
   id: string;
   title: string;
   institution?: string;
-  kind: 'mba' | 'graduation' | 'masters';
+  kind: 'mba' | 'graduation';
   status: string;
   dates: string[];
   summary: string;

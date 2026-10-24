@@ -5,7 +5,7 @@ import { pageMetadata } from '../../lib/seo';
 
 export const metadata: Metadata = pageMetadata({
   title: 'Formação',
-  description: 'MBA em Data Science (USP/ESALQ), graduação em Análise e Desenvolvimento de Sistemas (Uninove) e mestrado em Engenharia de Software.',
+  description: 'MBA em Data Science (USP/ESALQ) e graduação em Análise e Desenvolvimento de Sistemas (Uninove).',
   path: '/educacao/',
 });
 
@@ -50,7 +50,7 @@ export default function EducacaoPage() {
         <section key={e.id} className="grid gap-6 border-t border-rule py-12 lg:grid-cols-12 lg:gap-12" aria-labelledby={e.id}>
           <div className="lg:col-span-7">
             <p className="eyebrow mb-3">
-              {e.kind === 'masters' ? 'Pós-graduação stricto sensu' : 'Graduação tecnológica'} · {e.status}
+              Graduação tecnológica · {e.status}
             </p>
             <h2 id={e.id} className="display text-[clamp(2rem,4.5vw,3.5rem)]">
               {e.title}
