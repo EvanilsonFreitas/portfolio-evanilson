@@ -54,6 +54,7 @@ Usa um worktree separado, para não tocar no working tree do projeto.
 git worktree add --no-checkout --detach ..\portfolio_Evan_pages
 Set-Location ..\portfolio_Evan_pages
 git checkout --orphan gh-pages
+git rm -r -q --cached .   # a branch órfã herda o índice do código-fonte; limpe antes de copiar
 robocopy ..\portfolio_Evan\dist\github-pages . /E /XD .git
 git -c core.autocrlf=false add --all
 git status
@@ -62,6 +63,8 @@ git push -u origin gh-pages
 Set-Location ..\portfolio_Evan
 git worktree remove ..\portfolio_Evan_pages
 ```
+
+Confira com `git ls-files` que só existem arquivos do build (sem `src`, `public` ou `package.json`) antes de fazer o commit.
 
 `robocopy` retorna códigos de 0 a 7 em caso de sucesso (não é erro).
 

@@ -56,6 +56,13 @@ for (const f of files) {
 }
 
 const problems = [];
+// Payloads de prefetch devem ser arquivos planos (o cliente os requisita assim).
+const nestedPrefetch = (d) => readdirSync(d).some((n) => {
+  if (n === '_next') return false;
+  const p = join(d, n);
+  return statSync(p).isDirectory() && (n.startsWith('__next.') || nestedPrefetch(p));
+});
+if (nestedPrefetch(out)) problems.push('payloads de prefetch em pastas (esperado: arquivos planos)');
 const home = readFileSync(join(out, 'index.html'), 'utf8');
 if (!home.includes(`<link rel="canonical" href="${cfg.canonical}"`)) problems.push('canonical da home inesperado');
 if (existsSync(join(out, 'assets', 'curriculo'))) problems.push('fotografia do currículo exposta no artefato');

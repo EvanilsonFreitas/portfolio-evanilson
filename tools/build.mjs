@@ -3,7 +3,7 @@
 //   github-pages -> dist/github-pages          (com .nojekyll; basePath /portfolio-evanilson)
 //   vercel       -> dist/vercel/.vercel/output (Build Output API v3; basePath vazio)
 import { spawnSync } from 'node:child_process';
-import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -34,6 +34,28 @@ if (!existsSync(join(out, 'index.html'))) {
 
 // A fotografia é insumo do gerador de currículo (já embutida nos documentos): não vai para o site.
 rmSync(join(out, 'assets', 'curriculo'), { recursive: true, force: true });
+
+// No Windows o export grava os payloads de prefetch em pastas (`__next.blog/__PAGE__.txt`),
+// mas o cliente os solicita como arquivos planos (`__next.blog.__PAGE__.txt`). Normaliza.
+function flattenPrefetch(dir) {
+  for (const name of readdirSync(dir)) {
+    if (name === '_next') continue;
+    const p = join(dir, name);
+    if (!statSync(p).isDirectory()) continue;
+    if (name.startsWith('__next.')) {
+      const walk = (d, prefix) => {
+        for (const n of readdirSync(d)) {
+          const q = join(d, n);
+          if (statSync(q).isDirectory()) walk(q, `${prefix}.${n}`);
+          else renameSync(q, join(dir, `${prefix}.${n}`));
+        }
+      };
+      walk(p, name);
+      rmSync(p, { recursive: true, force: true });
+    } else flattenPrefetch(p);
+  }
+}
+flattenPrefetch(out);
 
 const dist = join(root, 'dist', target);
 rmSync(dist, { recursive: true, force: true });
