@@ -1,22 +1,24 @@
-import { Plus_Jakarta_Sans, Inter, JetBrains_Mono } from 'next/font/google';
+import { Instrument_Serif, Geist, Geist_Mono } from 'next/font/google';
 
-export const jakarta = Plus_Jakarta_Sans({
+/** Display editorial: títulos grandes e citações. */
+export const display = Instrument_Serif({
   subsets: ['latin'],
-  variable: '--font-jakarta',
+  variable: '--font-display',
+  weight: '400',
+  style: ['normal', 'italic'],
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800'],
 });
 
-export const inter = Inter({
+/** Interface e texto corrido. */
+export const sans = Geist({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-sans',
   display: 'swap',
-  weight: ['400', '500', '600'],
 });
 
-export const jetbrains = JetBrains_Mono({
+/** Dados, datas, rótulos técnicos e código. */
+export const mono = Geist_Mono({
   subsets: ['latin'],
-  variable: '--font-jetbrains',
+  variable: '--font-mono',
   display: 'swap',
-  weight: ['400', '500'],
 });

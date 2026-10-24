@@ -1,266 +1,349 @@
 @import "tailwindcss";
 
-/* ============================
-   DESIGN SYSTEM — Spatial Design
-   ============================ */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-/* --- Dark Mode (Default) --- */
+/* ==========================================================================
+   Design tokens — o tema claro é a referência; o escuro é uma variante neutra
+   (grafite). A identidade é monocromática; o contraste é o único destaque.
+   ========================================================================== */
 :root {
-  --background: #05070A;
-  --background-secondary: #0E131F;
-  --foreground: #EDEDED;
-  --foreground-muted: #8A8F98;
-  --accent-primary: #00F0FF;
-  --accent-secondary: #8A2BE2;
-  --accent-gradient: linear-gradient(135deg, #00F0FF 0%, #8A2BE2 100%);
-  --card-bg: rgba(14, 19, 31, 0.8);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --card-border-hover: rgba(0, 240, 255, 0.3);
-  --glass-blur: 12px;
-  --shadow-glow: 0 0 30px rgba(0, 240, 255, 0.15);
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
-  --divider: rgba(255, 255, 255, 0.06);
-  --input-border: rgba(255, 255, 255, 0.15);
-  --input-border-focus: #00F0FF;
+  --bg: #ffffff;
+  --bg-alt: #fafafa;
+  --surface: #f6f8fa;
+  --surface-2: #eef1f4;
+  --text: #1f2328;
+  --text-2: #59636e;
+  --border: #d1d9e0;
+  --rule: #d1d9e0;
+  /* Identidade monocromática: o destaque é o próprio contraste do texto. */
+  --accent: #1f2328;
+  --accent-ink: #1f2328;
+  --accent-soft: rgb(31 35 40 / 0.08);
+  /* Uso analítico discreto: apenas para distinguir séries em gráficos. */
+  --series-alt: #57606a;
+  --code-bg: #f6f8fa;
+  --header-bg: rgb(255 255 255 / 0.92);
+  color-scheme: light;
 }
 
-/* --- Light Mode --- */
-[data-theme="light"] {
-  --background: #F4F6F8;
-  --background-secondary: #FFFFFF;
-  --foreground: #121212;
-  --foreground-muted: #4B5563;
-  --accent-primary: #0056D2;
-  --accent-secondary: #5B21B6;
-  --accent-gradient: linear-gradient(135deg, #0056D2 0%, #5B21B6 100%);
-  --card-bg: rgba(255, 255, 255, 0.95);
-  --card-border: rgba(0, 0, 0, 0.1);
-  --card-border-hover: rgba(0, 86, 210, 0.4);
-  --glass-blur: 16px;
-  --shadow-glow: 0 0 20px rgba(0, 86, 210, 0.15);
-  --shadow-card: 0px 8px 30px rgba(0, 0, 0, 0.12);
-  --divider: rgba(0, 0, 0, 0.08);
-  --input-border: rgba(0, 0, 0, 0.2);
-  --input-border-focus: #0056D2;
+[data-theme="dark"] {
+  --bg: #0d1117;
+  --bg-alt: #0d1117;
+  --surface: #161b22;
+  --surface-2: #21262d;
+  --text: #e6edf3;
+  --text-2: #8b949e;
+  --border: #30363d;
+  --rule: #30363d;
+  --accent: #e6edf3;
+  --accent-ink: #e6edf3;
+  --accent-soft: rgb(230 237 243 / 0.1);
+  --series-alt: #9da7b3;
+  --code-bg: #161b22;
+  --header-bg: rgb(13 17 23 / 0.92);
+  color-scheme: dark;
 }
 
-/* --- Tailwind v4 Theme Tokens --- */
 @theme inline {
-  --color-background: var(--background);
-  --color-background-secondary: var(--background-secondary);
-  --color-foreground: var(--foreground);
-  --color-foreground-muted: var(--foreground-muted);
-  --color-accent: var(--accent-primary);
-  --color-accent-secondary: var(--accent-secondary);
-  --color-card-bg: var(--card-bg);
-  --color-card-border: var(--card-border);
-  --color-card-border-hover: var(--card-border-hover);
-  --color-divider: var(--divider);
-  --color-input-border: var(--input-border);
-  --color-input-border-focus: var(--input-border-focus);
-
-  --font-sans: var(--font-jakarta);
-  --font-heading: var(--font-jakarta);
-  --font-mono: var(--font-jetbrains);
-
-  --animate-marquee: marquee 40s linear infinite;
-  --animate-marquee-reverse: marquee-reverse 40s linear infinite;
-  --animate-fade-up: fade-up 0.6s ease-out forwards;
-  --animate-text-reveal: text-reveal 0.8s ease-out forwards;
-  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
-  --animate-float: float 6s ease-in-out infinite;
-
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-  @keyframes marquee-reverse {
-    0% { transform: translateX(-50%); }
-    100% { transform: translateX(0); }
-  }
-  @keyframes fade-up {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes text-reveal {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-  }
-  @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.2); }
-    50% { box-shadow: 0 0 40px rgba(0, 240, 255, 0.4); }
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-  }
+  --color-paper: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface-2);
+  --color-alt: var(--bg-alt);
+  --color-ink: var(--text);
+  --color-muted: var(--text-2);
+  --color-line: var(--border);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), Georgia, serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
 }
 
-/* ============================
-   BASE STYLES
-   ============================ */
-* {
-  cursor: none !important;
-}
-
-@media (pointer: coarse) {
-  * {
-    cursor: auto !important;
-  }
-}
-
+/* ==========================================================================
+   Base
+   ========================================================================== */
 html {
-  scroll-behavior: auto; /* Lenis handles scroll */
+  scroll-padding-top: 5rem;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
-  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: var(--accent-primary);
-  color: var(--background);
+  background: var(--accent-soft);
+  color: var(--text);
 }
 
-/* ============================
-   SCROLLBAR
-   ============================ */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(128, 128, 128, 0.3);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(128, 128, 128, 0.6);
-}
-
-/* ============================
-   GLASSMORPHISM UTILITIES
-   ============================ */
-.glass {
-  background: var(--card-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--card-border);
-}
-
-.glass-hover:hover {
-  border-color: var(--card-border-hover);
-  box-shadow: var(--shadow-glow);
-}
-
-/* ============================
-   FOCUS VISIBLE (A11y)
-   ============================ */
 :focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
-  border-radius: 4px;
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
-
-
-/* ============================
-   PROSE STYLES (Blog/Project)
-   ============================ */
-.prose-custom {
-  color: var(--foreground);
-  line-height: 1.8;
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 0.875rem;
+  border-radius: 2px;
 }
-.prose-custom h1,
-.prose-custom h2,
-.prose-custom h3,
-.prose-custom h4 {
-  color: var(--foreground);
-  font-family: var(--font-heading), system-ui, sans-serif;
-  font-weight: 700;
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* ==========================================================================
+   Tipografia e layout
+   ========================================================================== */
+.display {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
   letter-spacing: -0.02em;
-  margin-top: 2em;
-  margin-bottom: 0.75em;
+  line-height: 1.02;
 }
-.prose-custom h1 { font-size: 2.25rem; }
-.prose-custom h2 { font-size: 1.75rem; }
-.prose-custom h3 { font-size: 1.375rem; }
-.prose-custom p {
-  margin-bottom: 1.25em;
-  color: var(--foreground-muted);
+.display em {
+  font-style: italic;
+  color: var(--text-2);
 }
-.prose-custom a {
-  color: var(--accent-primary);
+
+.eyebrow {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+.section {
+  padding-block: clamp(4rem, 9vw, 7.5rem);
+  border-top: 1px solid var(--border);
+}
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--rule);
+}
+
+/* Botões e links */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.65rem 1.15rem;
+  border: 1px solid var(--text);
+  border-radius: 3px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: var(--text);
+  color: var(--bg);
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.btn:hover {
+  background: transparent;
+  color: var(--text);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--rule);
+}
+.btn-ghost:hover {
+  border-color: var(--text);
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1px;
+  transition: border-color 0.15s ease, gap 0.15s ease;
+}
+.link-arrow:hover {
+  border-color: var(--accent-ink);
+  gap: 0.65rem;
+}
+
+.tag {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.84rem;
+  color: var(--text-2);
+}
+
+/* ==========================================================================
+   Movimento — curto e discreto. Nada oculta conteúdo por mais de ~0,5 s.
+   ========================================================================== */
+.reveal-pending {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.reveal {
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+
+@keyframes beacon {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.beacon {
+  animation: beacon 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal-pending {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   Prosa editorial (artigos)
+   ========================================================================== */
+.prose-editorial {
+  max-width: 44rem;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.prose-editorial h2 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 2rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 2.75rem 0 1rem;
+}
+.prose-editorial h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 2rem 0 0.75rem;
+}
+.prose-editorial p {
+  margin: 0 0 1.25rem;
+  color: var(--text);
+}
+.prose-editorial a {
+  color: var(--accent-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.prose-custom code {
-  background: var(--card-bg);
-  padding: 0.15em 0.4em;
-  border-radius: 4px;
-  font-size: 0.875em;
+.prose-editorial ul,
+.prose-editorial ol {
+  margin: 0 0 1.25rem;
+  padding-left: 1.4rem;
+}
+.prose-editorial ul {
+  list-style: disc;
+}
+.prose-editorial ol {
+  list-style: decimal;
+}
+.prose-editorial li {
+  margin-bottom: 0.4rem;
+}
+.prose-editorial blockquote {
+  margin: 2rem 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--accent);
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.4rem;
+  line-height: 1.35;
+  color: var(--text-2);
+}
+.prose-editorial blockquote p {
+  margin: 0;
+  color: inherit;
+}
+.prose-editorial :not(pre) > code {
   font-family: var(--font-mono), monospace;
+  font-size: 0.86em;
+  background: var(--surface-2);
+  padding: 0.12em 0.4em;
+  border-radius: 3px;
 }
-.prose-custom pre {
-  background: var(--background-secondary);
-  border: 1px solid var(--card-border);
-  border-radius: 8px;
-  padding: 1.25em;
+.prose-editorial figure[data-rehype-pretty-code-figure] {
+  margin: 1.75rem 0;
+}
+.prose-editorial pre {
   overflow-x: auto;
-  margin: 1.5em 0;
+  padding: 1.1rem 1.25rem;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  line-height: 1.65;
 }
-.prose-custom pre code {
+.prose-editorial pre code {
+  font-family: var(--font-mono), monospace;
   background: none;
   padding: 0;
 }
-.prose-custom blockquote {
-  border-left: 3px solid var(--accent-primary);
-  padding-left: 1em;
-  margin: 1.5em 0;
-  color: var(--foreground-muted);
-  font-style: italic;
+code[data-theme] span,
+code span[style*="--shiki-light"] {
+  color: var(--shiki-light);
 }
-.prose-custom ul,
-.prose-custom ol {
-  padding-left: 1.5em;
-  margin-bottom: 1.25em;
-  color: var(--foreground-muted);
+[data-theme="dark"] code span[style*="--shiki-dark"] {
+  color: var(--shiki-dark);
 }
-.prose-custom li {
-  margin-bottom: 0.5em;
+.prose-editorial .table-scroll {
+  overflow-x: auto;
+  margin: 1.75rem 0;
 }
-.prose-custom img {
-  border-radius: 8px;
-  margin: 1.5em 0;
+.prose-editorial table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
 }
-.prose-custom hr {
-  border: none;
-  border-top: 1px solid var(--divider);
-  margin: 2em 0;
+.prose-editorial th,
+.prose-editorial td {
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--border);
 }
-
-/* ============================
-   SKELETON LOADER
-   ============================ */
-@keyframes skeleton-shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-.skeleton {
-  background: linear-gradient(90deg, var(--card-bg) 25%, rgba(255,255,255,0.05) 50%, var(--card-bg) 75%);
-  background-size: 200% 100%;
-  animation: skeleton-shimmer 1.5s infinite;
-}
-
-/* ============================
-   MARQUEE PAUSE ON HOVER
-   ============================ */
-.marquee-container:hover .marquee-track {
-  animation-play-state: paused;
+.prose-editorial th {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  border-bottom-color: var(--rule);
 }

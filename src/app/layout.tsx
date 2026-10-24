@@ -1,55 +1,53 @@
-import type { Metadata } from 'next';
-import { jakarta, inter, jetbrains } from '@/lib/fonts';
-import ThemeProvider from '@/components/providers/ThemeProvider';
-import SmoothScroll from '@/components/providers/SmoothScroll';
-import CustomCursor from '@/components/ui/CustomCursor';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+import type { Metadata, Viewport } from 'next';
+import { display, sans, mono } from '../lib/fonts';
+import ThemeProvider from '../components/layout/ThemeProvider';
+import Header from '../components/layout/Header';
+import Footer from '../components/layout/Footer';
+import { OG_IMAGE } from '../lib/seo';
+import { site, siteUrl } from '../content/site';
 import './globals.css';
 
+const description =
+  'Portfólio de Evanilson Freitas: Business Intelligence, Data Science e Engenharia de Software aplicados a desafios de negócio. Projetos, formação e artigos técnicos.';
+
 export const metadata: Metadata = {
-  title: 'Evanilson Freitas — Especialista em Power BI & Dados',
-  description:
-    'Portfólio de Evanilson Pereira de Freitas. Especialista em Power BI, Engenharia de Dados, Modelagem Star Schema e dashboards analíticos com alto nível de UI/UX.',
-  keywords: [
-    'Analista de Dados',
-    'Power BI',
-    'Engenheiro de Dados',
-    'Business Intelligence',
-    'DAX',
-    'SQL',
-    'Data Science',
-    'Evanilson Freitas',
-  ],
-  authors: [{ name: 'Evanilson Pereira de Freitas' }],
+  metadataBase: new URL(`${siteUrl}/`),
+  title: { default: `${site.name} — Business Intelligence, Data Science e Software`, template: `%s — ${site.name}` },
+  description,
+  authors: [{ name: site.fullName, url: site.github }],
+  creator: site.fullName,
+  keywords: ['Business Intelligence', 'Data Science', 'Engenharia de Software', 'Analytics', 'Python', 'SQL Server', 'TypeScript'],
+  alternates: { canonical: `${siteUrl}/` },
   openGraph: {
-    title: 'Evanilson Freitas — Especialista em Power BI & Dados',
-    description:
-      'Transformando dados em estratégia e performance. Especialista em Arquitetura de Dados, ETL e Power BI.',
-    type: 'website',
+    title: `${site.name} — Business Intelligence, Data Science e Software`,
+    description,
+    url: `${siteUrl}/`,
+    siteName: site.name,
     locale: 'pt_BR',
+    type: 'website',
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${site.name} — ${site.areas}` }],
   },
+  twitter: { card: 'summary_large_image', title: site.name, description, images: [OG_IMAGE] },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#fafaf8' },
+    { media: '(prefers-color-scheme: dark)', color: '#0d1117' },
+  ],
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="pt-BR"
-      suppressHydrationWarning
-      className={`${jakarta.variable} ${inter.variable} ${jetbrains.variable} antialiased`}
-    >
-      <body className="min-h-screen flex flex-col">
+    <html lang="pt-BR" suppressHydrationWarning className={`${display.variable} ${sans.variable} ${mono.variable}`}>
+      <body className="flex min-h-screen flex-col">
         <ThemeProvider>
-          <SmoothScroll>
-            <CustomCursor />
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </SmoothScroll>
+          <a href="#conteudo" className="skip-link">Ir para o conteúdo</a>
+          <Header />
+          <main id="conteudo" className="flex-1">
+            {children}
+          </main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

@@ -60,8 +60,7 @@ Evite adicionar colunas calculadas em tabelas fato. Elas consomem RAM e geralmen
 ## Implementação Prática
 
 ```sql
--- Exemplo de ETL para criar a dimensão de data
-CREATE TABLE dim_data AS
+-- Exemplo (T-SQL) de ETL para criar a dimensão de data
 SELECT DISTINCT
     CAST(data_venda AS DATE) AS data_id,
     YEAR(data_venda) AS ano,
@@ -69,6 +68,7 @@ SELECT DISTINCT
     DAY(data_venda) AS dia,
     DATENAME(WEEKDAY, data_venda) AS dia_semana,
     CASE WHEN MONTH(data_venda) <= 6 THEN 'S1' ELSE 'S2' END AS semestre
+INTO dim_data
 FROM fato_vendas_raw;
 ```
 

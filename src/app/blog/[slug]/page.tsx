@@ -1,168 +1,109 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getPostBySlug, getAllSlugs } from '@/lib/blog';
-import { MDXRemote } from 'next-mdx-remote/rsc';
-import { ChevronRight } from 'lucide-react';
 import type { Metadata } from 'next';
+import { MDXRemote } from 'next-mdx-remote/rsc';
+import remarkGfm from 'remark-gfm';
+import rehypeSlug from 'rehype-slug';
+import rehypePrettyCode from 'rehype-pretty-code';
+import Icon from '../../../components/ui/Icon';
+import { formatDate, getAllSlugs, getPostBySlug, getRelatedPosts } from '../../../lib/blog';
+import { absoluteUrl, jsonLd, pageMetadata } from '../../../lib/seo';
+import { site } from '../../../content/site';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  const slugs = getAllSlugs();
-  return slugs.map((slug) => ({ slug }));
+export function generateStaticParams() {
+  return getAllSlugs().map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = getPostBySlug(slug);
-  if (!post) return { title: 'Post não encontrado' };
-
-  return {
-    title: `${post.title} — Blog | Evanilson Freitas`,
+  if (!post) return { title: 'Artigo não encontrado' };
+  return pageMetadata({
+    title: post.title,
     description: post.excerpt,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      type: 'article',
-      publishedTime: post.date,
-      authors: [post.author],
-    },
-  };
-}
-
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
+    path: `/blog/${slug}/`,
+    type: 'article',
+    publishedTime: post.date,
   });
 }
+
+const mdxComponents = {
+  table: (props: React.ComponentProps<'table'>) => (
+    <div className="table-scroll" tabIndex={0} role="region" aria-label="Tabela rolável">
+      <table {...props} />
+    </div>
+  ),
+};
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
+  if (!post) notFound();
+  const related = getRelatedPosts(slug);
 
-  if (!post) {
-    notFound();
-  }
+  const article = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    author: { '@type': 'Person', name: site.fullName, url: site.github },
+    mainEntityOfPage: absoluteUrl(`/blog/${slug}/`),
+  };
 
   return (
-    <div className="pt-24 pb-16">
-      <article className="max-w-3xl mx-auto px-6">
-        {/* Breadcrumbs */}
-        <nav
-          className="flex items-center gap-2 text-sm mb-8"
-          aria-label="Breadcrumb"
-          style={{ color: 'var(--foreground-muted)' }}
-        >
-          <Link
-            href="/"
-            className="hover:text-[var(--accent-primary)] transition-colors duration-300"
-          >
-            Home
-          </Link>
-          <ChevronRight size={14} />
-          <Link
-            href="/blog"
-            className="hover:text-[var(--accent-primary)] transition-colors duration-300"
-          >
-            Blog
-          </Link>
-          <ChevronRight size={14} />
-          <span className="line-clamp-1" style={{ color: 'var(--accent-primary)' }}>
-            {post.title}
-          </span>
-        </nav>
+    <article className="wrap pb-24 pt-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(article) }} />
+      <nav aria-label="Navegação estrutural" className="mb-10 text-sm text-muted">
+        <Link href="/blog/" className="inline-flex items-center gap-2 hover:text-ink">
+          <Icon name="arrow" className="rotate-180" /> Artigos
+        </Link>
+      </nav>
 
-        {/* Header */}
-        <header className="mb-12">
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {post.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-xs font-medium px-3 py-1.5 rounded-full"
-                style={{
-                  background: 'var(--card-bg)',
-                  border: '1px solid var(--card-border)',
-                  color: 'var(--accent-primary)',
-                }}
-              >
-                {tag}
-              </span>
+      <header className="mb-12 max-w-4xl">
+        <p className="eyebrow mb-5">
+          {post.category} · <time dateTime={post.date}>{formatDate(post.date)}</time> · {post.readTime}
+        </p>
+        <h1 className="display text-[clamp(2.5rem,6vw,4.75rem)]">{post.title}</h1>
+        <p className="mt-6 max-w-2xl text-xl text-muted">{post.excerpt}</p>
+      </header>
+
+      <hr className="rule mb-12" />
+
+      <div className="prose-editorial">
+        <MDXRemote
+          source={post.content}
+          components={mdxComponents}
+          options={{
+            mdxOptions: {
+              remarkPlugins: [remarkGfm],
+              rehypePlugins: [
+                rehypeSlug,
+                [rehypePrettyCode, { theme: { light: 'github-light', dark: 'github-dark' }, keepBackground: false }],
+              ],
+            },
+          }}
+        />
+      </div>
+
+      {related.length > 0 && (
+        <aside className="mt-20 max-w-2xl border-t border-rule pt-8" aria-labelledby="relacionados">
+          <h2 id="relacionados" className="eyebrow mb-4">Leia também</h2>
+          <ul className="space-y-3">
+            {related.map((r) => (
+              <li key={r.slug}>
+                <Link href={`/blog/${r.slug}/`} className="display text-2xl hover:text-accent-ink">
+                  {r.title}
+                </Link>
+              </li>
             ))}
-          </div>
-
-          {/* Title */}
-          <h1
-            className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-6 leading-[1.15]"
-            style={{ color: 'var(--foreground)' }}
-          >
-            {post.title}
-          </h1>
-
-          {/* Meta */}
-          <div className="flex items-center gap-4">
-            {/* Author avatar placeholder */}
-            <div
-              className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold"
-              style={{
-                background: 'var(--accent-primary)',
-                color: 'var(--background-secondary)',
-              }}
-            >
-              EF
-            </div>
-            <div>
-              <p className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>
-                {post.author}
-              </p>
-              <div className="flex items-center gap-3">
-                <time
-                  className="text-xs font-mono"
-                  style={{ color: 'var(--foreground-muted)' }}
-                  dateTime={post.date}
-                >
-                  {formatDate(post.date)}
-                </time>
-                <span className="text-xs" style={{ color: 'var(--foreground-muted)' }}>•</span>
-                <span className="text-xs font-mono" style={{ color: 'var(--foreground-muted)' }}>
-                  {post.readTime}
-                </span>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        {/* Divider */}
-        <div className="h-px w-full mb-12" style={{ background: 'var(--divider)' }} />
-
-        {/* MDX Content */}
-        <div className="prose-custom">
-          <MDXRemote source={post.content} />
-        </div>
-
-        {/* Footer */}
-        <div
-          className="mt-16 pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
-          style={{ borderTop: '1px solid var(--divider)' }}
-        >
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-sm font-medium transition-colors duration-300"
-            style={{ color: 'var(--accent-primary)' }}
-            aria-label="Voltar para todos os artigos"
-          >
-            ← Voltar para Blog
-          </Link>
-
-          <p className="text-xs font-mono" style={{ color: 'var(--foreground-muted)' }}>
-            Publicado em {formatDate(post.date)}
-          </p>
-        </div>
-      </article>
-    </div>
+          </ul>
+        </aside>
+      )}
+    </article>
   );
 }
