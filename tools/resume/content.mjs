@@ -1,17 +1,32 @@
 // Monta o conteúdo do currículo a partir das mesmas fontes do site (src/content).
 import { existsSync, readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { site, resumeFiles } from '../../src/content/site.ts';
 import { education } from '../../src/content/education.ts';
+import { employment } from '../../src/content/career.ts';
+import { sortEmployment, sortRoles } from '../../src/lib/career.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const display = (url) => url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '');
 const PORTFOLIO = 'https://evanilsonfreitas.github.io/portfolio-evanilson/';
 
-/** Fotografia profissional opcional. Quando o arquivo existe, entra automaticamente nos documentos. */
-export const photoPath = join(root, 'public', 'assets', 'curriculo', 'foto-profissional.jpg');
-export const photo = existsSync(photoPath) ? readFileSync(photoPath) : null;
+/**
+ * Fotografia do currículo. A imagem principal é public/resume/Foto_Curriculo.jpg; sem ela, usa a anterior
+ * (public/assets/curriculo/foto-profissional.jpg). Nos dois casos a imagem entra apenas dentro do PDF e do
+ * DOCX de duas colunas: o build do site a remove dos artefatos publicados.
+ */
+export const photoPath = [join(root, 'public', 'resume', 'Foto_Curriculo.jpg'), join(root, 'public', 'assets', 'curriculo', 'foto-profissional.jpg')].find(existsSync);
+
+/** Recorte quadrado a partir do topo (rosto), igual ao enquadramento do PDF; sem esticar nem alterar a imagem. */
+async function squareFromTop(file) {
+  const sharp = createRequire(join(root, 'package.json'))('sharp');
+  const { width, height } = await sharp(file).metadata();
+  const side = Math.min(width, height);
+  return sharp(file).extract({ left: Math.round((width - side) / 2), top: 0, width: side, height: side }).jpeg({ quality: 92 }).toBuffer();
+}
+export const photo = photoPath ? await squareFromTop(photoPath) : null;
 
 export const resume = {
   files: resumeFiles,
@@ -27,6 +42,7 @@ export const resume = {
     { label: 'Portfólio', text: display(PORTFOLIO), href: PORTFOLIO },
   ],
   summary: site.resumeSummary,
+  experience: resumeExperience(),
   projects: resumeProjects(),
   skills: [
     { group: 'Business Intelligence', items: ['Power BI', 'DAX', 'Power Query', 'Modelagem dimensional', 'Data visualization', 'UX/UI de dashboards'] },
@@ -81,4 +97,28 @@ function resumeProjects() {
       stack: 'Python, normalização de texto, similaridade, SQL',
     },
   ];
+}
+
+function month(ym) {
+  const [y, m] = ym.split('-');
+  return `${['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'][Number(m) - 1]}/${y}`;
+}
+
+/**
+ * Experiência profissional, em ordem cronológica inversa, a partir do histórico formal do site.
+ * Períodos simultâneos e separados são preservados exatamente como cadastrados.
+ */
+function resumeExperience() {
+  return sortEmployment(employment).map((e) => ({
+    company: e.company.name,
+    location: e.location,
+    areas: e.areas?.join(' · '),
+    roles: sortRoles(e.roles).map((r) => ({
+      title: r.title,
+      period: `${month(r.period.start)} – ${r.period.end ? month(r.period.end) : 'atual'}`,
+      meta: [r.type, r.mode, r.location].filter(Boolean).join(' · '),
+      bullets: r.responsibilities ?? [],
+      skills: r.technologies?.join(', '),
+    })),
+  }));
 }

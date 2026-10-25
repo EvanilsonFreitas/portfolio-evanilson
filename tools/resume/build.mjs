@@ -2,7 +2,7 @@
 //   - PDF em duas colunas (HTML → Chrome/Edge headless)
 //   - DOCX em duas colunas
 //   - DOCX ATS em uma coluna, sem fotografia
-// Fotografia opcional: public/assets/curriculo/foto-profissional.jpg
+// Fotografia: public/resume/Foto_Curriculo.jpg (ou, na falta dela, public/assets/curriculo/foto-profissional.jpg)
 // Uso: (cd tools/resume && npm install) e depois `npm run resume` na raiz.
 import { mkdirSync, writeFileSync, existsSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -122,9 +122,27 @@ function sidebarChildren() {
   return c;
 }
 
-function mainChildren() {
-  const c = [mainHeading('Perfil profissional'), new Paragraph({ spacing: sp(0, 40), children: [run(resume.summary)] })];
-  c.push(mainHeading('Formação acadêmica'));
+function experienceChildren() {
+  const c = [mainHeading('Experiência profissional')];
+  for (const e of resume.experience) {
+    c.push(
+      new Paragraph({ spacing: sp(110, 10), keepNext: true, children: [run(e.company, { bold: true, size: 22 }), ...(e.location ? [run(`  ${e.location}`, { color: GREY, size: 17 })] : [])] }),
+    );
+    if (e.areas) c.push(new Paragraph({ spacing: sp(0, 20), keepNext: true, children: [run('Atuação: ', { bold: true, color: GREY, size: 17 }), run(e.areas, { color: GREY, size: 17 })] }));
+    for (const r of e.roles) {
+      c.push(
+        new Paragraph({ spacing: sp(50, 0), keepNext: true, children: [run(r.title, { bold: true }), run(`   ${r.period}`, { color: GREY, size: 17 })] }),
+      );
+      if (r.meta) c.push(new Paragraph({ spacing: sp(0, 15), keepNext: r.bullets.length > 0, children: [run(r.meta, { color: GREY, size: 16 })] }));
+      r.bullets.forEach((t) => c.push(bullet(t, 18)));
+      if (r.skills) c.push(new Paragraph({ spacing: sp(10, 30), children: [run('Competências: ', { bold: true, color: GREY, size: 16 }), run(r.skills, { color: GREY, size: 16 })] }));
+    }
+  }
+  return c;
+}
+
+function educationChildren() {
+  const c = [mainHeading('Formação acadêmica')];
   for (const e of resume.education) {
     c.push(
       new Paragraph({
@@ -136,7 +154,15 @@ function mainChildren() {
     if (e.institution) c.push(new Paragraph({ spacing: sp(0, 20), children: [run(e.institution, { bold: e.featured })] }));
     e.dates.forEach((d) => c.push(new Paragraph({ spacing: sp(0, 20), children: [run(d, { color: GREY, size: 18 })] })));
   }
-  c.push(mainHeading('Projetos selecionados'));
+  return c;
+}
+
+function mainPage1() {
+  return [mainHeading('Perfil profissional'), new Paragraph({ spacing: sp(0, 40), children: [run(resume.summary)] }), ...experienceChildren()];
+}
+
+function mainPage2() {
+  const c = [...educationChildren(), mainHeading('Projetos selecionados')];
   for (const p of resume.projects) {
     c.push(
       new Paragraph({ spacing: sp(70, 20), keepNext: true, children: [run(p.title, { bold: true }), run(`  ${p.kind}`, { color: GREY, size: 18 })] }),
@@ -161,47 +187,50 @@ const MAIN_W = 11906 - SIDE_W;
 const noBorder = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
 const noBorders = { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder };
 
+/** Uma página A4 em duas colunas: coluna lateral escura e conteúdo principal. Cada página é uma seção própria. */
+function sheet(sideChildren, mainChildren) {
+  return {
+    properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 0, bottom: 0, left: 0, right: 0 } } },
+    children: [
+      new Table({
+        width: { size: 11906, type: WidthType.DXA },
+        columnWidths: [SIDE_W, MAIN_W],
+        layout: TableLayoutType.FIXED,
+        borders: { ...noBorders, insideHorizontal: noBorder, insideVertical: noBorder },
+        rows: [
+          new TableRow({
+            height: { value: 16760, rule: HeightRule.ATLEAST },
+            children: [
+              new TableCell({
+                width: { size: SIDE_W, type: WidthType.DXA },
+                shading: { type: ShadingType.CLEAR, fill: SIDE, color: 'auto' },
+                margins: { top: 620, bottom: 400, left: 420, right: 320 },
+                borders: noBorders,
+                verticalAlign: VerticalAlign.TOP,
+                children: sideChildren,
+              }),
+              new TableCell({
+                width: { size: MAIN_W, type: WidthType.DXA },
+                margins: { top: 620, bottom: 400, left: 520, right: 560 },
+                borders: noBorders,
+                verticalAlign: VerticalAlign.TOP,
+                children: mainChildren,
+              }),
+            ],
+          }),
+        ],
+      }),
+      new Paragraph({ spacing: sp(0, 0), children: [new TextRun({ text: '', size: 2 })] }),
+    ],
+  };
+}
+
 const twoCol = new Document({
   creator: resume.name,
   title: `${resume.name} — Currículo`,
   styles: { default: { document: { run: { font: FONT, size: 19 } } } },
   numbering,
-  sections: [
-    {
-      properties: { page: { size: { width: 11906, height: 16838 }, margin: { top: 0, bottom: 0, left: 0, right: 0 } } },
-      children: [
-        new Table({
-          width: { size: 11906, type: WidthType.DXA },
-          columnWidths: [SIDE_W, MAIN_W],
-          layout: TableLayoutType.FIXED,
-          borders: { ...noBorders, insideHorizontal: noBorder, insideVertical: noBorder },
-          rows: [
-            new TableRow({
-              height: { value: 16760, rule: HeightRule.ATLEAST },
-              children: [
-                new TableCell({
-                  width: { size: SIDE_W, type: WidthType.DXA },
-                  shading: { type: ShadingType.CLEAR, fill: SIDE, color: 'auto' },
-                  margins: { top: 620, bottom: 400, left: 420, right: 320 },
-                  borders: noBorders,
-                  verticalAlign: VerticalAlign.TOP,
-                  children: sidebarChildren(),
-                }),
-                new TableCell({
-                  width: { size: MAIN_W, type: WidthType.DXA },
-                  margins: { top: 620, bottom: 400, left: 520, right: 560 },
-                  borders: noBorders,
-                  verticalAlign: VerticalAlign.TOP,
-                  children: mainChildren(),
-                }),
-              ],
-            }),
-          ],
-        }),
-        new Paragraph({ spacing: sp(0, 0), children: [new TextRun({ text: '', size: 2 })] }),
-      ],
-    },
-  ],
+  sections: [sheet(sidebarChildren(), mainPage1()), sheet([new Paragraph({ children: [] })], mainPage2())],
 });
 writeFileSync(out(resume.files.docx.path), await Packer.toBuffer(twoCol));
 console.log('DOCX:', out(resume.files.docx.path));
@@ -233,6 +262,16 @@ const ats = [
   atsHeading('Resumo profissional'),
   new Paragraph({ spacing: sp(0, 60), children: [atsRun(resume.summary)] }),
 ];
+ats.push(atsHeading('Experiência profissional'));
+for (const e of resume.experience) {
+  ats.push(new Paragraph({ spacing: sp(120, 10), keepNext: true, children: [atsRun(e.company, { bold: true }), ...(e.location ? [atsRun(` — ${e.location}`, { color: GREY })] : [])] }));
+  if (e.areas) ats.push(new Paragraph({ spacing: sp(0, 20), keepNext: true, children: [atsRun('Atuação: ', { bold: true, color: GREY }), atsRun(e.areas, { color: GREY })] }));
+  for (const r of e.roles) {
+    ats.push(new Paragraph({ spacing: sp(60, 0), keepNext: true, children: [atsRun(r.title, { bold: true }), atsRun(` | ${r.period}`, { color: GREY }), ...(r.meta ? [atsRun(` | ${r.meta}`, { color: GREY })] : [])] }));
+    r.bullets.forEach((t) => ats.push(atsBullet(t)));
+    if (r.skills) ats.push(new Paragraph({ spacing: sp(10, 30), children: [atsRun('Competências: ', { bold: true, color: GREY }), atsRun(r.skills, { color: GREY })] }));
+  }
+}
 ats.push(atsHeading('Formação acadêmica'));
 for (const e of resume.education) {
   ats.push(
@@ -277,9 +316,9 @@ const html = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><tit
 <style>
 @page { size: A4; margin: 0; }
 * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-html { background: linear-gradient(90deg, #${SIDE} 0, #${SIDE} 66mm, #ffffff 66mm); }
 body { margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 9.2pt; line-height: 1.38; color: #${INK}; }
-.page { display: grid; grid-template-columns: 66mm 1fr; }
+.sheet { display: grid; grid-template-columns: 66mm 1fr; min-height: 297mm; height: 297mm; overflow: hidden; break-after: page; background: linear-gradient(90deg, #${SIDE} 0, #${SIDE} 66mm, #ffffff 66mm); }
+.sheet:last-child { break-after: auto; }
 .side { color: #e6edf3; padding: 11mm 7mm 8mm 8mm; font-size: 8.6pt; }
 .main { padding: 11mm 11mm 8mm 10mm; }
 .photo { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; object-position: center top; margin: 0 0 5mm; }
@@ -303,7 +342,11 @@ li { margin: 0 0 0.7mm; }
 .item { break-inside: avoid; margin-bottom: 2.6mm; }
 .edu-main { font-size: 12pt; }
 .small { font-size: 8.6pt; }
-</style></head><body><div class="page">
+.company { font-size: 10.4pt; margin-bottom: 0.6mm; }
+.role { break-inside: avoid; margin: 1.6mm 0 1.8mm; }
+.role .row p, .role p.row { margin: 0; }
+</style></head><body>
+<div class="sheet">
 <aside class="side">
 ${photoTag}
 <h1>${esc(resume.name)}</h1>
@@ -319,6 +362,21 @@ ${resume.languages.length ? `<h2>Idiomas</h2>${resume.languages.map((l) => `<p>$
 <main class="main">
 <h2>Perfil profissional</h2>
 <p>${esc(resume.summary)}</p>
+<h2>Experiência profissional</h2>
+${resume.experience
+  .map(
+    (e) => `<div class="item"><p class="company"><strong>${esc(e.company)}</strong>${e.location ? ` <span class="muted small">${esc(e.location)}</span>` : ''}</p>${e.areas ? `<p class="muted small"><strong>Atuação:</strong> ${esc(e.areas)}</p>` : ''}${e.roles
+      .map(
+        (r) => `<div class="role"><p class="row"><strong>${esc(r.title)}</strong><span class="when">${esc(r.period)}</span></p>${r.meta ? `<p class="muted small">${esc(r.meta)}</p>` : ''}${r.bullets.length ? `<ul>${r.bullets.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}${r.skills ? `<p class="muted small"><strong>Competências:</strong> ${esc(r.skills)}</p>` : ''}</div>`,
+      )
+      .join('')}</div>`,
+  )
+  .join('\n')}
+</main>
+</div>
+<div class="sheet">
+<aside class="side"></aside>
+<main class="main">
 <h2>Formação acadêmica</h2>
 ${resume.education
   .map(
