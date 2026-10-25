@@ -1,7 +1,9 @@
 # Estado do projeto
 
-**Versão:** V3.3 — CONCLUÍDA E HOMOLOGADA EM PRODUÇÃO EM 25/10/2026.
+**Versão:** V3.3.1 — PUBLICADA EM PRODUÇÃO EM 25/10/2026 (ajuste pontual sobre a V3.3 homologada).
 Implementação concluída, testes aprovados, publicada no GitHub Pages e na Vercel, validada nos dois ambientes e aprovada pelo proprietário em produção ("VALIDADO! TUDO OK!"), incluindo catálogo, projetos independentes, busca e filtros, claro e escuro, imagens e ampliação. Não há homologação pendente. O baseline anterior foi a V3.2.2.
+
+A V3.3.1 corrige apenas as tecnologias dos painéis em Excel de coleta e extravio (ver "Painéis em Excel de coleta e extravio"): sem novos projetos, 42 itens, imagens, layout e currículos inalterados.
 
 Este arquivo é o ponto de retomada de uma nova sessão. Leia, nesta ordem: este arquivo, [PUBLICACAO.md](PUBLICACAO.md) e [PROJETOS.md](PROJETOS.md). Nenhuma implementação é necessária até o proprietário definir a próxima frente.
 
@@ -15,13 +17,13 @@ Portfólio profissional de Evanilson Freitas (Business Intelligence, Inteligênc
 | Repositório | https://github.com/EvanilsonFreitas/portfolio-evanilson (branch `master`; `gh-pages` só com o artefato) |
 
 ## Estado da publicação
-- `master` sincronizada com `origin/master`. Código da V3.3 em `b7c6a3f`; commits da frente: `032cdda`, `9ecd238`, `5e95abd`, `e2b7db3`, `582c851`, `b7c6a3f`, `5d92bf7`.
-- GitHub Pages: `gh-pages` em `24d5e4a` (`chore(pages): publica a V3.3`), build `built`. Baseline V3.2.2: `7a25356`.
-- Vercel: deployment de produção `portfolio-evanilson-ksppfrzjr-evan-b357.vercel.app`, `Ready`, no domínio `portfolio-evanilson.vercel.app`. Projeto `portfolio-evanilson`, scope `evan-b357`, deploy manual `--prebuilt --prod`, sem integração Git. Deployment anterior (V3.2.2): `portfolio-evanilson-c17spjz0l-evan-b357.vercel.app`.
+- `master` sincronizada com `origin/master`. Código da V3.3.1 em `fd59c0c` (`fix(catalog): corrige as tecnologias das soluções de coleta e extravio`); código da V3.3 em `b7c6a3f`; commits da frente: `032cdda`, `9ecd238`, `5e95abd`, `e2b7db3`, `582c851`, `b7c6a3f`, `5d92bf7`.
+- GitHub Pages: `gh-pages` em `61a067a` (`chore(pages): publica a V3.3.1`), build `built`. Anterior (V3.3): `24d5e4a`. Baseline V3.2.2: `7a25356`.
+- Vercel: deployment de produção `portfolio-evanilson-8ux3gsq5w-evan-b357.vercel.app`, `Ready`, no domínio `portfolio-evanilson.vercel.app`. Projeto `portfolio-evanilson`, scope `evan-b357`, deploy manual `--prebuilt --prod`, sem integração Git. Deployment anterior (V3.3): `portfolio-evanilson-ksppfrzjr-evan-b357.vercel.app`; antes dele, o da V3.2.2: `portfolio-evanilson-c17spjz0l-evan-b357.vercel.app`.
 - Commits documentais posteriores à publicação não geram deploy: o artefato não inclui `docs/`.
 
-## Qualidade (baseline da V3.3)
-178 testes aprovados; typecheck, ESLint, build dos dois destinos e verificação de links (61 páginas, 2.646 referências internas) aprovados; integridade dos assets, currículos e metadados verificada; console sem erros na inspeção em produção. Os testes protegem o catálogo, a separação entre texto público e notas internas, as imagens (inclusive por hash dos PNGs originais) e a identidade.
+## Qualidade (V3.3.1)
+179 testes aprovados; typecheck, ESLint, build dos dois destinos e verificação de links (61 páginas, 2.646 referências internas) aprovados; integridade dos assets, currículos e metadados verificada; console sem erros na inspeção em produção. Os testes protegem o catálogo, a separação entre texto público e notas internas, as imagens (inclusive por hash dos PNGs originais) e a identidade.
 
 ## Stack e arquitetura
 Next.js 16 (App Router), React 19, TypeScript, Tailwind v4, exportação estática (`output: "export"`, `trailingSlash`). Sem backend, banco, autenticação ou CMS. MDX para artigos. Gráficos e diagramas em SVG próprio. Testes com `node --test` (TypeScript nativo do Node ≥ 22). Build por destino em `tools/build.mjs` (`DEPLOY_TARGET`: `github-pages` com basePath `/portfolio-evanilson`; `vercel` sem basePath). `AGENTS.md` pede ler `node_modules/next/dist/docs/` antes de escrever código Next.
