@@ -11,7 +11,7 @@ O projeto é um site estático (`output: "export"`). **Não há CI/CD, GitHub Ac
 
 - O mesmo código gera os dois destinos; muda apenas `DEPLOY_TARGET` (basePath e URL pública).
 - Cada ambiente é canônico de si mesmo (canonical, Open Graph, sitemap e robots usam a própria origem). Não há redirecionamento entre eles.
-- Projeto Vercel: `portfolio-evanilson`, scope `evan-b357` (conta pessoal, plano Hobby). O projeto **não está ligado ao GitHub**, então nada é publicado por push. Outros projetos do scope (por exemplo `marivan-finance`) não fazem parte deste.
+- Projeto Vercel: `portfolio-evanilson`, scope `evan-b357` (conta pessoal, plano Hobby). O projeto **não está ligado ao GitHub**, então nada é publicado por push. Outros projetos do scope (por exemplo o do produto de gestão financeira) não fazem parte deste.
 - A vinculação (`.vercel/project.json`) fica só em `dist/vercel/.vercel/` e em uma pasta temporária; não é versionada.
 
 ## 2. Validar e gerar os artefatos

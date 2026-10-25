@@ -1,7 +1,16 @@
 # Estado do projeto
 
-**Versão:** V3.2.2 — concluída, publicada e homologada (25/10/2026).
-Este arquivo é o ponto de retomada de uma nova sessão. Procedimentos de publicação: [PUBLICACAO.md](PUBLICACAO.md).
+**Versão:** V3.3, expansão e reestruturação do catálogo de projetos. Homologada pelo proprietário em 25/10/2026, com os 42 itens do catálogo e os refinamentos editoriais; publicação autorizada. A V3.2.2 foi o baseline publicado anterior.
+Este arquivo é o ponto de retomada de uma nova sessão. Procedimentos de publicação: [PUBLICACAO.md](PUBLICACAO.md). Inventário do catálogo: [PROJETOS.md](PROJETOS.md).
+
+## V3.3
+- **Catálogo independente**: 42 itens (13 preservados e 29 novos), sem numeração, linha do tempo ou "próximo projeto". A fonte única é `src/content/catalog.ts`, que reúne `projects.ts`, `studies.ts` e os novos `cases-*.ts`; o vocabulário controlado está em `taxonomy.ts` (6 categorias, tipos de solução, tecnologias confirmadas).
+- **Páginas**: `/projetos/` com busca e filtros (categoria, tecnologia, tipo; estado na URL), `/projetos/<slug>/` para cada item. A home exibe uma curadoria (`homeFeatured`) com acesso ao catálogo.
+- **Texto público x documentação interna**: incertezas (tecnologia não confirmada, fonte, agrupamentos) ficam em `docs/PROJETOS.md` e nos campos internos `techNote` e `pending` de cada case, que o site não exibe. A página omite o campo de tecnologias quando não há tecnologia confirmada. Testes barram expressões de auditoria no texto e nas páginas geradas.
+- **Decisões do proprietário (25/10/2026)**: os três agrupamentos (Consolidado e Ranking de Filiais; Gestão de Coletas e Logística Reversa; Desvio Operacional · Operação GRU, com "Ocorrências Ofensoras" como termo de busca) estão confirmados; Power BI está confirmado para os sete projetos de BI comercial, sem presumir DAX, Power Query ou SQL Server. Também confirmado: o painel Ocorrências na Origem (BI) e a solução em Excel/VBA são entregas distintas, e Controles em SharePoint e Automação com Power Automate são projetos independentes, com referências cruzadas. Não há decisão editorial em aberto; as pendências restantes são não bloqueantes e estão em `PROJETOS.md`.
+- **Tecnologias**: só as confirmadas pelo autor. Painéis com captura e sem confirmação ficam sem tecnologia atribuída e o campo é omitido na página; a pendência consta em PROJETOS.md.
+- **Capturas**: autorizadas pelo proprietário como estão (25/10/2026). Usadas como ele as forneceu (desfoque nativo), sem tarjas nem camadas adicionais; só convertidas para WebP e reduzidas nas 4K (`tools/build-project-images.mjs`). Os PNGs originais ficam fora do repositório (`../portfolio_Evan_privado/projetos-originais`) e nunca em `public`; testes e `check-links` verificam por hash.
+- **Nome público**: o projeto financeiro é "Gestão financeira (Tracker finance)", slug `gestao-financeira`. O nome anterior é barrado por `identity-guard.ts` em código, docs, artefatos e currículos. Não há redirecionamento do endereço antigo, para não manter o nome no artefato.
 
 ## Produto
 Portfólio profissional de Evanilson Freitas (Business Intelligence, Inteligência de Negócios e Engenharia de Software), em português do Brasil.
@@ -50,7 +59,7 @@ PDF (2 páginas, duas colunas, com foto), DOCX (duas colunas, uma seção por p�
 - Sem CI/CD nem GitHub Actions; publicação manual. Sem force push nem reescrita de histórico.
 - Autoria: sem `Co-Authored-By`, trailers ou créditos de ferramentas; identidade Git do proprietário (`Evanilson <101538587+EvanilsonFreitas@users.noreply.github.com>`).
 - Informações incorretas já removidas (empregadores, cargo e curso que não pertencem ao proprietário) não podem voltar: a lista está em `src/content/identity-guard.ts` e é aplicada por testes ao código, aos artefatos e aos currículos. Nunca usar dados de currículos de terceiros. Não inventar empresas, cargos, datas, métricas, códigos do IBGE ou implantações.
-- Marivan Finance fica no site, não no currículo. Dados sintéticos devem estar rotulados.
+- O projeto Gestão financeira (Tracker finance) fica no site, não no currículo. Dados sintéticos devem estar rotulados.
 - Idade (26) é estática em `site.age`; não há data de nascimento.
 
 ## Estado da publicação (V3.2.2)
