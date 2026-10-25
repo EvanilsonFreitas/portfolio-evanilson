@@ -62,8 +62,8 @@ PDF (2 páginas, duas colunas, com foto), DOCX (duas colunas, uma seção por p�
 - O projeto Gestão financeira (Tracker finance) fica no site, não no currículo. Dados sintéticos devem estar rotulados.
 - Idade (26) é estática em `site.age`; não há data de nascimento.
 
-## Estado da publicação (V3.2.2)
-`master` sincronizado com `origin/master`. `gh-pages` publicada e `built`. Vercel: deployment de produção `Ready` em `portfolio-evanilson.vercel.app`, sem integração Git. Os dois ambientes foram validados (conteúdo, downloads com hash idêntico, favicon, navegação e console).
+## Estado da publicação (V3.3)
+V3.3 publicada em 25/10/2026, aguardando a validação final do proprietário diretamente em produção. `master` sincronizada com `origin/master` (código da V3.3 em `b7c6a3f`). `gh-pages` em `24d5e4a` (`chore(pages): publica a V3.3`), com build `built`. Vercel: deployment de produção `Ready` (`portfolio-evanilson-ksppfrzjr-evan-b357.vercel.app`) em `portfolio-evanilson.vercel.app`, sem integração Git. Os dois ambientes foram validados: 42 itens do catálogo, busca e filtros, imagens com hash idêntico ao local, currículos com hash idêntico, favicon, SEO, links, ausência de insumos e do nome anterior, e console sem erros. O baseline anterior (V3.2.2) foi a `gh-pages` em `7a25356`.
 
 ## Pendências reais
 - Nome do MBA: o LinkedIn diz "Executive MBA, Data Analytics"; o site mantém "MBA em Data Science" até haver certificado.

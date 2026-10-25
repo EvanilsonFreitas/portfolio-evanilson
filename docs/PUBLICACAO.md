@@ -2,7 +2,7 @@
 
 O projeto é um site estático (`output: "export"`). **Não há CI/CD, GitHub Actions nem deploy automático**, e a publicação é sempre manual. Comandos em PowerShell (ou Git Bash), a partir da raiz do repositório.
 
-## 1. Ambientes (V3.2.2)
+## 1. Ambientes (V3.3)
 
 | Ambiente | URL | Como é publicado | Origem canônica (`SITE_ORIGIN`) |
 |---|---|---|---|
