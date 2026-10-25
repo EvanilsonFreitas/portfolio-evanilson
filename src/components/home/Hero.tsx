@@ -58,15 +58,15 @@ export default function Hero() {
         </div>
 
         <div className="lg:col-span-5">
-          <figure className="mx-auto max-w-sm lg:max-w-none">
+          <figure className="mx-auto max-w-sm lg:relative lg:-top-5 lg:max-w-none">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={withBasePath(site.photo)}
               alt={`Retrato de ${site.fullName}`}
-              width={560}
-              height={560}
+              width={1122}
+              height={1402}
               fetchPriority="high"
-              className="aspect-square w-full border border-line object-cover"
+              className="aspect-square w-full border border-line object-cover object-[50%_10%]"
             />
             <figcaption className="mt-3 flex flex-wrap items-baseline justify-between gap-x-4 text-sm text-muted">
               <span>{site.fullName}</span>
