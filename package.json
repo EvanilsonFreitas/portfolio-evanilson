@@ -15,7 +15,8 @@
     "preview:pages": "node tools/preview.mjs github-pages",
     "preview:vercel": "node tools/preview.mjs vercel",
     "resume": "node tools/resume/build.mjs",
-    "check": "npm run typecheck && npm run lint && npm run build:pages && npm run check:pages && npm run build:vercel && npm run check:vercel && npm run test"
+    "check": "npm run typecheck && npm run lint && npm run build:pages && npm run check:pages && npm run build:vercel && npm run check:vercel && npm run test",
+    "brand": "node tools/build-brand.mjs"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

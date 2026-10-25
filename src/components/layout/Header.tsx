@@ -136,8 +136,25 @@ export default function Header() {
       style={{ background: 'var(--header-bg)' }}
     >
       <div className="wrap flex h-16 items-center justify-between gap-6">
-        <Link href="/" onClick={(e) => go(e, '/')} className="flex items-baseline gap-2" aria-label={`${site.name} — início`}>
-          <span className="display text-2xl">Evanilson Freitas</span>
+        <Link href="/" onClick={(e) => go(e, '/')} className="flex items-center gap-3" aria-label={`${site.name} — início`}>
+          {/* Emblema decorativo: alterna entre o monograma (conforme o tema) e o retrato a cada 4 s, por CSS.
+              O nome textual é a identificação acessível. */}
+          <span className="logo-roll h-[1.625rem] w-[1.625rem] sm:h-[1.875rem] sm:w-[1.875rem]" aria-hidden="true">
+            {/* O monograma mantém o tamanho aprovado (22–24 px) dentro do quadro maior, que dá mais presença ao retrato. */}
+            <span className="logo-roll-a p-[2px] sm:p-[3px]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={withBasePath('/assets/brand/ep-light-96.png')} alt="" width={96} height={96} className="h-full w-full dark:hidden" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={withBasePath('/assets/brand/ep-dark-96.png')} alt="" width={96} height={96} className="hidden h-full w-full dark:block" />
+            </span>
+            <span className="logo-roll-b">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={withBasePath('/assets/brand/avatar-96.png')} alt="" width={96} height={96} className="h-full w-full" />
+            </span>
+          </span>
+          {/* Divisória fina entre o emblema e o nome (decorativa). */}
+          <span aria-hidden="true" className="h-6 w-px shrink-0 bg-muted/60 sm:h-7" />
+          <span className="display text-2xl leading-none">Evanilson Freitas</span>
         </Link>
 
         <nav aria-label="Principal" className="hidden lg:block">

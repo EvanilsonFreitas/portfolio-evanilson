@@ -65,7 +65,7 @@ const nestedPrefetch = (d) => readdirSync(d).some((n) => {
 if (nestedPrefetch(out)) problems.push('payloads de prefetch em pastas (esperado: arquivos planos)');
 const home = readFileSync(join(out, 'index.html'), 'utf8');
 if (!home.includes(`<link rel="canonical" href="${cfg.canonical}"`)) problems.push('canonical da home inesperado');
-if (existsSync(join(out, 'assets', 'curriculo'))) problems.push('fotografia do currículo exposta no artefato');
+if (existsSync(join(out, 'assets', 'curriculo')) || existsSync(join(out, 'resume', 'Foto_Curriculo.jpg')) || existsSync(join(out, 'resume', 'Logo_Animeted.svg'))) problems.push('fotografia do currículo exposta no artefato');
 if (target === 'github-pages' && !existsSync(join(out, '.nojekyll'))) problems.push('.nojekyll ausente');
 if (target === 'vercel' && !existsSync(join(out, '..', 'config.json'))) problems.push('config.json ausente');
 if (target === 'vercel' && home.includes('/portfolio-evanilson/')) problems.push('prefixo do GitHub Pages presente no build da Vercel');

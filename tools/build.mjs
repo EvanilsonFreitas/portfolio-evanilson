@@ -34,6 +34,9 @@ if (!existsSync(join(out, 'index.html'))) {
 
 // A fotografia é insumo do gerador de currículo (já embutida nos documentos): não vai para o site.
 rmSync(join(out, 'assets', 'curriculo'), { recursive: true, force: true });
+rmSync(join(out, 'resume', 'Foto_Curriculo.jpg'), { force: true });
+// O SVG do retrato (3,5 MB) é insumo: o cabeçalho usa a miniatura raster em assets/brand.
+rmSync(join(out, 'resume', 'Logo_Animeted.svg'), { force: true });
 
 // No Windows o export grava os payloads de prefetch em pastas (`__next.blog/__PAGE__.txt`),
 // mas o cliente os solicita como arquivos planos (`__next.blog.__PAGE__.txt`). Normaliza.

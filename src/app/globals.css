@@ -148,6 +148,11 @@ body {
   border-top: 1px solid var(--border);
 }
 
+/* Seção que termina em lista longa: o respiro inferior é menor, pois a seção seguinte já abre com o seu. */
+.section-tight {
+  padding-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
 .rule {
   border: 0;
   border-top: 1px solid var(--rule);
@@ -254,7 +259,56 @@ body {
   to { transform: translateY(250%); }
 }
 
+/* Emblema do cabeçalho: alterna a cada 4 s entre o monograma e o retrato, em rolagem linear para cima.
+   Ciclo de 8 s: 3,5 s parado, 0,5 s de rolagem, 3,5 s parado, 0,5 s de rolagem. Só CSS, sem JavaScript. */
+.logo-roll {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.logo-roll-a,
+.logo-roll-b {
+  position: absolute;
+  inset: 0;
+  display: block;
+  animation-duration: 8s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+.logo-roll-a {
+  animation-name: logo-roll-a;
+}
+.logo-roll-b {
+  animation-name: logo-roll-b;
+  transform: translateY(100%);
+}
+@keyframes logo-roll-a {
+  0%, 43.75% { transform: translateY(0); }
+  50% { transform: translateY(-100%); }
+  50.01%, 93.75% { transform: translateY(100%); }
+  100% { transform: translateY(0); }
+}
+@keyframes logo-roll-b {
+  0%, 43.75% { transform: translateY(100%); }
+  50%, 93.75% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  /* Sem movimento: fica somente o monograma. */
+  .logo-roll-a,
+  .logo-roll-b {
+    animation-name: none;
+    will-change: auto;
+  }
+  .logo-roll-a {
+    transform: none;
+  }
+  .logo-roll-b {
+    display: none;
+  }
   .nav-next::after {
     animation: none;
     width: 100%;

@@ -11,6 +11,8 @@ import './globals.css';
 const description =
   'Portfólio de Evanilson Freitas: Business Intelligence, Inteligência de Negócios e Engenharia de Software. Soluções de dados, automação e software para decisão, com projetos, estudos técnicos e artigos.';
 
+const base = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
 export const metadata: Metadata = {
   metadataBase: new URL(`${siteUrl}/`),
   title: { default: `${site.name} • Portfólio`, template: `%s • ${site.name}` },
@@ -19,6 +21,17 @@ export const metadata: Metadata = {
   creator: site.fullName,
   keywords: ['Business Intelligence', 'Inteligência de Negócios', 'Engenharia de Software', 'Data Science', 'SQL Server', 'Integração de sistemas', 'Python', 'TypeScript'],
   alternates: { canonical: `${siteUrl}/` },
+  // Monograma EP derivado do arquivo original (npm run brand). O favicon acompanha o tema do navegador/sistema:
+  // variante escura em abas claras e variante clara em abas escuras. O .ico é o fallback.
+  icons: {
+    icon: [
+      { url: `${base}/favicon.ico`, sizes: 'any' },
+      { url: `${base}/assets/brand/ep-light-32.png`, type: 'image/png', sizes: '32x32', media: '(prefers-color-scheme: light)' },
+      { url: `${base}/assets/brand/ep-dark-32.png`, type: 'image/png', sizes: '32x32', media: '(prefers-color-scheme: dark)' },
+    ],
+    apple: [{ url: `${base}/assets/brand/apple-touch-icon.png`, sizes: '180x180', type: 'image/png' }],
+  },
+  manifest: `${base}/manifest.webmanifest`,
   openGraph: {
     title: `${site.name} • Portfólio`,
     description,
