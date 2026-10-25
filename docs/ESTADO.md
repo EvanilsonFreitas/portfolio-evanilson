@@ -17,9 +17,9 @@ Portfólio profissional de Evanilson Freitas (Business Intelligence, Inteligênc
 | Repositório | https://github.com/EvanilsonFreitas/portfolio-evanilson (branch `master`; `gh-pages` só com o artefato) |
 
 ## Estado da publicação
-- `master` sincronizada com `origin/master`. Código da V3.3.1 em `fd59c0c` (`fix(catalog): corrige as tecnologias das soluções de coleta e extravio`); código da V3.3 em `b7c6a3f`; commits da frente: `032cdda`, `9ecd238`, `5e95abd`, `e2b7db3`, `582c851`, `b7c6a3f`, `5d92bf7`.
-- GitHub Pages: `gh-pages` em `61a067a` (`chore(pages): publica a V3.3.1`), build `built`. Anterior (V3.3): `24d5e4a`. Baseline V3.2.2: `7a25356`.
-- Vercel: deployment de produção `portfolio-evanilson-8ux3gsq5w-evan-b357.vercel.app`, `Ready`, no domínio `portfolio-evanilson.vercel.app`. Projeto `portfolio-evanilson`, scope `evan-b357`, deploy manual `--prebuilt --prod`, sem integração Git. Deployment anterior (V3.3): `portfolio-evanilson-ksppfrzjr-evan-b357.vercel.app`; antes dele, o da V3.2.2: `portfolio-evanilson-c17spjz0l-evan-b357.vercel.app`.
+- `master` sincronizada com `origin/master`. Código da V3.3.1 em `e2f4466`; commits da frente: `fd59c0c` (tecnologias de coleta e extravio), `6acf97c` (Índice de Retorno e retirada das Tabelas Dinâmicas), `e2f4466` (destaques da home e Salesforce); código da V3.3 em `b7c6a3f`; commits da frente: `032cdda`, `9ecd238`, `5e95abd`, `e2b7db3`, `582c851`, `b7c6a3f`, `5d92bf7`.
+- GitHub Pages: `gh-pages` em `8f9a06e` (`chore(pages): publica a V3.3.1 com o CRM e a correção das tecnologias`), build `built`. Publicações anteriores: `61a067a` (V3.3.1 inicial) e `24d5e4a` (V3.3). Baseline V3.2.2: `7a25356`.
+- Vercel: deployment de produção `portfolio-evanilson-i4umrtm3d-evan-b357.vercel.app`, `Ready`, no domínio `portfolio-evanilson.vercel.app`. Projeto `portfolio-evanilson`, scope `evan-b357`, deploy manual `--prebuilt --prod`, sem integração Git. Deployments anteriores: `portfolio-evanilson-8ux3gsq5w-evan-b357.vercel.app` (V3.3.1 inicial) e `portfolio-evanilson-ksppfrzjr-evan-b357.vercel.app` (V3.3); antes dele, o da V3.2.2: `portfolio-evanilson-c17spjz0l-evan-b357.vercel.app`.
 - Commits documentais posteriores à publicação não geram deploy: o artefato não inclui `docs/`.
 
 ## Qualidade (V3.3.1)
