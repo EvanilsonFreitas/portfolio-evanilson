@@ -2,60 +2,67 @@ import Link from 'next/link';
 import Icon from '../ui/Icon';
 import Reveal from '../ui/Reveal';
 import SectionHead from '../ui/SectionHead';
-import ProjectVisual from '../projects/ProjectVisual';
-import { projects } from '../../content/projects';
-import { studies } from '../../content/studies';
+import EntryTile from '../catalog/EntryTile';
+import { catalog, homeFeatured } from '../../content/catalog';
+import { categories } from '../../content/taxonomy';
 
+/**
+ * Curadoria de projetos representativos. Os dois destaques com imagem abrem a seção; os demais
+ * formam uma grade de texto. Não há numeração, linha do tempo nem conectores: os projetos são independentes.
+ */
 export default function ProjectsPreview() {
+  const featured = homeFeatured.map((slug) => catalog.find((e) => e.slug === slug)!);
+  const leads = featured.filter((e) => e.image);
+  const rest = featured.filter((e) => !e.image);
+
   return (
     <section id="projetos" className="section">
       <div className="wrap">
-        <SectionHead number="07" label="Projetos" title="Projetos e estudos.">
-          <p>Projetos corporativos, autorais e demonstrações, mais estudos técnicos. A natureza de cada um está indicada.</p>
+        <SectionHead number="07" label="Projetos" title="Soluções construídas.">
+          <p>Business intelligence, Excel e automação, engenharia de dados e software. Cada projeto é independente e tem página própria.</p>
         </SectionHead>
 
-        <div className="space-y-20 lg:space-y-28">
-          {projects.map((p, i) => (
-            <Reveal key={p.slug}>
-              <article className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
-                <div className={`lg:col-span-5 ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
-                  <p className="display text-7xl text-muted/50" aria-hidden="true">{p.number}</p>
-                  <p className="eyebrow mt-2">{p.domain} · {p.natureLabel}</p>
-                  <h3 className="display mt-3 text-[clamp(2rem,4vw,3rem)]">
-                    <Link href={`/projetos/${p.slug}/`} className="hover:text-accent-ink">{p.title}</Link>
-                  </h3>
-                  <p className="mt-4 text-muted">{p.summary}</p>
-                  <p className="tag mt-5">{p.stack.join(' · ')}</p>
-                  <Link href={`/projetos/${p.slug}/`} className="link-arrow mt-6">
-                    Ler case study <Icon name="arrow" />
-                  </Link>
-                </div>
-                <div className={`lg:col-span-7 ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
-                  <ProjectVisual slug={p.slug} />
-                </div>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal>
+          <ul className="grid border-l border-t border-line lg:grid-cols-2">
+            {leads.map((e) => (
+              <li key={e.slug} className="border-b border-r border-line bg-paper">
+                <EntryTile entry={e} variant="lead" />
+              </li>
+            ))}
+          </ul>
+        </Reveal>
 
-        <div className="mt-24 border-t border-rule pt-10">
-          <h3 className="eyebrow mb-6">Estudos técnicos</h3>
-          <ul className="grid gap-x-10 md:grid-cols-2">
-            {studies.map((st) => (
-              <li key={st.slug} className="border-b border-line">
-                <Link href={`/projetos/${st.slug}/`} className="group flex items-start justify-between gap-4 py-5">
-                  <span>
-                    <span className="eyebrow block">{st.domain}</span>
-                    <span className="display mt-1 block text-2xl group-hover:text-accent-ink">{st.title}</span>
-                  </span>
-                  <Icon name="arrow" size={18} className="mt-6 shrink-0" />
+        <Reveal>
+          <ul className="mt-12 grid gap-x-10 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+            {rest.map((e) => (
+              <li key={e.slug}>
+                <EntryTile entry={e} variant="text" />
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <div className="mt-16 border-t border-rule pt-10">
+          <div className="grid gap-8 md:grid-cols-12 md:items-end">
+            <div className="md:col-span-7">
+              <p className="eyebrow mb-3">Catálogo completo</p>
+              <p className="display text-[clamp(1.75rem,3.5vw,2.5rem)]">{catalog.length} projetos e estudos, por categoria, tecnologia e tipo de solução.</p>
+            </div>
+            <div className="md:col-span-5 md:justify-self-end">
+              <Link href="/projetos/" className="btn">
+                Ver o catálogo completo <Icon name="arrow" />
+              </Link>
+            </div>
+          </div>
+          <ul className="mt-8 flex flex-wrap gap-2">
+            {categories.map((c) => (
+              <li key={c.id}>
+                <Link href={`/projetos/?categoria=${c.id}`} className="inline-flex min-h-11 items-center border border-line px-3.5 text-[0.875rem] hover:border-ink">
+                  {c.label}
                 </Link>
               </li>
             ))}
           </ul>
-          <Link href="/projetos/" className="link-arrow mt-8">
-            Ver todos, por área <Icon name="arrow" />
-          </Link>
         </div>
       </div>
     </section>

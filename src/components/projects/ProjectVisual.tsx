@@ -66,7 +66,7 @@ function PricingVisual() {
   );
 }
 
-/** Marivan Finance: despesas organizadas por categoria, com um rateio. */
+/** Gestão financeira: despesas organizadas por categoria, com um rateio. */
 function FinanceVisual() {
   const rows = [0.86, 0.64, 0.5, 0.38, 0.27];
   return (
@@ -158,6 +158,6 @@ function OperationsVisual() {
 
 export default function ProjectVisual({ slug }: { slug: string }) {
   if (slug === 'simulador-preco-rodoviario') return <PricingVisual />;
-  if (slug === 'marivan-finance') return <FinanceVisual />;
+  if (slug === 'gestao-financeira') return <FinanceVisual />;
   return <OperationsVisual />;
 }

@@ -1,16 +1,19 @@
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import Icon from '../../../components/ui/Icon';
 import Breadcrumbs from '../../../components/layout/Breadcrumbs';
+import CaseFigure from '../../../components/projects/CaseFigure';
+import RelatedEntries from '../../../components/projects/RelatedEntries';
 import ProjectVisual from '../../../components/projects/ProjectVisual';
 import LayerDiagram from '../../../components/projects/LayerDiagram';
 import LegacyRedirect from '../../../components/projects/LegacyRedirect';
 import OperationsDemo from '../../../components/demos/OperationsDemo';
 import PricingDemo from '../../../components/demos/PricingDemo';
 import BlockRenderer from '../../../components/studies/BlockRenderer';
+import { catalog, cases, getCase } from '../../../content/catalog';
 import { getProject, legacySlugs, projects } from '../../../content/projects';
 import { getStudy, studies } from '../../../content/studies';
+import { categoryLabel, solutionTypeLabel, techLabel } from '../../../content/taxonomy';
+import { relatedEntries } from '../../../lib/catalog';
 import { pageMetadata } from '../../../lib/seo';
 
 interface PageProps {
@@ -18,13 +21,15 @@ interface PageProps {
 }
 
 export function generateStaticParams() {
-  return [...projects.map((p) => p.slug), ...studies.map((s) => s.slug), ...Object.keys(legacySlugs)].map((slug) => ({ slug }));
+  return [...projects.map((p) => p.slug), ...cases.map((c) => c.slug), ...studies.map((s) => s.slug), ...Object.keys(legacySlugs)].map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
   const study = getStudy(slug);
+  const kase = getCase(slug);
+  if (kase) return pageMetadata({ title: kase.title, description: kase.summary, path: `/projetos/${slug}/` });
   if (study) return pageMetadata({ title: study.title, description: study.summary, path: `/projetos/${slug}/` });
   if (!project) {
     return pageMetadata({ title: 'Projeto atualizado', description: 'Este endereço foi substituído por um projeto atual.', path: `/projetos/${slug}/`, noindex: true });
@@ -49,12 +54,60 @@ function Block({ number, title, children }: { number: string; title: string; chi
 }
 
 
-function entryOf(slug: string) {
-  return getProject(slug) ?? getStudy(slug)!;
+function catalogCategory(slug: string) {
+  return catalog.find((e) => e.slug === slug)!.category;
+}
+
+function CaseView({ slug }: { slug: string }) {
+  const c = getCase(slug)!;
+  const facts: [string, string][] = [
+    ['Categoria', categoryLabel(c.category)],
+    ['Tipo de solução', c.types.map(solutionTypeLabel).join(' · ')],
+    ...(c.tech.length > 0 ? ([['Tecnologias', c.tech.map(techLabel).join(' · ')]] as [string, string][]) : []),
+    ['Natureza', c.natureLabel],
+    ...(c.facts ?? []),
+  ];
+  return (
+    <article className="wrap pb-24 pt-12">
+      <Breadcrumbs items={[{ label: 'Projetos', href: '/projetos/' }, { label: c.crumb }]} />
+
+      <header className="mb-12">
+        <p className="eyebrow mb-5">
+          <span className="text-accent-ink">{categoryLabel(c.category)}</span> — {c.caseType === 'completo' ? 'Case completo' : 'Case compacto'}
+        </p>
+        <h1 className="display text-[clamp(2.75rem,7vw,5.5rem)]">{c.title}</h1>
+        <p className="mt-6 max-w-2xl text-xl text-muted">{c.summary}</p>
+        <dl className="mt-8 grid max-w-4xl gap-x-8 gap-y-4 sm:grid-cols-2">
+          {facts.map(([k, v]) => (
+            <div key={k}>
+              <dt className="eyebrow mb-1">{k}</dt>
+              <dd>{v}</dd>
+            </div>
+          ))}
+        </dl>
+      </header>
+
+      {c.images && (
+        <div className="mb-16 space-y-10">
+          {c.images.map((im, i) => (
+            <CaseFigure key={im.id} id={im.id} caption={im.caption} priority={i === 0} />
+          ))}
+          <p className="text-sm text-muted">Captura de painel corporativo, com os dados confidenciais tratados na origem.</p>
+        </div>
+      )}
+
+      {c.sections.map((sec, i) => (
+        <Block key={sec.title} number={String(i + 1).padStart(2, '0')} title={sec.title}>
+          <BlockRenderer blocks={sec.blocks} />
+        </Block>
+      ))}
+
+      <RelatedEntries entries={relatedEntries(catalog, c.slug, c.related)} />
+    </article>
+  );
 }
 
 function StudyView({ study }: { study: NonNullable<ReturnType<typeof getStudy>> }) {
-  const next = entryOf(study.next);
   return (
     <article className="wrap pb-24 pt-12">
       <Breadcrumbs items={[{ label: 'Projetos', href: '/projetos/' }, { label: study.crumb }]} />
@@ -75,15 +128,7 @@ function StudyView({ study }: { study: NonNullable<ReturnType<typeof getStudy>> 
         </Block>
       ))}
 
-      <section className="border-t border-rule pt-12" aria-labelledby="s-next">
-        <h2 id="s-next" className="eyebrow mb-4">Próxima leitura</h2>
-        <Link href={`/projetos/${next.slug}/`} className="group block">
-          <p className="display text-[clamp(2.5rem,6vw,4.5rem)] group-hover:text-accent-ink">
-            {next.title} <Icon name="arrow" size={36} className="inline" />
-          </p>
-          <p className="mt-2 text-muted">{next.summary}</p>
-        </Link>
-      </section>
+      <RelatedEntries entries={relatedEntries(catalog, study.slug)} />
     </article>
   );
 }
@@ -92,6 +137,7 @@ export default async function ProjectPage({ params }: PageProps) {
   const { slug } = await params;
   const project = getProject(slug);
   const study = getStudy(slug);
+  if (getCase(slug)) return <CaseView slug={slug} />;
   if (study) return <StudyView study={study} />;
 
   if (!project) {
@@ -101,7 +147,6 @@ export default async function ProjectPage({ params }: PageProps) {
     return <LegacyRedirect to={dest.slug} title={dest.title} />;
   }
 
-  const next = entryOf(project.next);
   const meta: [string, string][] = [
     ['Natureza', project.natureLabel],
     ['Atuação', project.role],
@@ -115,7 +160,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
       <header className="mb-14">
         <p className="eyebrow mb-5">
-          <span className="text-accent-ink">{project.number}</span> — {project.category}
+          <span className="text-accent-ink">{categoryLabel(catalogCategory(project.slug))}</span> — {project.category}
         </p>
         <h1 className="display text-[clamp(3rem,8vw,6.5rem)]">{project.title}</h1>
         <p className="mt-6 max-w-2xl text-xl text-muted">{project.summary}</p>
@@ -242,17 +287,7 @@ export default async function ProjectPage({ params }: PageProps) {
         <p className="display mt-8 max-w-2xl text-3xl text-muted">{project.learning}</p>
       </Block>
 
-      <section className="border-t border-rule pt-12" aria-labelledby="s-09">
-        <h2 id="s-09" className="eyebrow mb-4">
-          <span className="text-accent-ink">09</span> — Próximo projeto
-        </h2>
-        <Link href={`/projetos/${next.slug}/`} className="group block">
-          <p className="display text-[clamp(2.5rem,6vw,4.5rem)] group-hover:text-accent-ink">
-            {next.title} <Icon name="arrow" size={36} className="inline" />
-          </p>
-          <p className="mt-2 text-muted">{next.summary}</p>
-        </Link>
-      </section>
+      <RelatedEntries entries={relatedEntries(catalog, project.slug)} />
     </article>
   );
 }
