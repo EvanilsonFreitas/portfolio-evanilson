@@ -108,14 +108,13 @@ export const infraStudies: Study[] = [
               { label: 'IIS como proxy reverso HTTPS, com a aplicação Python local, no EasyPrice', status: 'declarado', note: 'Decisão registrada na documentação do projeto.' },
               { label: 'Ambiente em VM dedicada com IIS e SQL Server, com homologação e produção separadas', status: 'declarado', note: 'Definido junto à área de infraestrutura.' },
               { label: 'Windows Authentication', status: 'conceitual', note: 'Avaliada no EasyPrice e substituída por login com credenciais corporativas validadas por um serviço de identidade.' },
-              { label: 'Hospedagem em IIS da fundação inicial do Marivan Finance (.NET)', status: 'declarado', note: 'Etapa histórica, já substituída por outra arquitetura.' },
+              { label: 'Hospedagem em IIS da fundação inicial do projeto de gestão financeira (.NET)', status: 'declarado', note: 'Etapa histórica, já substituída por outra arquitetura.' },
               { label: 'Kerberos, NTLM e ASP.NET Core Module', status: 'conceitual' },
             ],
           },
         ],
       },
     ],
-    next: 'arquitetura-azure',
   },
   {
     slug: 'arquitetura-azure',
@@ -214,7 +213,6 @@ export const infraStudies: Study[] = [
         ],
       },
     ],
-    next: 'azure-devops-cicd',
   },
   {
     slug: 'azure-devops-cicd',
@@ -317,7 +315,6 @@ export const infraStudies: Study[] = [
         ],
       },
     ],
-    next: 'analise-preditiva-operacional',
   },
   {
     slug: 'analise-preditiva-operacional',
@@ -391,6 +388,5 @@ export const infraStudies: Study[] = [
         ],
       },
     ],
-    next: 'inteligencia-comercial-crm',
   },
 ];

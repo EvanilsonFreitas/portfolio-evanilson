@@ -1,3 +1,5 @@
+import type { CategoryId, SolutionTypeId, TechId } from './taxonomy.ts';
+
 /** Natureza da evidência: separa projeto corporativo, projeto autoral, formação e demonstração. */
 export type EvidenceKind = 'applied' | 'personal' | 'academic' | 'demonstration' | 'article' | 'study';
 
@@ -50,7 +52,6 @@ export interface Project {
   domain: DomainName;
   /** Aprofundamento técnico em blocos, exibido entre Implementação e Demonstração. */
   deepDive?: Section[];
-  number: string;
   title: string;
   category: string;
   summary: string;
@@ -69,7 +70,6 @@ export interface Project {
   challenges: { title: string; text: string }[];
   outcomes: string[];
   learning: string;
-  next: string;
 }
 
 /** Estado de cada afirmação técnica: o que é código, o que é declaração e o que é estudo. */
@@ -119,5 +119,53 @@ export interface Study {
   scope: string;
   access: string;
   sections: Section[];
-  next: string;
+}
+
+/** Classificação de uma pendência interna: bloqueia a publicação, não bloqueia, ou depende de decisão do proprietário. */
+export type PendingKind = 'bloqueante' | 'nao-bloqueante' | 'decisao';
+
+export interface Pending {
+  kind: PendingKind;
+  text: string;
+}
+
+/** Imagem de evidência de um case: `id` aponta para `project-images.ts`. */
+export interface CaseImageRef {
+  id: string;
+  /** Legenda própria quando o case tem mais de uma imagem. */
+  caption?: string;
+}
+
+/**
+ * Case independente do catálogo (projeto corporativo documentado por declaração do autor e, quando
+ * houver, por captura de tela). Projetos e estudos anteriores mantêm seus próprios formatos.
+ */
+export interface Case {
+  id: string;
+  slug: string;
+  /** Rótulo curto para trilhas de navegação. */
+  crumb: string;
+  title: string;
+  /** Outros nomes pelos quais a solução é conhecida; entram na busca. */
+  aliases?: string[];
+  summary: string;
+  category: CategoryId;
+  types: SolutionTypeId[];
+  /** Somente tecnologias confirmadas para este case. */
+  tech: TechId[];
+  /**
+   * Interno: como a classificação tecnológica foi estabelecida. Alimenta docs/PROJETOS.md e os testes,
+   * mas não é exibido no site.
+   */
+  techNote: string;
+  caseType: 'completo' | 'compacto';
+  natureLabel: string;
+  images?: CaseImageRef[];
+  /** Dados de identificação adicionais, exibidos junto da tecnologia. */
+  facts?: [string, string][];
+  sections: Section[];
+  /** Slugs de cases ou estudos relacionados (referência cruzada, não sequência). */
+  related?: string[];
+  /** Interno: pendências de confirmação. Não são exibidas no site; vão para docs/PROJETOS.md. */
+  pending?: Pending[];
 }

@@ -32,7 +32,7 @@ export const expertise: ExpertisePillar[] = [
     tech: ['Python', 'FastAPI', 'TypeScript', 'React', 'Next.js', 'C#', 'ASP.NET Core', 'Entity Framework Core', 'Git'],
     evidence: [
       { label: 'EasyPrice', kind: 'applied', href: '/projetos/simulador-preco-rodoviario/' },
-      { label: 'Marivan Finance', kind: 'personal', href: '/projetos/marivan-finance/' },
+      { label: 'Gestão financeira (Tracker finance)', kind: 'personal', href: '/projetos/gestao-financeira/' },
       { label: 'Engenharia de sistemas e infraestrutura', kind: 'study', href: '/projetos/engenharia-sistemas-infraestrutura/' },
     ],
   },

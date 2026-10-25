@@ -13,6 +13,9 @@ export const incorrectClaims: { id: string; pattern: RegExp }[] = [
   { id: 'confidencial-zeus', pattern: /\bZeus\b/ },
   // Contato: o e-mail validado é o Outlook; o endereço anterior não deve reaparecer.
   { id: 'email-anterior', pattern: /Evanilson.2631@hotmail/i },
+  // Nome público anterior do projeto de gestão financeira: desde a V3.3 o nome público é
+  // "Gestão financeira (Tracker finance)". Nenhum texto publicável pode voltar a usá-lo.
+  { id: 'nome-anterior-gestao-financeira', pattern: /Marivan/i },
   // Títulos formais que o proprietário não declarou.
   { id: 'titulo-dba', pattern: /\bDBA\b/ },
   { id: 'titulo-arquiteto', pattern: /Arquiteto\s+de\s+(Software|Solu[çc][õo]es|Dados)/i },

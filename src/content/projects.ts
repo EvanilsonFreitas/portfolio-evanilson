@@ -5,7 +5,6 @@ export const projects: Project[] = [
     slug: 'simulador-preco-rodoviario',
     crumb: 'EasyPrice',
     domain: 'Precificação e Rentabilidade',
-    number: '01',
     title: 'EasyPrice',
     category: 'Plataforma de precificação',
     summary:
@@ -146,14 +145,12 @@ export const projects: Project[] = [
     ],
     learning:
       'Separar a regra de negócio da interface torna o cálculo testável e reaproveitável por outros canais.',
-    next: 'marivan-finance',
   },
   {
-    slug: 'marivan-finance',
-    crumb: 'Marivan Finance',
+    slug: 'gestao-financeira',
+    crumb: 'Gestão financeira (Tracker finance)',
     domain: 'Engenharia de Software',
-    number: '02',
-    title: 'Marivan Finance',
+    title: 'Gestão financeira (Tracker finance)',
     category: 'Aplicação web · gestão financeira',
     summary:
       'Aplicação web de gestão financeira pessoal e familiar, construída como monólito modular: receitas, despesas recorrentes e parceladas, categorias, rateios e indicadores.',
@@ -248,13 +245,11 @@ export const projects: Project[] = [
       'Não há métricas de uso divulgadas.',
     ],
     learning: 'Regras financeiras pedem precisão: tipos decimais, testes de arredondamento e totais conferíveis.',
-    next: 'bi-operacional-logistica',
   },
   {
     slug: 'bi-operacional-logistica',
     crumb: 'BI Operacional',
     domain: 'Business Intelligence Operacional',
-    number: '03',
     title: 'BI operacional em logística',
     category: 'Business Intelligence · análise operacional',
     summary:
@@ -404,7 +399,6 @@ export const projects: Project[] = [
       'Benefício esperado do método: um indicador único e auditável de SLA para todas as áreas.',
     ],
     learning: 'Definir grão e medidas antes do visual evita retrabalho e discussões sobre qual número está certo.',
-    next: 'simulador-preco-rodoviario',
   },
 ];
 

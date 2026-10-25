@@ -26,7 +26,7 @@ export const education: Education[] = [
     summary:
       'Curso Superior de Tecnologia voltado ao desenvolvimento de sistemas, com título de Tecnólogo, conforme o diploma.',
     appliedIn: [
-      'Fundamento dos projetos de software: EasyPrice e Marivan Finance.',
+      'Fundamento dos projetos de software: EasyPrice e Gestão financeira (Tracker finance).',
       'Este portfólio, desenvolvido em TypeScript, React e Next.js.',
     ],
   },

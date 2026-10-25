@@ -130,7 +130,6 @@ const coreStudies: Study[] = [
         ],
       },
     ],
-    next: 'integracoes-automacoes',
   },
   {
     slug: 'integracoes-automacoes',
@@ -226,7 +225,6 @@ const coreStudies: Study[] = [
         ],
       },
     ],
-    next: 'sql-server-avancado',
   },
   {
     slug: 'sql-server-avancado',
@@ -313,7 +311,7 @@ const coreStudies: Study[] = [
           {
             kind: 'status',
             items: [
-              { label: 'SQL Server como banco do EasyPrice e do Marivan Finance', status: 'codigo', note: 'Código privado; uso comprovado no histórico dos repositórios.' },
+              { label: 'SQL Server como banco do EasyPrice e do projeto Gestão financeira (Tracker finance)', status: 'codigo', note: 'Código privado; uso comprovado no histórico dos repositórios.' },
               { label: 'Exemplos desta página', status: 'conceitual', note: 'Escritos para o estudo, com tabelas fictícias.' },
               { label: 'Administração de servidores de banco de dados', status: 'conceitual', note: 'Não é uma atribuição declarada.' },
             ],
@@ -321,7 +319,6 @@ const coreStudies: Study[] = [
         ],
       },
     ],
-    next: 'engenharia-sistemas-infraestrutura',
   },
   {
     slug: 'engenharia-sistemas-infraestrutura',
@@ -396,7 +393,7 @@ const coreStudies: Study[] = [
             kind: 'status',
             items: [
               { label: 'Aplicação em camadas com FastAPI, Next.js e SQL Server', status: 'codigo', note: 'EasyPrice.' },
-              { label: 'Hospedagem em IIS e autenticação do Windows', status: 'codigo', note: 'Marivan Finance.' },
+              { label: 'Hospedagem em IIS e autenticação do Windows', status: 'codigo', note: 'Gestão financeira (Tracker finance).' },
               { label: 'Adaptador de cache com Redis opcional no EasyPrice', status: 'codigo', note: 'Existe no código, com a aplicação funcionando sem ele. Não afirmo que o Redis esteja implantado.' },
               { label: 'Fila, balanceamento de carga e múltiplas instâncias', status: 'conceitual', note: 'Parte do desenho de referência; não afirmo implantação.' },
             ],
@@ -404,7 +401,6 @@ const coreStudies: Study[] = [
         ],
       },
     ],
-    next: 'normalizacao-cidades-ibge',
   },
   {
     slug: 'normalizacao-cidades-ibge',
@@ -482,7 +478,6 @@ const coreStudies: Study[] = [
         ],
       },
     ],
-    next: 'ia-rag-agentes',
   },
   {
     slug: 'ia-rag-agentes',
@@ -538,7 +533,6 @@ const coreStudies: Study[] = [
         ],
       },
     ],
-    next: 'inteligencia-comercial-crm',
   },
 ];
 
