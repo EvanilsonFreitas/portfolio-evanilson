@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Icon from '../ui/Icon';
+import { about } from '../../content/about';
 import { resumeFiles, site } from '../../content/site';
 import { withBasePath } from '../../lib/paths';
 
@@ -8,7 +9,14 @@ export default function Hero() {
     <section id="inicio" className="wrap pb-20 pt-12 sm:pt-20 lg:pb-28">
       <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-7">
-          <p className="eyebrow mb-6">{site.name} / Portfólio</p>
+          <p className="mb-5 text-lg text-muted">
+            {about.greeting.slice(0, about.greeting.lastIndexOf(' '))}{' '}
+            {/* A última palavra e o emoji ficam juntos. O emoji é decorativo. */}
+            <span className="whitespace-nowrap">
+              {about.greeting.slice(about.greeting.lastIndexOf(' ') + 1)}&nbsp;
+              <span aria-hidden="true">{about.emoji}</span>
+            </span>
+          </p>
           <p className="eyebrow mb-8 !text-ink">{site.areas}</p>
 
           {/* Texto sempre visível desde a renderização inicial: sem animação de entrada. */}
@@ -70,7 +78,9 @@ export default function Hero() {
             />
             <figcaption className="mt-3 flex flex-wrap items-baseline justify-between gap-x-4 text-sm text-muted">
               <span>{site.fullName}</span>
-              <span className="eyebrow">{site.location}</span>
+              <span className="eyebrow">
+                {site.location} · {site.age} anos
+              </span>
             </figcaption>
           </figure>
         </div>

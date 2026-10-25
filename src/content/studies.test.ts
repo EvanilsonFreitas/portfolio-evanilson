@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { diagrams } from './diagrams.ts';
 import { projects } from './projects.ts';
 import { studies } from './studies.ts';
-import { trajectory, businessDomains } from './about.ts';
+import { businessDomains } from './about.ts';
 import type { Block, Section } from './types.ts';
 
 const allSections: Section[] = [...studies.flatMap((s) => s.sections), ...projects.flatMap((p) => p.deepDive ?? [])];
@@ -24,10 +24,6 @@ test('o encadeamento "próximo" aponta para um estudo ou projeto existente', () 
 });
 
 test('links internos de trajetória e domínios apontam para páginas existentes', () => {
-  for (const m of trajectory) {
-    const m2 = m.href?.match(/^\/projetos\/([^/]+)\/$/);
-    if (m2) assert.ok(slugs.has(m2[1]), m.href);
-  }
   for (const d of businessDomains) {
     const m2 = d.href.match(/^\/projetos\/([^/]+)\/$/);
     if (m2) assert.ok(slugs.has(m2[1]), d.href);

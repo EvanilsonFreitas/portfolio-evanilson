@@ -137,7 +137,7 @@ Set-Location tools\resume; npm install; Set-Location ..\..   # uma vez
 npm run resume
 ```
 
-Coloque a fotografia profissional em `public/assets/curriculo/foto-profissional.jpg` (retrato, proporção 3:4 ou próxima, ao menos 900 × 1200 px) e rode `npm run resume` de novo. Sem o arquivo, o PDF e o DOCX são gerados sem foto.
+Coloque a fotografia profissional em `public/resume/Foto_Curriculo.jpg` (retrato, ao menos 900 × 1200 px; o gerador usa o recorte quadrado a partir do topo). Ela não é publicada: o build a remove do artefato. e rode `npm run resume` de novo. Sem o arquivo, o PDF e o DOCX são gerados sem foto.
 
 ## 6. Versionamento
 

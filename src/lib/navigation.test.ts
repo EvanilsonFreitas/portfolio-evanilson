@@ -12,13 +12,13 @@ test('o menu tem exatamente cinco itens, na ordem combinada', () => {
 });
 
 test('as seções da home seguem a ordem da página e pertencem a um único item', () => {
-  assert.deepEqual(HOME_SECTIONS, ['inicio', 'sobre', 'trajetoria', 'formacao', 'atuacao', 'especialidades', 'projetos', 'artigos', 'contato']);
+  assert.deepEqual(HOME_SECTIONS, ['inicio', 'sobre', 'trajetoria', 'experiencia', 'formacao', 'atuacao', 'especialidades', 'projetos', 'artigos', 'contato']);
   assert.equal(new Set(HOME_SECTIONS).size, HOME_SECTIONS.length);
 });
 
 test('agrupamento: cada seção ativa o item correto', () => {
   const esperado: Record<string, string> = {
-    inicio: 'inicio', sobre: 'sobre', trajetoria: 'sobre', formacao: 'sobre',
+    inicio: 'inicio', sobre: 'sobre', trajetoria: 'sobre', experiencia: 'sobre', formacao: 'sobre',
     atuacao: 'atuacao', especialidades: 'atuacao', projetos: 'projetos', artigos: 'artigos', contato: 'artigos',
   };
   for (const [sec, item] of Object.entries(esperado)) assert.equal(activeNavId('/', sec), item, sec);

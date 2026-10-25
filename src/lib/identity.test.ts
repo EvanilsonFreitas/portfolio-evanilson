@@ -54,7 +54,15 @@ test('os currículos (texto extraído de PDF e DOCX) não afirmam atribuições 
   assert.ok(pdf.text.includes('Evanilson'), 'PDF sem texto extraível');
   assert.ok(pdf.text.includes('MBA em Data Science') && pdf.text.includes('Uninove'), 'PDF: formação ausente');
   assert.deepEqual(findIncorrectClaims(pdf.text), []);
-  assert.equal(pdf.pages, 1);
+  assert.ok(pdf.pages >= 1 && pdf.pages <= 2, `páginas: ${pdf.pages}`);
+  // Histórico formal: as três empresas autorizadas, os cargos e os períodos, nos três formatos.
+  for (const t of [pdf.text, await docxText(join(dir, 'Evanilson_Freitas_Curriculo.docx')), await docxText(join(dir, 'Evanilson_Freitas_Curriculo_ATS.docx'))]) {
+    const flat = t.replace(/\s+/g, ' ');
+    for (const n of ['Tragetta', 'Solistica', 'Transface Transportes Ltda.', 'Analista de Pricing', 'Analista de Dados', 'Aprendiz', 'Assistente Administrativo']) assert.ok(flat.includes(n), `currículo sem "${n}"`);
+    for (const d of ['jun/2026 – atual', 'jan/2026 – jun/2026', 'mar/2025 – jan/2026', 'out/2021 – mar/2025', 'dez/2018 – ago/2020', 'nov/2021 – ago/2022']) assert.ok(flat.includes(d), `currículo sem o período "${d}"`);
+    assert.ok(flat.includes('Tecnologia em Análise e Desenvolvimento de Sistemas'), 'denominação do curso conforme o diploma');
+    assert.ok(!/Marina|Souza/.test(flat), 'dados de terceiros no currículo');
+  }
   // Marivan Finance permanece no site, mas não entra nos currículos; a foto e o título novo, sim.
   // Contato confirmado: telefone e e-mail Outlook em todos os formatos.
   for (const t of [pdf.text, await docxText(join(dir, 'Evanilson_Freitas_Curriculo.docx')), await docxText(join(dir, 'Evanilson_Freitas_Curriculo_ATS.docx'))]) {
@@ -73,7 +81,7 @@ test('o guarda reconhece as atribuições incorretas (sanidade do teste)', () =>
   assert.deepEqual(findIncorrectClaims('Trabalhou na Red Cargas Logística').length, 1);
   assert.equal(findIncorrectClaims('Mestrado em  Engenharia de Software').length, 1);
   assert.equal(findIncorrectClaims('Analista de BI e desenvolvedor').length, 0);
-  assert.equal(findIncorrectClaims('cliente Tragetta').length, 1);
+  assert.equal(findIncorrectClaims('sistema Zeus').length, 1);
   assert.equal(findIncorrectClaims('atua como DBA').length, 1);
   assert.equal(findIncorrectClaims('Tech Lead do time').length, 1);
 });

@@ -8,7 +8,7 @@ export default function EducationPreview() {
   return (
     <section id="formacao" className="section">
       <div className="wrap">
-        <SectionHead number="03" label="Formação" title="Base acadêmica em dados e software." />
+        <SectionHead number="04" label="Formação" title="Base acadêmica em dados e software." />
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-7">
             <p className="eyebrow mb-3">{mba.status}</p>

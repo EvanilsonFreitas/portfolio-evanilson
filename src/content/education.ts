@@ -19,12 +19,12 @@ export const education: Education[] = [
   {
     id: 'ads',
     kind: 'graduation',
-    title: 'Análise e Desenvolvimento de Sistemas',
+    title: 'Tecnologia em Análise e Desenvolvimento de Sistemas',
     institution: 'Universidade Nove de Julho (Uninove)',
     status: 'Concluído',
-    dates: ['Conclusão do curso: 30/06/2024', 'Colação de grau: 30/07/2024'],
+    dates: ['Período: jan de 2022 – jul de 2024', 'Conclusão do curso: 30/06/2024', 'Colação de grau: 30/07/2024'],
     summary:
-      'Graduação tecnológica voltada ao desenvolvimento de sistemas.',
+      'Curso Superior de Tecnologia voltado ao desenvolvimento de sistemas, com título de Tecnólogo, conforme o diploma.',
     appliedIn: [
       'Fundamento dos projetos de software: EasyPrice e Marivan Finance.',
       'Este portfólio, desenvolvido em TypeScript, React e Next.js.',

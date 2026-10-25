@@ -9,7 +9,7 @@ export default function Expertise() {
   return (
     <section id="especialidades" className="section">
       <div className="wrap">
-        <SectionHead number="05" label="Especialidades" title="O que resolvo, e onde está a evidência.">
+        <SectionHead number="06" label="Especialidades" title="O que resolvo, e onde está a evidência.">
           <p>Cada área aponta para projetos, formação ou artigos. A natureza da evidência está sempre indicada.</p>
         </SectionHead>
 

@@ -10,7 +10,7 @@ export default function ProjectsPreview() {
   return (
     <section id="projetos" className="section">
       <div className="wrap">
-        <SectionHead number="06" label="Projetos" title="Projetos e estudos.">
+        <SectionHead number="07" label="Projetos" title="Projetos e estudos.">
           <p>Projetos corporativos, autorais e demonstrações, mais estudos técnicos. A natureza de cada um está indicada.</p>
         </SectionHead>
 

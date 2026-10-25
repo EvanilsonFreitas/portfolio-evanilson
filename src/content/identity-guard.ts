@@ -8,9 +8,8 @@ export const incorrectClaims: { id: string; pattern: RegExp }[] = [
   { id: 'empresa-red-cargas', pattern: /Red\s+Cargas/i },
   { id: 'mestrado-engenharia-software', pattern: /Mestrado\s+em\s+Engenharia\s+de\s+Software/i },
   { id: 'cargo-analista-controladoria', pattern: /Analista\s+de\s+Controladoria/i },
-  // Dados confidenciais: nomes de clientes e sistemas internos não são publicados.
-  { id: 'confidencial-tragetta', pattern: /Tragetta/i },
-  { id: 'confidencial-solistica', pattern: /Solistica/i },
+  // Dados confidenciais: nomes de sistemas internos não são publicados. (Tragetta, Solistica e Transface
+  // são empregadores informados pelo proprietário e constam do histórico formal.)
   { id: 'confidencial-zeus', pattern: /\bZeus\b/ },
   // Contato: o e-mail validado é o Outlook; o endereço anterior não deve reaparecer.
   { id: 'email-anterior', pattern: /Evanilson.2631@hotmail/i },

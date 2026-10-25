@@ -9,7 +9,7 @@ import { pageMetadata } from '../../lib/seo';
 
 export const metadata: Metadata = pageMetadata({
   title: 'Formação',
-  description: 'MBA em Data Science (USP/ESALQ) e graduação em Análise e Desenvolvimento de Sistemas (Uninove).',
+  description: 'MBA em Data Science (USP/ESALQ) e Tecnologia em Análise e Desenvolvimento de Sistemas (Uninove).',
   path: '/educacao/',
 });
 

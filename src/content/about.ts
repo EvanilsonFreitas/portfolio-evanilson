@@ -1,65 +1,20 @@
-/** Textos de apresentação. Redação em primeira pessoa, apenas com escopo declarado ou comprovado. */
+/** Apresentação pessoal. A saudação abre o hero; o título e o texto pertencem à seção Sobre. Primeira pessoa, apenas com a trajetória informada pelo proprietário. */
 export const about = {
+  /** Título da seção Sobre. */
+  title: 'Muito além da tecnologia.',
+  /** Saudação exibida no início do hero. */
+  greeting: 'Olá, prazer. Sou o Evanilson.',
+  /** Emoji decorativo, exibido ao final da saudação e ocultado de leitores de tela. */
+  emoji: '👋',
+  /** Trecho em destaque discreto dentro do último parágrafo. */
+  highlight: 'MBA em Data Science pela USP/ESALQ',
   paragraphs: [
-    'Comecei na operação logística, entre controles em Excel e indicadores de produtividade e qualidade. Dali veio meu ponto de partida: o problema de negócio. Antes de modelar dados ou escrever código, procuro entender como o processo funciona, quem decide, com que informação e o que muda quando um número muda.',
-    'Uso dados para enxergar a operação com precisão. Defino cada indicador com fórmula e granularidade explícitas, modelo o dado de forma dimensional e construo análises de BI comerciais e operacionais.',
-    'Quando a necessidade vai além do relatório, transformo requisitos em sistemas e automações: APIs, regras de negócio, integrações entre sistemas e aplicações web, sempre pensando em como serão hospedadas e operadas. O EasyPrice, motor de precificação em cujo desenvolvimento atuo, é o exemplo mais completo.',
-    'O que une essas frentes é a decisão. O trabalho só termina quando alguém consegue agir melhor com o que foi entregue.',
+    'Minha trajetória começou na operação logística, entre Excel, controles e indicadores de produtividade, extravios e avarias. Com o tempo, passei a desenvolver análises para a gestão, soluções de Business Intelligence, inteligência comercial e automações.',
+    'Hoje atuo em Business Intelligence, aplicando minha experiência em análise de dados, inteligência comercial, precificação e desenvolvimento de software para construir soluções que apoiam decisões de negócio.',
+    'Sou formado em Tecnologia em Análise e Desenvolvimento de Sistemas pela Uninove e concluí o MBA em Data Science pela USP/ESALQ. Gosto de entender como o negócio funciona antes de pensar na tecnologia: é essa combinação entre visão operacional, análise e engenharia que orienta meu trabalho.',
   ],
+  cta: 'Conheça minha trajetória',
 };
-
-export interface Milestone {
-  label: string;
-  title: string;
-  text: string;
-  /** Temas da etapa. */
-  topics: string[];
-  href?: string;
-  linkLabel?: string;
-}
-
-/**
- * Evolução profissional, em etapas. Sem datas, empregadores ou cargos: o proprietário descreve
- * a sequência, e o portfólio não acrescenta o que não foi confirmado.
- */
-export const trajectory: Milestone[] = [
-  {
-    label: 'Operação e Excel',
-    title: 'Onde tudo começou: a operação logística',
-    text: 'O ponto de partida foi a rotina da operação: controles em Excel, acompanhamento de coletas e entregas, e os indicadores que mostravam se o dia tinha ido bem. Dali vieram o hábito de medir produtividade, qualidade e ocorrências, e o primeiro contato com análise de risco e de tendência. Foi nessa fase que o pensamento analítico nasceu, ao lado de quem executa o processo.',
-    topics: ['Controles em Excel', 'Produtividade', 'Coletas e entregas', 'Extravio e avaria', 'Qualidade operacional'],
-  },
-  {
-    label: 'Gestão e diretoria',
-    title: 'Do controle da operação à leitura gerencial',
-    text: 'Com a responsabilidade crescendo, os números deixaram de servir só ao dia a dia e passaram a sustentar conversas com gestão e diretoria. O trabalho passou a ser apontar desvios, propor planos de melhoria, antecipar riscos e apresentar resultados de forma que apoiasse uma decisão.',
-    topics: ['Indicadores gerenciais e executivos', 'Análise de desvios', 'Planos de melhoria', 'Análise de risco', 'Apresentação de resultados'],
-  },
-  {
-    label: 'Business Intelligence',
-    title: 'Estruturar o dado para durar',
-    text: 'Planilhas chegaram ao limite. A etapa seguinte foi organizar o dado: consultas em SQL, tratamento no Power Query, modelagem dimensional e medidas em DAX, publicados em workspaces com definições únicas. Aqui entraram também o cuidado com a experiência de quem lê o painel e com a governança dos indicadores.',
-    topics: ['Power BI', 'SQL', 'Power Query', 'DAX', 'Modelagem dimensional', 'Modelo semântico', 'UX/UI e visualização de dados'],
-    href: '/projetos/bi-operacional-logistica/',
-    linkLabel: 'BI operacional',
-  },
-  {
-    label: 'Inteligência comercial e integrações',
-    title: 'Do indicador ao processo comercial',
-    text: 'O olhar de dados chegou à área comercial: oportunidades, propostas, conversão, preço e rentabilidade. Para isso foi preciso entender CRM e as ligações com ERP e TMS, e automatizar o que dependia de repetição manual, como aprovações, solicitações e notificações.',
-    topics: ['CRM e Salesforce', 'Funil, hit rate e tracker', 'Rentabilidade e price', 'Power Automate', 'Integrações', 'SQL Server'],
-    href: '/projetos/inteligencia-comercial-crm/',
-    linkLabel: 'BI comercial',
-  },
-  {
-    label: 'Produtos e engenharia',
-    title: 'Construir a solução, e não só o relatório',
-    text: 'Quando o problema pedia mais do que um painel, a resposta passou a ser software. O EasyPrice reúne regras de negócio, API, interface e banco em uma plataforma de precificação, com decisões de arquitetura, autenticação e hospedagem em ambiente Windows.',
-    topics: ['EasyPrice', 'Python e FastAPI', 'Next.js, React e TypeScript', 'SQL Server', 'Arquitetura', 'IIS e Windows Server'],
-    href: '/projetos/simulador-preco-rodoviario/',
-    linkLabel: 'EasyPrice',
-  },
-];
 
 export interface BusinessDomain {
   number: string;

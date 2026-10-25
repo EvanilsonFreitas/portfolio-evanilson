@@ -14,7 +14,8 @@ Portfólio profissional em Next.js (App Router), React e TypeScript, com exporta
 | `src/app` | Rotas: `/`, `/projetos`, `/projetos/[slug]`, `/educacao`, `/blog`, `/blog/[slug]`, `sitemap.xml`, `robots.txt` |
 | `content/blog` | Artigos em MDX |
 | `public/resume` | Currículo em PDF e DOCX (duas colunas) e DOCX ATS (uma coluna), gerados |
-| `public/assets/curriculo` | Fotografia opcional do currículo (`foto-profissional.jpg`); não é publicada no site |
+| `public/resume/Logo_Animeted.svg` | Retrato circular (insumo do `npm run brand`, que gera `assets/brand/avatar-96.png`); não é publicado |
+| `public/resume/Foto_Curriculo.jpg` | Fotografia do currículo (insumo do gerador); não é publicada no site |
 | `public/assets/perfil`, `public/documents` | Foto de perfil da home e diploma da graduação (publicação autorizada pelo titular) |
 | `tools` | Scripts locais: build por destino, verificação de links, pré-visualização, gerador do currículo |
 | `docs/PUBLICACAO.md` | Procedimento de publicação manual |
@@ -41,7 +42,7 @@ cd tools/resume && npm install   # uma vez (dependência `docx`, isolada do site
 cd ../.. && npm run resume       # requer Chrome ou Edge instalado para o PDF
 ```
 
-Se existir `public/assets/curriculo/foto-profissional.jpg`, a fotografia entra automaticamente no PDF e no DOCX de duas colunas. Os caminhos dos arquivos ficam em `src/content/site.ts` (`resumeFiles`).
+Se existir `public/resume/Foto_Curriculo.jpg` (ou, na falta dela, `public/assets/curriculo/foto-profissional.jpg`), a fotografia entra automaticamente no PDF e no DOCX de duas colunas. Os caminhos dos arquivos ficam em `src/content/site.ts` (`resumeFiles`).
 
 ## Telefone e dados de contato
 

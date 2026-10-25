@@ -9,7 +9,7 @@ export default function Business() {
   return (
     <section id="atuacao" className="section">
       <div className="wrap">
-        <SectionHead number="04" label="Atuação" title="Conhecimento de negócio por trás dos dados.">
+        <SectionHead number="05" label="Atuação" title="Conhecimento de negócio por trás dos dados.">
           <p>Cada área parte de uma pergunta de gestão e termina em indicador, regra ou integração.</p>
         </SectionHead>
 

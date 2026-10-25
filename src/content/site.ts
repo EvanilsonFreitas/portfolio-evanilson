@@ -2,6 +2,8 @@ export const site = {
   name: 'Evanilson Freitas',
   fullName: 'Evanilson Pereira de Freitas',
   location: 'São Paulo — SP, Brasil',
+  /** Idade informada pelo proprietário. Valor estático (sem data de nascimento): atualizar aqui, em um único lugar. */
+  age: 26,
   areas: 'Business Intelligence · Inteligência de Negócios · Engenharia de Software',
   email: 'Evanilson.2631@outlook.com',
   /** Telefone e WhatsApp confirmados pelo titular. Site e currículos leem estes campos. */
@@ -13,7 +15,7 @@ export const site = {
   summary:
     'Compreendo os processos de negócio, identifico oportunidades e desenvolvo soluções de dados, automação e software que as transformam em aplicações e em inteligência para decisão.',
   resumeSummary:
-    'Profissional de Business Intelligence e Engenharia de Software, com formação em Análise e Desenvolvimento de Sistemas (Uninove) e MBA em Data Science (USP/ESALQ). Conecta processos de negócio a soluções de dados, automação e software: BI comercial e operacional, precificação, integrações entre sistemas e aplicações web, com projetos em Python, FastAPI, SQL Server, TypeScript e React, e noções de hospedagem em Windows Server e IIS.',
+    'Profissional de Business Intelligence com trajetória que integra operação logística, inteligência comercial, engenharia de dados e desenvolvimento de software. Atua na construção de soluções analíticas corporativas: modelagem dimensional, transformação e integração de dados, governança de indicadores e análises de produtividade, rentabilidade, precificação e desempenho, com Power BI, DAX, Power Query, SQL Server e Python. Participa do desenvolvimento de plataformas de precificação, automações e soluções orientadas a regras de negócio, com APIs em FastAPI e interfaces em React, Next.js e TypeScript. Conhece hospedagem em IIS e Windows Server e a arquitetura do ecossistema Microsoft Azure e Azure DevOps. Traduz problemas operacionais e comerciais complexos em soluções tecnológicas orientadas à decisão. MBA em Data Science pela USP/ESALQ.',
   title: 'Business Intelligence',
   titleComplement: 'Data Science · Engenharia de Software · Inteligência de Negócios',
   photo: '/assets/perfil/evanilson-freitas.jpg',
@@ -27,7 +29,7 @@ export const resumeFiles = {
 } as const;
 
 /** Diploma da graduação (publicação autorizada pelo titular). */
-export const diplomaFile = { path: '/documents/diploma-ads-uninove.pdf', label: 'Diploma — Análise e Desenvolvimento de Sistemas (Uninove)' } as const;
+export const diplomaFile = { path: '/documents/diploma-ads-uninove.pdf', label: 'Diploma — Tecnologia em Análise e Desenvolvimento de Sistemas (Uninove)' } as const;
 
 /** URL pública do destino do build (definida em next.config.ts; padrão: GitHub Pages). */
 export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://evanilsonfreitas.github.io/portfolio-evanilson').replace(/\/$/, '');

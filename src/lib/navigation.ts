@@ -19,7 +19,7 @@ export interface NavItem {
 /** Cinco itens. Cada seção da home pertence a exatamente um item. */
 export const NAV: NavItem[] = [
   { id: 'inicio', label: 'Início', href: '/', sections: ['inicio'] },
-  { id: 'sobre', label: 'Sobre', href: '/#sobre', sections: ['sobre', 'trajetoria', 'formacao'], paths: ['/educacao'] },
+  { id: 'sobre', label: 'Sobre', href: '/#sobre', sections: ['sobre', 'trajetoria', 'experiencia', 'formacao'], paths: ['/educacao'] },
   { id: 'atuacao', label: 'Atuação', href: '/#atuacao', sections: ['atuacao', 'especialidades'] },
   { id: 'projetos', label: 'Projetos', href: '/#projetos', sections: ['projetos'], paths: ['/projetos'] },
   { id: 'artigos', label: 'Artigos', href: '/#artigos', sections: ['artigos', 'contato'], paths: ['/blog'] },
