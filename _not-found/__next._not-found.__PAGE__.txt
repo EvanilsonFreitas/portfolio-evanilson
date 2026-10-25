@@ -1,55 +1,57 @@
 1:"$Sreact.fragment"
-2:"/portfolio-evanilson/_next/static/chunks/0-i5w3h3uiap3.js"
+2:"/portfolio-evanilson/_next/static/chunks/2i74jofmvtngd.js"
 3:I[18359,["$2"],"default"]
-4:I[3374,["$2"],"default"]
-5:I[39756,["$2"],"default"]
-6:I[37457,["$2"],"default"]
-7:I[22016,["$2"],""]
-12:"ViewportBoundary"
-13:I[97367,["$2"],"$12"]
-14:"MetadataBoundary"
-15:I[97367,["$2"],"$14"]
-16:"$Sreact.suspense"
-:HL["/portfolio-evanilson/_next/static/chunks/2t7wgy3-bu5_9.css","style"]
-9:X
-c:X
-c:C
-d:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$1","c",{"children":[["$","div",null,{"className":"wrap py-28","children":[["$","p",null,{"className":"eyebrow mb-4","children":"Erro 404"}],["$","h1",null,{"className":"display text-[clamp(3rem,8vw,6rem)]","children":"Página não encontrada."}],["$","p",null,{"className":"mt-6 max-w-lg text-lg text-muted","children":"O endereço pode ter mudado. Os projetos e os artigos estão acessíveis pelo menu."}],["$","div",null,{"className":"mt-10 flex flex-wrap gap-3","children":["$Le","$Lf"]}]]}],null,"$L10"]}],"p":"$@11","v":null,"s":"$9"}}]]
-a:[["children",{"s":"/_not-found","h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}]}]]}],"p":"$@b","v":"$c","s":"$9"},"c":"$Qd"}]]
-0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/portfolio-evanilson/_next/static/chunks/2t7wgy3-bu5_9.css","precedence":"next"}],["$","script","script-0",{"src":"/portfolio-evanilson/_next/static/chunks/0-i5w3h3uiap3.js","async":true}]],["$","html",null,{"lang":"pt-BR","suppressHydrationWarning":true,"className":"Inxb-G_variable rbrRBG_variable -icAOa_variable","children":["$","body",null,{"className":"flex min-h-screen flex-col","children":["$","$L3",null,{"children":[["$","a",null,{"href":"#conteudo","className":"skip-link","children":"Ir para o conteúdo"}],["$","$L4",null,{}],["$","main",null,{"id":"conteudo","className":"flex-1","children":["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}],"notFound":[["$","div",null,{"className":"wrap py-28","children":[["$","p",null,{"className":"eyebrow mb-4","children":"Erro 404"}],["$","h1",null,{"className":"display text-[clamp(3rem,8vw,6rem)]","children":"Página não encontrada."}],["$","p",null,{"className":"mt-6 max-w-lg text-lg text-muted","children":"O endereço pode ter mudado. Os projetos e os artigos estão acessíveis pelo menu."}],["$","div",null,{"className":"mt-10 flex flex-wrap gap-3","children":[["$","$L7",null,{"href":"/","className":"btn","children":"Voltar ao início"}],["$","$L7",null,{"href":"/projetos/","className":"btn btn-ghost","children":"Ver projetos"}]]}]]}],[]]}]}],["$","footer",null,{"className":"border-t border-line py-12","children":[["$","div",null,{"className":"wrap flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between","children":[["$","div",null,{"children":[["$","p",null,{"className":"display text-3xl","children":"Evanilson Freitas"}],["$","p",null,{"className":"mt-1 text-sm text-muted","children":"Business Intelligence / Data Science / Software Engineering"}]]}],["$","nav",null,{"aria-label":"Rodapé","className":"flex flex-wrap items-center gap-x-6 gap-y-3 text-sm","children":[["$","$L7",null,{"href":"/projetos/","className":"hover:underline","children":"Projetos"}],["$","$L7",null,{"href":"/educacao/","className":"hover:underline","children":"Formação"}],["$","$L7",null,{"href":"/blog/","className":"hover:underline","children":"Artigos"}],["$","a",null,{"href":"https://github.com/EvanilsonFreitas","target":"_blank","rel":"noopener noreferrer","className":"inline-flex items-center gap-1.5 hover:underline","children":[["$","svg",null,{"width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"1.6","strokeLinecap":"round","strokeLinejoin":"round","aria-hidden":"true","focusable":"false","children":["$","path",null,{"d":"M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"}]}]," GitHub"]}],["$","a",null,{"href":"https://www.linkedin.com/in/evanilson-p-freitas-303889350/","target":"_blank","rel":"noopener noreferrer","className":"inline-flex items-center gap-1.5 hover:underline","children":[["$","svg",null,{"width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"1.6","strokeLinecap":"round","strokeLinejoin":"round","aria-hidden":"true","focusable":"false","children":[["$","path",null,{"d":"M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"}],["$","rect",null,{"x":"2","y":"9","width":"4","height":"12"}],["$","circle",null,{"cx":"4","cy":"4","r":"2"}]]}]," LinkedIn"]}]]}]]}],["$","p",null,{"className":"wrap mt-8 text-[0.8125rem] text-muted","children":["© ",2026," ","Evanilson Pereira de Freitas",". Todos os direitos reservados."]}]]}]]}]}]}]]}],"p":"$@8","v":null,"s":"$9"},"c":"$Qa"},"h":{"r":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L13",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#fafaf8","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#0d1117","media":"(prefers-color-scheme: dark)"}]]}],["$","$L15",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$16",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Evanilson Freitas — Business Intelligence, Data Science e Software"}],["$","meta","1",{"name":"description","content":"Portfólio de Evanilson Freitas: Business Intelligence, Data Science e Engenharia de Software aplicados a desafios de negócio. Projetos, formação e artigos técnicos."}],"$L17","$L18","$L19","$L1a","$L1b","$L1c","$L1d","$L1e","$L1f","$L20","$L21","$L22","$L23","$L24","$L25","$L26","$L27","$L28","$L29","$L2a","$L2b"]}]}],null]}],"$L2c"]}],"p":"$@2d","v":null,"s":"$9"}},"a":"$@2e","u":"$@2f","b":"P9A7BXIzPNmgeu214qXut"}
-30:I[97367,["$2"],"OutletBoundary"]
-32:I[27201,["$2"],"IconMark"]
-e:["$","$L7",null,{"href":"/","className":"btn","children":"Voltar ao início"}]
-f:["$","$L7",null,{"href":"/projetos/","className":"btn btn-ghost","children":"Ver projetos"}]
-10:["$","$L30",null,{"children":["$","$16",null,{"name":"Next.MetadataOutlet","children":"$@31"}]}]
-17:["$","link","2",{"rel":"author","href":"https://github.com/EvanilsonFreitas"}]
-18:["$","meta","3",{"name":"author","content":"Evanilson Pereira de Freitas"}]
-19:["$","meta","4",{"name":"keywords","content":"Business Intelligence,Data Science,Engenharia de Software,Analytics,Python,SQL Server,TypeScript"}]
-1a:["$","meta","5",{"name":"creator","content":"Evanilson Pereira de Freitas"}]
-1b:["$","link","6",{"rel":"canonical","href":"https://evanilsonfreitas.github.io/portfolio-evanilson/"}]
-1c:["$","meta","7",{"property":"og:title","content":"Evanilson Freitas — Business Intelligence, Data Science e Software"}]
-1d:["$","meta","8",{"property":"og:description","content":"Portfólio de Evanilson Freitas: Business Intelligence, Data Science e Engenharia de Software aplicados a desafios de negócio. Projetos, formação e artigos técnicos."}]
-1e:["$","meta","9",{"property":"og:url","content":"https://evanilsonfreitas.github.io/portfolio-evanilson/"}]
-1f:["$","meta","10",{"property":"og:site_name","content":"Evanilson Freitas"}]
-20:["$","meta","11",{"property":"og:locale","content":"pt_BR"}]
-21:["$","meta","12",{"property":"og:image","content":"https://evanilsonfreitas.github.io/portfolio-evanilson/og/portfolio.png"}]
-22:["$","meta","13",{"property":"og:image:width","content":"1200"}]
-23:["$","meta","14",{"property":"og:image:height","content":"630"}]
-24:["$","meta","15",{"property":"og:image:alt","content":"Evanilson Freitas — Business Intelligence · Data Science · Software Engineering"}]
-25:["$","meta","16",{"property":"og:type","content":"website"}]
-26:["$","meta","17",{"name":"twitter:card","content":"summary_large_image"}]
-27:["$","meta","18",{"name":"twitter:title","content":"Evanilson Freitas"}]
-28:["$","meta","19",{"name":"twitter:description","content":"Portfólio de Evanilson Freitas: Business Intelligence, Data Science e Engenharia de Software aplicados a desafios de negócio. Projetos, formação e artigos técnicos."}]
-29:["$","meta","20",{"name":"twitter:image","content":"https://evanilsonfreitas.github.io/portfolio-evanilson/og/portfolio.png"}]
-2a:["$","link","21",{"rel":"icon","href":"/portfolio-evanilson/favicon.ico?favicon.2vob68tjqpejf.ico","sizes":"256x256","type":"image/x-icon"}]
-2b:["$","$L32","22",{}]
-2c:["$","meta",null,{"name":"next-size-adjust","content":""}]
-9:300
-31:null
-2f:true
-9:C
-2e:0
-b:"$undefined"
-8:"$undefined"
-2d:"$undefined"
-11:"$undefined"
+4:I[76763,["$2"],"default"]
+5:I[3374,["$2"],"default"]
+6:I[39756,["$2"],"default"]
+7:I[37457,["$2"],"default"]
+8:I[22016,["$2"],""]
+13:"ViewportBoundary"
+14:I[97367,["$2"],"$13"]
+15:"MetadataBoundary"
+16:I[97367,["$2"],"$15"]
+17:"$Sreact.suspense"
+:HL["/portfolio-evanilson/_next/static/chunks/3k1iv2eh9su8l.css","style"]
+a:X
+d:X
+d:C
+e:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$1","c",{"children":[["$","div",null,{"className":"wrap py-28","children":[["$","p",null,{"className":"eyebrow mb-4","children":"Erro 404"}],["$","h1",null,{"className":"display text-[clamp(3rem,8vw,6rem)]","children":"Página não encontrada."}],["$","p",null,{"className":"mt-6 max-w-lg text-lg text-muted","children":"O endereço pode ter mudado. Os projetos e os artigos estão acessíveis pelo menu."}],["$","div",null,{"className":"mt-10 flex flex-wrap gap-3","children":["$Lf","$L10"]}]]}],null,"$L11"]}],"p":"$@12","v":null,"s":"$a"}}]]
+b:[["children",{"s":"/_not-found","h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}]}]]}],"p":"$@c","v":"$d","s":"$a"},"c":"$Qe"}]]
+0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/portfolio-evanilson/_next/static/chunks/3k1iv2eh9su8l.css","precedence":"next"}],["$","script","script-0",{"src":"/portfolio-evanilson/_next/static/chunks/2i74jofmvtngd.js","async":true}]],["$","html",null,{"lang":"pt-BR","suppressHydrationWarning":true,"className":"Inxb-G_variable rbrRBG_variable -icAOa_variable","children":["$","body",null,{"className":"flex min-h-screen flex-col","children":["$","$L3",null,{"children":[["$","a",null,{"href":"#conteudo","className":"skip-link","children":"Ir para o conteúdo"}],["$","$L4",null,{}],["$","$L5",null,{}],["$","main",null,{"id":"conteudo","className":"flex-1","children":["$","$L6",null,{"parallelRouterKey":"children","template":["$","$L7",null,{}],"notFound":[["$","div",null,{"className":"wrap py-28","children":[["$","p",null,{"className":"eyebrow mb-4","children":"Erro 404"}],["$","h1",null,{"className":"display text-[clamp(3rem,8vw,6rem)]","children":"Página não encontrada."}],["$","p",null,{"className":"mt-6 max-w-lg text-lg text-muted","children":"O endereço pode ter mudado. Os projetos e os artigos estão acessíveis pelo menu."}],["$","div",null,{"className":"mt-10 flex flex-wrap gap-3","children":[["$","$L8",null,{"href":"/","className":"btn","children":"Voltar ao início"}],["$","$L8",null,{"href":"/projetos/","className":"btn btn-ghost","children":"Ver projetos"}]]}]]}],[]]}]}],["$","footer",null,{"className":"border-t border-line py-12","children":[["$","div",null,{"className":"wrap flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between","children":[["$","div",null,{"children":[["$","p",null,{"className":"display text-3xl","children":"Evanilson Freitas"}],["$","p",null,{"className":"mt-1 text-sm text-muted","children":"Business Intelligence / Inteligência de Negócios / Engenharia de Software"}]]}],["$","nav",null,{"aria-label":"Rodapé","className":"flex flex-wrap items-center gap-x-6 gap-y-3 text-sm","children":[["$","$L8",null,{"href":"/projetos/","className":"hover:underline","children":"Projetos"}],["$","$L8",null,{"href":"/educacao/","className":"hover:underline","children":"Formação"}],["$","$L8",null,{"href":"/blog/","className":"hover:underline","children":"Artigos"}],["$","a",null,{"href":"https://github.com/EvanilsonFreitas","target":"_blank","rel":"noopener noreferrer","className":"inline-flex items-center gap-1.5 hover:underline","children":[["$","svg",null,{"width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"1.6","strokeLinecap":"round","strokeLinejoin":"round","aria-hidden":"true","focusable":"false","children":["$","path",null,{"d":"M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"}]}]," GitHub"]}],["$","a",null,{"href":"https://www.linkedin.com/in/evanilson-p-freitas-303889350/","target":"_blank","rel":"noopener noreferrer","className":"inline-flex items-center gap-1.5 hover:underline","children":[["$","svg",null,{"width":15,"height":15,"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"1.6","strokeLinecap":"round","strokeLinejoin":"round","aria-hidden":"true","focusable":"false","children":[["$","path",null,{"d":"M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"}],["$","rect",null,{"x":"2","y":"9","width":"4","height":"12"}],["$","circle",null,{"cx":"4","cy":"4","r":"2"}]]}]," LinkedIn"]}]]}]]}],["$","p",null,{"className":"wrap mt-8 text-[0.8125rem] text-muted","children":["© ",2026," ","Evanilson Pereira de Freitas",". Todos os direitos reservados."]}]]}]]}]}]}]]}],"p":"$@9","v":null,"s":"$a"},"c":"$Qb"},"h":{"r":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L14",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#fafaf8","media":"(prefers-color-scheme: light)"}],["$","meta","3",{"name":"theme-color","content":"#0d1117","media":"(prefers-color-scheme: dark)"}]]}],["$","$L16",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$17",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Evanilson Freitas — Business Intelligence, Inteligência de Negócios e Software"}],"$L18","$L19","$L1a","$L1b","$L1c","$L1d","$L1e","$L1f","$L20","$L21","$L22","$L23","$L24","$L25","$L26","$L27","$L28","$L29","$L2a","$L2b","$L2c","$L2d"]}]}],null]}],"$L2e"]}],"p":"$@2f","v":null,"s":"$a"}},"a":"$@30","u":"$@31","b":"4amhIUeHtrz2bF6bIRpux"}
+32:I[97367,["$2"],"OutletBoundary"]
+34:I[27201,["$2"],"IconMark"]
+f:["$","$L8",null,{"href":"/","className":"btn","children":"Voltar ao início"}]
+10:["$","$L8",null,{"href":"/projetos/","className":"btn btn-ghost","children":"Ver projetos"}]
+11:["$","$L32",null,{"children":["$","$17",null,{"name":"Next.MetadataOutlet","children":"$@33"}]}]
+18:["$","meta","1",{"name":"description","content":"Portfólio de Evanilson Freitas: Business Intelligence, Inteligência de Negócios e Engenharia de Software. Soluções de dados, automação e software para decisão, com projetos, estudos técnicos e artigos."}]
+19:["$","link","2",{"rel":"author","href":"https://github.com/EvanilsonFreitas"}]
+1a:["$","meta","3",{"name":"author","content":"Evanilson Pereira de Freitas"}]
+1b:["$","meta","4",{"name":"keywords","content":"Business Intelligence,Inteligência de Negócios,Engenharia de Software,Data Science,SQL Server,Integração de sistemas,Python,TypeScript"}]
+1c:["$","meta","5",{"name":"creator","content":"Evanilson Pereira de Freitas"}]
+1d:["$","link","6",{"rel":"canonical","href":"https://evanilsonfreitas.github.io/portfolio-evanilson/"}]
+1e:["$","meta","7",{"property":"og:title","content":"Evanilson Freitas — Business Intelligence, Inteligência de Negócios e Software"}]
+1f:["$","meta","8",{"property":"og:description","content":"Portfólio de Evanilson Freitas: Business Intelligence, Inteligência de Negócios e Engenharia de Software. Soluções de dados, automação e software para decisão, com projetos, estudos técnicos e artigos."}]
+20:["$","meta","9",{"property":"og:url","content":"https://evanilsonfreitas.github.io/portfolio-evanilson/"}]
+21:["$","meta","10",{"property":"og:site_name","content":"Evanilson Freitas"}]
+22:["$","meta","11",{"property":"og:locale","content":"pt_BR"}]
+23:["$","meta","12",{"property":"og:image","content":"https://evanilsonfreitas.github.io/portfolio-evanilson/og/portfolio.png"}]
+24:["$","meta","13",{"property":"og:image:width","content":"1200"}]
+25:["$","meta","14",{"property":"og:image:height","content":"630"}]
+26:["$","meta","15",{"property":"og:image:alt","content":"Evanilson Freitas — Business Intelligence · Inteligência de Negócios · Engenharia de Software"}]
+27:["$","meta","16",{"property":"og:type","content":"website"}]
+28:["$","meta","17",{"name":"twitter:card","content":"summary_large_image"}]
+29:["$","meta","18",{"name":"twitter:title","content":"Evanilson Freitas"}]
+2a:["$","meta","19",{"name":"twitter:description","content":"Portfólio de Evanilson Freitas: Business Intelligence, Inteligência de Negócios e Engenharia de Software. Soluções de dados, automação e software para decisão, com projetos, estudos técnicos e artigos."}]
+2b:["$","meta","20",{"name":"twitter:image","content":"https://evanilsonfreitas.github.io/portfolio-evanilson/og/portfolio.png"}]
+2c:["$","link","21",{"rel":"icon","href":"/portfolio-evanilson/favicon.ico?favicon.2vob68tjqpejf.ico","sizes":"256x256","type":"image/x-icon"}]
+2d:["$","$L34","22",{}]
+2e:["$","meta",null,{"name":"next-size-adjust","content":""}]
+a:300
+33:null
+31:true
+a:C
+30:0
+c:"$undefined"
+9:"$undefined"
+2f:"$undefined"
+12:"$undefined"
