@@ -1,4 +1,4 @@
-:HL["/portfolio-evanilson/_next/static/chunks/0pobcl6svaabf.css","style"]
+:HL["/portfolio-evanilson/_next/static/chunks/14f01f9z0ek-d.css","style"]
 :HL["/portfolio-evanilson/_next/static/media/07a39a8a4660cc7c-s.p.0r6juujl39pe6.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/portfolio-evanilson/_next/static/media/605ce01b664af129-s.p.0wgildi0cnwt9.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/portfolio-evanilson/_next/static/media/d902bc2bfdd0a4cb-s.p.1g73gv09-xcb6.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
@@ -6,4 +6,4 @@
 3:[["children",{"s":"__PAGE__","h":160}]]
 2:[["children",{"s":{"n":"slug","t":"d","k":"pricing-inteligente-logistica","s":[]},"h":96,"c":"$Q3"}]]
 1:[["children",{"s":"blog","h":96,"c":"$Q2"}]]
-0:{"b":"PgXA-oe2XjG2e4tgJDcee","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"3FRd-OrHrvUSty5b8MLh5","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
