@@ -1,4 +1,4 @@
-:HL["/portfolio-evanilson/_next/static/chunks/3k1iv2eh9su8l.css","style"]
+:HL["/portfolio-evanilson/_next/static/chunks/11f059dioc2re.css","style"]
 2:[["children",{"s":"__PAGE__","h":160}]]
 1:[["children",{"s":"/_not-found","h":96,"c":"$Q2"}]]
-0:{"b":"4amhIUeHtrz2bF6bIRpux","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
+0:{"b":"kXv7Z5J2E3Za1I92u-88L","t":{"t":{"s":"","h":80,"c":"$Q1"}}}
