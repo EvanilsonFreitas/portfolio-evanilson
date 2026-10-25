@@ -8,6 +8,50 @@ import { CORPORATE, list, open, p, sec, table } from './cases-shared.ts';
 const UNCONFIRMED =
   'Plataforma de construção não confirmada; nenhuma tecnologia atribuída. Os elementos visíveis na captura (fonte de dados, botões, filtros) não bastam para inferir a ferramenta.';
 
+const IMPLEMENTATION = 'Tecnologias de implementação';
+
+/**
+ * Gestão de Coletas e Logística Reversa é uma solução em Excel (não Power BI). "Power BI · Operacional (Coletas)",
+ * exibido na captura, é a fonte de dados consumida. Power Pivot (modelo) e Tabelas Dinâmicas (PivotTable) são
+ * ferramentas distintas e não se confundem.
+ */
+const COLETAS_NOTE =
+  'Construído em Excel (interface analítica), confirmado pelo proprietário, com VBA (automação), Power Query (M) (tratamento e transformação), Power Pivot (modelagem analítica) e Tabelas Dinâmicas. "Power BI · Operacional (Coletas)" é a fonte de dados consumida; Power BI não é a plataforma do painel e não é atribuído.';
+
+const coletasImplementation = sec(
+  IMPLEMENTATION,
+  p('A solução foi construída em Excel, com atualização automatizada dos dados e recursos de análise. A fonte de dados exibida no painel, Power BI · Operacional (Coletas), é a origem da informação consumida pela solução, não a plataforma em que o painel foi desenvolvido.'),
+  table(
+    ['Camada', 'Tecnologia'],
+    [
+      ['Interface analítica', 'Excel'],
+      ['Automação', 'VBA'],
+      ['Tratamento e transformação dos dados', 'Power Query (M)'],
+      ['Modelagem analítica', 'Power Pivot'],
+      ['Análise e consolidação', 'Tabelas Dinâmicas'],
+      ['Fonte de dados', 'Power BI · Operacional (Coletas)'],
+    ],
+  ),
+);
+
+/** Consolidado (inclui o Controle de Extravio): solução em Excel; Power Pivot não está confirmado para ela. */
+const CONSOLIDADO_NOTE =
+  'Solução em Excel com VBA (automação), Power Query (M) (tratamento e transformação) e Tabelas Dinâmicas, confirmados pelo proprietário para as soluções de extravio. Power Pivot não está confirmado para este case e não é atribuído. Power BI não é atribuído como plataforma.';
+
+const consolidadoImplementation = sec(
+  IMPLEMENTATION,
+  p('A solução foi construída em Excel, com tratamento, transformação, consolidação e automação dos dados. Os indicadores e as visões do painel estão descritos nas demais seções.'),
+  table(
+    ['Camada', 'Tecnologia'],
+    [
+      ['Ambiente', 'Excel'],
+      ['Automação', 'VBA'],
+      ['Tratamento e transformação dos dados', 'Power Query (M)'],
+      ['Análise e consolidação', 'Tabelas Dinâmicas'],
+    ],
+  ),
+);
+
 export const casesOperacional: Case[] = [
   {
     id: 'comprovantes-retidos',
@@ -154,8 +198,8 @@ export const casesOperacional: Case[] = [
       'Consolidado de ocorrências ativas com ranking de filiais e ranking regional no Brasil, evolução diária e acompanhamento dos casos, em duas apresentações do painel.',
     category: 'bi-operacional',
     types: ['dashboard', 'inteligencia-operacional'],
-    tech: [],
-    techNote: UNCONFIRMED,
+    tech: ['excel', 'vba', 'power-query', 'tabelas-dinamicas'],
+    techNote: CONSOLIDADO_NOTE,
     caseType: 'completo',
     natureLabel: CORPORATE,
     images: [
@@ -193,11 +237,12 @@ export const casesOperacional: Case[] = [
         ]),
       ),
       sec('Navegação', p('O painel é organizado por seções de navegação lateral: atendimento, desvio operacional, pendência, consolidado e status. As capturas exibem o consolidado.')),
+      consolidadoImplementation,
       sec('Aplicação', p('Compara unidades, identifica as áreas com mais ocorrências e acompanha os casos em aberto, do consolidado nacional ao caso individual.')),
     ],
     related: ['desvio-operacional-operacao-gru', 'automacao-avarias-extravios'],
     pending: [
-      open('Confirmar a plataforma de construção.'),
+      open('Confirmar se Power Pivot participa da solução e detalhar o fluxo de atualização.'),
     ],
   },
   {
@@ -210,8 +255,8 @@ export const casesOperacional: Case[] = [
       'Desempenho das coletas dentro do prazo frente à meta de 96%, por filial, região e semana, com o recorte de logística reversa e a regra de apuração declarada no próprio painel.',
     category: 'bi-operacional',
     types: ['dashboard', 'inteligencia-operacional'],
-    tech: [],
-    techNote: UNCONFIRMED,
+    tech: ['excel', 'vba', 'power-query', 'power-pivot', 'tabelas-dinamicas'],
+    techNote: COLETAS_NOTE,
     caseType: 'completo',
     natureLabel: CORPORATE,
     images: [
@@ -257,11 +302,12 @@ export const casesOperacional: Case[] = [
           ],
         ),
       ),
+      coletasImplementation,
       sec('Aplicação', p('Permite acompanhar o cumprimento de prazo das coletas por filial e região, comparar com o ano anterior e isolar a logística reversa quando for o foco da análise.')),
     ],
     related: ['prazo-coleta', 'indice-retorno'],
     pending: [
-      open('Confirmar a plataforma de construção (a fonte exibida é Power BI · Operacional, o que não define, por si, a ferramenta do painel).'),
+      open('Confirmar a origem e a frequência de atualização da fonte "Power BI · Operacional (Coletas)" consumida pela solução.'),
     ],
   },
   {

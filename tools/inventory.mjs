@@ -82,6 +82,20 @@ O proprietário confirmou os três agrupamentos: cada um é **uma única soluç�
 
 Power BI está confirmado pelo proprietário para os **sete projetos de BI comercial** (Tracker Comercial, Solution Price, Hit Rate Comercial, Alçadas de Aprovação Comercial, Painel Frete/Kg, Painel de Análise de Mercado e Painel de Produtividade Comercial). DAX, Power Query, SQL Server e outras tecnologias **não** são atribuídos sem confirmação específica. Nas Alçadas, o Power BI é a camada analítica; as automações de aprovação são de sistemas integrados.
 
+### Tecnologia dos painéis em Excel de coleta e extravio (V3.3.1)
+
+O proprietário corrigiu a arquitetura: **Gestão de Coletas e Logística Reversa não foi desenvolvida em Power BI**. É uma solução em Excel (interface analítica), com VBA (automação), Power Query (M) (tratamento e transformação dos dados), Power Pivot (modelagem analítica) e Tabelas Dinâmicas, com atualização automatizada. A inscrição "Power BI · Operacional (Coletas)" exibida na captura é a **fonte de dados** consumida, não a plataforma do painel.
+
+| Case | Tecnologias atribuídas |
+|---|---|
+| Gestão de Coletas e Logística Reversa | Excel, VBA, Power Query (M), Power Pivot, Tabelas Dinâmicas |
+| Consolidado Operacional e Ranking de Filiais (inclui o Controle de Extravio) | Excel, VBA, Power Query (M), Tabelas Dinâmicas |
+
+- **Power Pivot não é Tabelas Dinâmicas (PivotTable).** Power Pivot só consta onde foi confirmado (Gestão de Coletas); no Consolidado não é atribuído.
+- Os cases separam a **fonte de dados** das **tecnologias de implementação** em uma seção própria. Power BI e DAX não são atribuídos a esses dois cases.
+- "Inteligência operacional" continua sendo a classificação analítica (tipo de solução e categoria "BI Operacional"); não indica a ferramenta Microsoft Power BI.
+- **Não atribuídas** aos demais painéis (Comprovantes Retidos, Índice de Retorno, Ocorrências na Origem, Desvio Operacional · GRU, Pendências de Digitalização) nem aos sete projetos em Excel/VBA, que seguem com as tecnologias já confirmadas. Prazo de Coleta mantém Power BI (identificação do arquivo de evidência, confirmação formal pendente). Qualquer ampliação depende de confirmação individual.
+
 ### Entregas independentes confirmadas
 
 - **Ocorrências na Origem**: o painel de Business Intelligence (\`ocorrencias-origem\`) e a solução automatizada em Excel/VBA (\`relatorio-ocorrencias-origem\`) são entregas distintas, embora tratem do mesmo contexto operacional. Permanecem como dois cases, com referência cruzada.
