@@ -1,8 +1,9 @@
 // Verifica links internos, assets, prefixo e metadados do artefato exportado.
 // Uso: node tools/check-links.mjs github-pages | vercel
+import { createHash } from 'node:crypto';
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const target = process.argv[2];
@@ -85,6 +86,32 @@ for (const f of ['Evanilson_Freitas_Curriculo.pdf', 'Evanilson_Freitas_Curriculo
   if (existsSync(pub) && existsSync(art) && !readFileSync(pub).equals(readFileSync(art))) problems.push();
 }
 if (!readFileSync(join(out, 'sitemap.xml'), 'utf8').includes(cfg.canonical)) problems.push('sitemap com origem inesperada');
+
+// Catálogo: cada item precisa ter página, canonical e entrada no sitemap; o nome público anterior do
+// projeto financeiro e as capturas originais confidenciais não podem estar no artefato.
+const { catalog } = await import(pathToFileURL(join(root, 'src', 'content', 'catalog.ts')).href);
+const { projectImages } = await import(pathToFileURL(join(root, 'src', 'content', 'project-images.ts')).href);
+const sitemap = readFileSync(join(out, 'sitemap.xml'), 'utf8');
+for (const e of catalog) {
+  const page = join(out, 'projetos', e.slug, 'index.html');
+  if (!existsSync(page)) {
+    problems.push(`página ausente: /projetos/${e.slug}/`);
+    continue;
+  }
+  if (!readFileSync(page, 'utf8').includes(`<link rel="canonical" href="${cfg.canonical}projetos/${e.slug}/"`)) problems.push(`canonical inesperado: ${e.slug}`);
+  if (!sitemap.includes(`${cfg.canonical}projetos/${e.slug}/`)) problems.push(`fora do sitemap: ${e.slug}`);
+}
+const imgDir = join(out, 'assets', 'projetos');
+const expectedImages = new Set(projectImages.flatMap((i) => [`${i.id}.webp`, `${i.id}-thumb.webp`]));
+const publishedImages = existsSync(imgDir) ? readdirSync(imgDir) : [];
+if (publishedImages.length !== expectedImages.size || publishedImages.some((n) => !expectedImages.has(n))) problems.push('assets/projetos difere das imagens públicas esperadas');
+if (readdirSync(join(out, 'assets')).includes('Projetos')) problems.push('pasta de originais (assets/Projetos) no artefato');
+const originalHashes = new Set(projectImages.map((i) => i.originalSha256));
+const { findIncorrectClaims } = await import(pathToFileURL(join(root, 'src', 'content', 'identity-guard.ts')).href);
+for (const f of walk(out)) {
+  if (/\.(png|jpe?g|webp|gif|pdf)$/i.test(f) && originalHashes.has(createHash('sha256').update(readFileSync(f)).digest('hex'))) problems.push(`captura original confidencial no artefato: ${f.replace(out, '')}`);
+  if (/\.(html|txt|xml|json|js|css|webmanifest)$/i.test(f) && findIncorrectClaims(readFileSync(f, 'utf8')).length > 0) problems.push(`atribuição incorreta ou nome público anterior em ${f.replace(out, '')}`);
+}
 
 console.log(`Destino: ${target} · ${out}`);
 console.log(`Páginas: ${files.length} · referências internas verificadas: ${checked}`);

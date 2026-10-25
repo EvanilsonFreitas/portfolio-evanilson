@@ -62,7 +62,7 @@ export const resume = {
 };
 
 /**
- * Projetos do currículo, em ordem de prioridade. Marivan Finance não entra nos currículos
+ * Projetos do currículo, em ordem de prioridade. O projeto de gestão financeira não entra nos currículos
  * (permanece no site). Os textos descrevem a atuação em BI com as ferramentas de BI;
  * o demonstrador do portfólio (TypeScript, React e SVG) não é citado aqui.
  */

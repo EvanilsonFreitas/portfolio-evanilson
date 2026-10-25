@@ -38,6 +38,11 @@ rmSync(join(out, 'resume', 'Foto_Curriculo.jpg'), { force: true });
 // O SVG do retrato (3,5 MB) é insumo: o cabeçalho usa a miniatura raster em assets/brand.
 rmSync(join(out, 'resume', 'Logo_Animeted.svg'), { force: true });
 
+// Capturas originais de projetos são confidenciais e vivem fora do repositório. Se alguma pasta com esse
+// nome voltar a existir em public, ela não pode chegar ao artefato (a verificação também falha).
+// A comparação é exata: no Windows o sistema de arquivos ignora maiúsculas e apagaria `assets/projetos`.
+if (readdirSync(join(out, 'assets')).includes('Projetos')) rmSync(join(out, 'assets', 'Projetos'), { recursive: true, force: true });
+
 // No Windows o export grava os payloads de prefetch em pastas (`__next.blog/__PAGE__.txt`),
 // mas o cliente os solicita como arquivos planos (`__next.blog.__PAGE__.txt`). Normaliza.
 function flattenPrefetch(dir) {
