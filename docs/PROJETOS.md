@@ -1,6 +1,6 @@
 # Inventário de projetos (V3.3)
 
-Gerado por `node tools/inventory.mjs` a partir de `src/content/catalog.ts`. A fonte única do catálogo é esse arquivo; a home, a página de projetos, o sitemap e os testes leem dele. Este documento concentra as incertezas e as decisões pendentes; nada disso é exibido no site.
+Gerado por `node tools/inventory.mjs` a partir de `src/content/catalog.ts`. A fonte única do catálogo é esse arquivo; a home, a página de projetos, o sitemap e os testes leem dele. Este documento concentra as decisões do proprietário, as incertezas e as pendências não bloqueantes; nada disso é exibido no site. Baseline homologado da V3.3.
 
 ## Quantitativos
 
@@ -171,7 +171,7 @@ Power BI está confirmado pelo proprietário para os **sete projetos de BI comer
 
 ### Homologação
 
-A V3.3 foi homologada pelo proprietário em 25/10/2026, com os 42 itens do catálogo e os refinamentos editoriais, e a publicação foi autorizada.
+A V3.3 está **concluída, publicada e homologada em produção em 25/10/2026**. O proprietário validou pessoalmente os dois ambientes (catálogo, páginas, imagens ampliadas, busca, filtros, claro e escuro) e confirmou: "VALIDADO! TUDO OK!". Os quantitativos acima são o baseline da V3.3. Não há homologação pendente.
 
 ## Pendências
 
@@ -224,4 +224,12 @@ Não há decisões editoriais em aberto: os agrupamentos, as duas separações a
 
 ## Imagens
 
-As 10 capturas foram autorizadas pelo proprietário como estão (confirmado em 25/10/2026, ciente de que valores em R$, nomes de clientes e logotipos continuam legíveis em seis delas). Usam-se como ele as forneceu (desfoque nativo), sem tarjas nem camadas adicionais, apenas convertidas para WebP e, nas 4K, reduzidas em largura. Os PNGs originais ficam fora do repositório (`../portfolio_Evan_privado/projetos-originais`) e nunca entram em `public`; `tools/build-project-images.mjs` regenera as versões web. Os valores das capturas não são reproduzidos em texto, tabela ou metadado.
+As 10 capturas foram autorizadas pelo proprietário como estão (confirmado em 25/10/2026, ciente de que valores em R$, nomes de clientes e logotipos continuam legíveis em seis delas). Usam-se como ele as forneceu (desfoque nativo), sem tarjas nem camadas adicionais, apenas convertidas para WebP e, nas 4K, reduzidas em largura. Os PNGs originais ficam fora do repositório (`../portfolio_Evan_privado/projetos-originais`) e nunca entram em `public`; `tools/build-project-images.mjs` regenera as versões web. Os valores das capturas não são reproduzidos em texto, tabela ou metadado. A autorização cobre especificamente estas dez capturas e foi aprovada em produção: não é pendência e não se estende a novas imagens. Preservar o desfoque original, e não adicionar tarjas, caixas, overlays, pixelização ou novas ocultações.
+
+## Como estender o catálogo
+
+1. Crie o case em um dos arquivos `src/content/cases-*.ts` (ou um novo, importado em `catalog.ts`) com `id`, `slug` (kebab-case estável), `category`, `types`, `tech`, `techNote` (interno), `caseType`, `summary`, `sections` e, se houver, `related` e `pending`. Os atalhos de `cases-shared.ts` (`sec`, `p`, `list`, `table`, `limits`, `open`, `decide`) mantêm o padrão.
+2. Só preencha `tech` com tecnologia confirmada pelo proprietário. Sem confirmação, deixe `[]`: a página omite o campo e a pendência fica em `pending`.
+3. Imagem: coloque o PNG original em `../portfolio_Evan_privado/projetos-originais`, acrescente a entrada em `tools/project-images.config.mjs` e rode `node tools/build-project-images.mjs`. Nada de camadas adicionais sobre a captura. Associe o `id` no case (`images`).
+4. Para destacar na home, inclua o slug em `homeFeatured` (`catalog.ts`); a curadoria mantém todas as categorias e no máximo 2 itens de software.
+5. Rode `node tools/inventory.mjs` para regenerar este documento e `npm run check` para validar. Os testes barram duplicações, tecnologias fora do vocabulário, mensagens internas no texto público e a presença de PNGs originais nos artefatos.

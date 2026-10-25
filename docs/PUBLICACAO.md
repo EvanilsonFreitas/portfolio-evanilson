@@ -92,6 +92,8 @@ npx vercel@latest deploy --prebuilt --prod --yes --scope evan-b357
 3. HTTP e integridade: páginas, `sitemap.xml`, `robots.txt`, `favicon.ico`, `manifest.webmanifest`, `assets/brand/*`, diploma e currículos. Compare o hash dos três currículos com `public/resume/`.
 4. Confirme que `Foto_Curriculo.jpg`, `Logo_Animeted.svg` e `assets/curriculo/*` retornam 404.
 5. No navegador: console sem erros, Experiência com os cargos corretos, navegação (menu, breadcrumbs, Back/Forward) e favicon.
+6. Catálogo (V3.3): as 42 páginas de `/projetos/<slug>/` respondem 200 com o canonical da própria origem; `sitemap.xml` lista todas; as 20 imagens de `assets/projetos` têm hash igual ao de `public/assets/projetos`; busca, filtros e contadores funcionam; `assets/Projetos/*` e o endereço antigo do projeto financeiro (anterior ao slug `gestao-financeira`) retornam 404.
+7. Commits só de documentação (`docs/`) não alteram o artefato e **não exigem novo deploy**.
 
 ## 6. Currículos
 
@@ -112,7 +114,11 @@ O histórico formal está em `src/content/career.ts` (`employment`: empresas, ca
 
 `npm run brand` deriva os ícones do monograma original (`public/assets/perfil/Monograma EP Preto em Fundo Transparente.png`) e a miniatura do retrato do emblema (`public/resume/Logo_Animeted.svg`) para `public/assets/brand` e `public/favicon.ico`.
 
-## 9. Versionamento
+## 9. Capturas dos projetos
+
+As dez capturas dos painéis estão autorizadas pelo proprietário como estão. Os PNGs originais ficam **fora** do repositório, em `C:\Desenvolvimento\portfolio_Evan_privado\projetos-originais`, e nunca em `public`. `node tools/build-project-images.mjs` converte para WebP em `public/assets/projetos` (sem tarjas, máscaras ou desfoque adicionais) e atualiza `src/content/project-images.ts`, que guarda o SHA-256 de cada original. O build remove `assets/Projetos` do artefato se a pasta reaparecer, e `npm run check` falha se algum original ou arquivo inesperado estiver no artefato. Cuidado no Windows: o sistema de arquivos ignora maiúsculas, então `Projetos` e `projetos` colidem; compare nomes exatos.
+
+## 10. Versionamento
 
 Commits e PRs descrevem apenas a mudança técnica, sem trailers de coautoria. Confira antes de cada commit:
 

@@ -1,16 +1,9 @@
 # Estado do projeto
 
-**Versão:** V3.3, expansão e reestruturação do catálogo de projetos. Homologada pelo proprietário em 25/10/2026, com os 42 itens do catálogo e os refinamentos editoriais; publicação autorizada. A V3.2.2 foi o baseline publicado anterior.
-Este arquivo é o ponto de retomada de uma nova sessão. Procedimentos de publicação: [PUBLICACAO.md](PUBLICACAO.md). Inventário do catálogo: [PROJETOS.md](PROJETOS.md).
+**Versão:** V3.3 — CONCLUÍDA E HOMOLOGADA EM PRODUÇÃO EM 25/10/2026.
+Implementação concluída, testes aprovados, publicada no GitHub Pages e na Vercel, validada nos dois ambientes e aprovada pelo proprietário em produção ("VALIDADO! TUDO OK!"), incluindo catálogo, projetos independentes, busca e filtros, claro e escuro, imagens e ampliação. Não há homologação pendente. O baseline anterior foi a V3.2.2.
 
-## V3.3
-- **Catálogo independente**: 42 itens (13 preservados e 29 novos), sem numeração, linha do tempo ou "próximo projeto". A fonte única é `src/content/catalog.ts`, que reúne `projects.ts`, `studies.ts` e os novos `cases-*.ts`; o vocabulário controlado está em `taxonomy.ts` (6 categorias, tipos de solução, tecnologias confirmadas).
-- **Páginas**: `/projetos/` com busca e filtros (categoria, tecnologia, tipo; estado na URL), `/projetos/<slug>/` para cada item. A home exibe uma curadoria (`homeFeatured`) com acesso ao catálogo.
-- **Texto público x documentação interna**: incertezas (tecnologia não confirmada, fonte, agrupamentos) ficam em `docs/PROJETOS.md` e nos campos internos `techNote` e `pending` de cada case, que o site não exibe. A página omite o campo de tecnologias quando não há tecnologia confirmada. Testes barram expressões de auditoria no texto e nas páginas geradas.
-- **Decisões do proprietário (25/10/2026)**: os três agrupamentos (Consolidado e Ranking de Filiais; Gestão de Coletas e Logística Reversa; Desvio Operacional · Operação GRU, com "Ocorrências Ofensoras" como termo de busca) estão confirmados; Power BI está confirmado para os sete projetos de BI comercial, sem presumir DAX, Power Query ou SQL Server. Também confirmado: o painel Ocorrências na Origem (BI) e a solução em Excel/VBA são entregas distintas, e Controles em SharePoint e Automação com Power Automate são projetos independentes, com referências cruzadas. Não há decisão editorial em aberto; as pendências restantes são não bloqueantes e estão em `PROJETOS.md`.
-- **Tecnologias**: só as confirmadas pelo autor. Painéis com captura e sem confirmação ficam sem tecnologia atribuída e o campo é omitido na página; a pendência consta em PROJETOS.md.
-- **Capturas**: autorizadas pelo proprietário como estão (25/10/2026). Usadas como ele as forneceu (desfoque nativo), sem tarjas nem camadas adicionais; só convertidas para WebP e reduzidas nas 4K (`tools/build-project-images.mjs`). Os PNGs originais ficam fora do repositório (`../portfolio_Evan_privado/projetos-originais`) e nunca em `public`; testes e `check-links` verificam por hash.
-- **Nome público**: o projeto financeiro é "Gestão financeira (Tracker finance)", slug `gestao-financeira`. O nome anterior é barrado por `identity-guard.ts` em código, docs, artefatos e currículos. Não há redirecionamento do endereço antigo, para não manter o nome no artefato.
+Este arquivo é o ponto de retomada de uma nova sessão. Leia, nesta ordem: este arquivo, [PUBLICACAO.md](PUBLICACAO.md) e [PROJETOS.md](PROJETOS.md). Nenhuma implementação é necessária até o proprietário definir a próxima frente.
 
 ## Produto
 Portfólio profissional de Evanilson Freitas (Business Intelligence, Inteligência de Negócios e Engenharia de Software), em português do Brasil.
@@ -21,50 +14,69 @@ Portfólio profissional de Evanilson Freitas (Business Intelligence, Inteligênc
 | Vercel | https://portfolio-evanilson.vercel.app/ |
 | Repositório | https://github.com/EvanilsonFreitas/portfolio-evanilson (branch `master`; `gh-pages` só com o artefato) |
 
+## Estado da publicação
+- `master` sincronizada com `origin/master`. Código da V3.3 em `b7c6a3f`; commits da frente: `032cdda`, `9ecd238`, `5e95abd`, `e2b7db3`, `582c851`, `b7c6a3f`, `5d92bf7`.
+- GitHub Pages: `gh-pages` em `24d5e4a` (`chore(pages): publica a V3.3`), build `built`. Baseline V3.2.2: `7a25356`.
+- Vercel: deployment de produção `portfolio-evanilson-ksppfrzjr-evan-b357.vercel.app`, `Ready`, no domínio `portfolio-evanilson.vercel.app`. Projeto `portfolio-evanilson`, scope `evan-b357`, deploy manual `--prebuilt --prod`, sem integração Git. Deployment anterior (V3.2.2): `portfolio-evanilson-c17spjz0l-evan-b357.vercel.app`.
+- Commits documentais posteriores à publicação não geram deploy: o artefato não inclui `docs/`.
+
+## Qualidade (baseline da V3.3)
+178 testes aprovados; typecheck, ESLint, build dos dois destinos e verificação de links (61 páginas, 2.646 referências internas) aprovados; integridade dos assets, currículos e metadados verificada; console sem erros na inspeção em produção. Os testes protegem o catálogo, a separação entre texto público e notas internas, as imagens (inclusive por hash dos PNGs originais) e a identidade.
+
 ## Stack e arquitetura
-Next.js 16 (App Router), React 19, TypeScript, Tailwind v4, exportação estática (`output: "export"`, `trailingSlash`). Sem backend, banco, autenticação ou CMS. MDX para artigos. Gráficos e diagramas em SVG próprio (sem biblioteca). Testes com `node --test` (TypeScript nativo do Node ≥ 22). Build por destino em `tools/build.mjs` (`DEPLOY_TARGET`: `github-pages` com basePath `/portfolio-evanilson`; `vercel` sem basePath).
+Next.js 16 (App Router), React 19, TypeScript, Tailwind v4, exportação estática (`output: "export"`, `trailingSlash`). Sem backend, banco, autenticação ou CMS. MDX para artigos. Gráficos e diagramas em SVG próprio. Testes com `node --test` (TypeScript nativo do Node ≥ 22). Build por destino em `tools/build.mjs` (`DEPLOY_TARGET`: `github-pages` com basePath `/portfolio-evanilson`; `vercel` sem basePath). `AGENTS.md` pede ler `node_modules/next/dist/docs/` antes de escrever código Next.
 
 ## Mapa do repositório
-- `src/content/`: fonte única de conteúdo (site, sobre, carreira, formação, projetos, estudos, diagramas, especialidades). O gerador de currículos usa a mesma fonte.
-- `src/lib/`: lógica pura e testada (navegação, carreira, diagramas, gráficos, demos sintéticas, SEO, paths).
+- `src/content/`: fonte única de conteúdo. Site, sobre, carreira, formação, especialidades, diagramas; projetos (`projects.ts`), estudos (`studies*.ts`) e cases novos (`cases-*.ts`). `catalog.ts` reúne tudo no catálogo; `taxonomy.ts` define o vocabulário controlado; `project-images.ts` é gerado. O gerador de currículos usa a mesma fonte.
+- `src/lib/`: lógica pura e testada (navegação, carreira, catálogo e busca, diagramas, gráficos, demos sintéticas, SEO, paths).
 - `src/components/` e `src/app/`: interface e rotas (`/`, `/projetos`, `/projetos/[slug]`, `/educacao`, `/blog`, `/blog/[slug]`).
 - `content/blog/*.mdx`: artigos.
-- `tools/`: build por destino, verificação de links, pré-visualização, gerador de currículos (`tools/resume`), geração de ícones (`tools/build-brand.mjs`).
-- `public/resume`: currículos gerados (PDF, DOCX, ATS) e insumos não publicados (`Foto_Curriculo.jpg`, `Logo_Animeted.svg`).
-- `public/assets/brand`, `public/favicon.ico`, `public/manifest.webmanifest`: identidade EP.
+- `tools/`: build por destino, `check-links.mjs` (links, catálogo, imagens e privacidade), pré-visualização, currículos (`tools/resume`), ícones (`build-brand.mjs`), imagens dos projetos (`build-project-images.mjs`, `project-images.config.mjs`) e inventário (`inventory.mjs`, gera `docs/PROJETOS.md`).
+- `public/assets/projetos`: versões WebP das dez capturas (e miniaturas). `public/resume`: currículos gerados e insumos não publicados (`Foto_Curriculo.jpg`, `Logo_Animeted.svg`). `public/assets/brand`, `favicon.ico`, `manifest.webmanifest`: identidade EP.
+- Fora do repositório: `C:\Desenvolvimento\portfolio_Evan_privado\projetos-originais` guarda os PNGs originais das capturas. Nunca vão para `public`.
 
 ## Scripts
-`npm run check` (typecheck, lint, build dos dois destinos, links e testes), `build:pages`, `build:vercel`, `check:pages`, `check:vercel`, `preview:pages`, `preview:vercel`, `resume`, `brand`, `test`.
+`npm run check` (typecheck, lint, build dos dois destinos, links e testes), `build:pages`, `build:vercel`, `check:pages`, `check:vercel`, `preview:pages`, `preview:vercel`, `resume`, `brand`, `test`. Auxiliares: `node tools/build-project-images.mjs` e `node tools/inventory.mjs`.
 
 ## Decisões de design
-Identidade editorial monocromática: Instrument Serif, Geist e Geist Mono; tema claro padrão e escuro inspirado no GitHub; sem cores de destaque (exceções deliberadas: o emoji 👋 e o ponto verde do retrato). Menu de cinco itens (Início, Sobre, Atuação, Projetos, Artigos) em linha do tempo com pulso até o próximo item; seções da home mapeadas a itens em `src/lib/navigation.ts`. Emblema do cabeçalho alterna a cada 4 s entre o monograma e o retrato (só CSS, respeita movimento reduzido). Breadcrumbs em páginas internas; títulos no padrão `Página • Evanilson Freitas`.
+Identidade editorial monocromática: Instrument Serif, Geist e Geist Mono; tema claro padrão e escuro inspirado no GitHub; sem cores de destaque (exceções: o emoji 👋 e o ponto verde do retrato). Menu de cinco itens (Início, Sobre, Atuação, Projetos, Artigos) em linha do tempo com pulso até o próximo item; seções da home mapeadas a itens em `src/lib/navigation.ts`. Emblema do cabeçalho alterna a cada 4 s entre o monograma e o retrato (só CSS, respeita movimento reduzido). Breadcrumbs em páginas internas; títulos no padrão `Página • Evanilson Freitas`.
+**Projetos não formam sequência nem timeline.** A linha narrativa vale para a trajetória profissional; o catálogo é de itens independentes, sem numeração, setas, conectores ou "próximo projeto". Não reintroduzir conexões visuais de dependência.
 
 ## Conteúdo
-- Home: Hero (saudação, headline, foto com idade na legenda), Sobre, Evolução (5 marcos), Experiência (empresas e cargos), Formação, Atuação, Especialidades, Projetos e estudos, Artigos, Contato.
+- Home: Hero, Sobre, Evolução (5 marcos), Experiência, Formação, Atuação, Especialidades, Projetos (curadoria de 9 itens, 2 com imagem, mais acesso ao catálogo e atalhos por categoria), Artigos, Contato.
 - Estudos técnicos e artigos separam o que é comprovado, declarado, sintético, conceitual ou planejado (`statusLabels`). Azure é conhecimento arquitetural e a migração para Azure DevOps está planejada; nenhum pipeline existe para o portfólio.
 
+## Catálogo de projetos (V3.3)
+- **Baseline: 42 itens** = 13 preservados (3 projetos e 10 estudos) + 29 cases novos. Formato: 10 completos (3 projetos anteriores + 7 novos), 22 compactos, 10 estudos. Categorias: BI Comercial 7, BI Operacional 13, Excel e Automação 7, SQL / Engenharia de Dados 4, Software / Aplicações 7, Integrações e Processos 4. 8 itens com imagem e 34 sem.
+- **Recursos**: página `/projetos/` com busca (por nome, apelidos, tecnologia, categoria), filtros de categoria, tecnologia e tipo de solução, estado na URL (`?q=`, `categoria`, `tecnologia`, `tipo`); páginas individuais; imagem ampliável em diálogo nativo; "Ver também" por referência cruzada.
+- **Texto público x documentação interna**: incertezas ficam em `docs/PROJETOS.md` e nos campos internos `techNote` e `pending` de cada case; o site não os exibe. A página omite o campo de tecnologias quando não há tecnologia confirmada.
+- **Agrupamentos aprovados (uma solução cada, não separar)**: Consolidado Operacional e Ranking de Filiais (duas apresentações); Gestão de Coletas e Logística Reversa (logística reversa como recorte); Desvio Operacional · Operação GRU (com "Ocorrências Ofensoras" como termo de busca). Não criar projetos duplicados por haver capturas diferentes.
+- **Independentes (preservar separados)**: painel Ocorrências na Origem e a solução em Excel/VBA; Controles Operacionais em SharePoint e Automação de Relatórios com Power Automate; painel de Desvio Operacional da operação GRU e o Relatório de Desvios em Excel; os demais cases individuais.
+- **Tecnologias**: Power BI confirmado para os sete projetos de BI comercial, sem presumir DAX, Power Query ou SQL Server. Os sete projetos em Excel têm VBA e atualização automatizada (nunca "relatório manual"); Python só na Automação de Avarias e Extravios; Access, Power Automate, SharePoint Lists e integrações variam por projeto e só se atribuem com confirmação individual. Painéis com captura e sem confirmação ficam sem tecnologia.
+- **Capturas**: as dez estão autorizadas pelo proprietário como estão e aprovadas em produção, ciente de que há valores em R$, nomes de clientes e logotipos legíveis em parte delas. Não é pendência. Preservar o desfoque original; não adicionar tarjas, caixas, overlays, pixelização ou ocultações. Só conversão para WebP e redução de largura nas 4K. Os testes e o `check-links` barram os PNGs originais por hash. A autorização não se estende a novas imagens nem a novos dados em texto.
+- **Nome público**: o projeto financeiro é "Gestão financeira (Tracker finance)", slug `gestao-financeira`. O nome anterior é barrado por `identity-guard.ts` em código, docs, artefatos e currículos; não há redirecionamento do endereço antigo.
+
 ## Histórico profissional (fonte: `src/content/career.ts`)
-- Tragetta: Business Intelligence (jun/2026 – atual, híbrido), Analista de Pricing (jan/2026 – jun/2026), Analista de Dados (mar/2025 – jan/2026).
+- Tragetta: Business Intelligence (jun/2026 – atual, híbrido; único cargo atual), Analista de Pricing (jan/2026 – jun/2026), Analista de Dados (mar/2025 – jan/2026).
 - Solistica: Assistente Administrativo (out/2021 – mar/2025), Aprendiz (dez/2018 – ago/2020); períodos separados ("Tempo acumulado").
 - Transface Transportes Ltda.: Assistente Administrativo (nov/2021 – ago/2022); sobrepõe-se à Solistica.
 - Durações são calculadas; o total usa a união dos períodos. Evolução (`career`) e vínculos (`employment`) são dados distintos.
+- Datas dos projetos não são inventadas nem derivadas dos cargos.
 
 ## Formação
 Tecnologia em Análise e Desenvolvimento de Sistemas (Uninove; título de Tecnólogo; conclusão 30/06/2024, colação 30/07/2024, conforme o diploma publicado) e MBA em Data Science (USP/ESALQ, concluído).
 
 ## Currículos
-PDF (2 páginas, duas colunas, com foto), DOCX (duas colunas, uma seção por página) e ATS (uma coluna, sem foto). Regenerar com `npm run resume`. Contato: Evanilson.2631@outlook.com, +55 11 96463-9228.
+PDF (2 páginas, duas colunas, com foto), DOCX (duas colunas, uma seção por página) e ATS (uma coluna, sem foto). Regenerar com `npm run resume`; não foram regenerados na V3.3. Contato: Evanilson.2631@outlook.com, +55 11 96463-9228. O projeto de gestão financeira não entra nos currículos.
 
 ## Regras permanentes
-- Sem CI/CD nem GitHub Actions; publicação manual. Sem force push nem reescrita de histórico.
-- Autoria: sem `Co-Authored-By`, trailers ou créditos de ferramentas; identidade Git do proprietário (`Evanilson <101538587+EvanilsonFreitas@users.noreply.github.com>`).
-- Informações incorretas já removidas (empregadores, cargo e curso que não pertencem ao proprietário) não podem voltar: a lista está em `src/content/identity-guard.ts` e é aplicada por testes ao código, aos artefatos e aos currículos. Nunca usar dados de currículos de terceiros. Não inventar empresas, cargos, datas, métricas, códigos do IBGE ou implantações.
-- O projeto Gestão financeira (Tracker finance) fica no site, não no currículo. Dados sintéticos devem estar rotulados.
+- Sem CI/CD nem GitHub Actions; publicação manual, só com autorização expressa do proprietário. Sem force push nem reescrita de histórico.
+- Autoria: sem `Co-Authored-By`, trailers, assinaturas ou créditos de ferramentas, em commits, PRs, código e documentação; identidade Git do proprietário (`Evanilson <101538587+EvanilsonFreitas@users.noreply.github.com>`).
+- Informações incorretas já removidas (empregadores, cargo e curso que não pertencem ao proprietário) não podem voltar: a lista está em `src/content/identity-guard.ts` e é aplicada por testes. Nunca usar dados de currículos de terceiros. Não inventar empresas, cargos, datas, métricas, tecnologias, códigos do IBGE ou implantações. Projetos sem confirmação de tecnologia não recebem ferramenta por parecerem dashboards.
+- Linguagem objetiva, sem jargão promocional e sem títulos de senioridade não comprovados. Dados sintéticos devem estar rotulados.
 - Idade (26) é estática em `site.age`; não há data de nascimento.
 
-## Estado da publicação (V3.3)
-V3.3 publicada em 25/10/2026, aguardando a validação final do proprietário diretamente em produção. `master` sincronizada com `origin/master` (código da V3.3 em `b7c6a3f`). `gh-pages` em `24d5e4a` (`chore(pages): publica a V3.3`), com build `built`. Vercel: deployment de produção `Ready` (`portfolio-evanilson-ksppfrzjr-evan-b357.vercel.app`) em `portfolio-evanilson.vercel.app`, sem integração Git. Os dois ambientes foram validados: 42 itens do catálogo, busca e filtros, imagens com hash idêntico ao local, currículos com hash idêntico, favicon, SEO, links, ausência de insumos e do nome anterior, e console sem erros. O baseline anterior (V3.2.2) foi a `gh-pages` em `7a25356`.
-
 ## Pendências reais
+- 30 pendências **não bloqueantes** do catálogo, em `docs/PROJETOS.md` (detalhamento técnico, fontes de dados, plataformas, arquiteturas específicas e confirmação formal de Power BI no Prazo de Coleta). Nenhuma bloqueia; não atribuir tecnologia sem comprovação para encerrá-las.
 - Nome do MBA: o LinkedIn diz "Executive MBA, Data Analytics"; o site mantém "MBA em Data Science" até haver certificado.
 - A foto do hero (2,4 MB) e o monograma original (270 KB) são publicados sem otimização.
