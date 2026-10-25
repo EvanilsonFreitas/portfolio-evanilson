@@ -14,8 +14,8 @@ export default function Business() {
         </SectionHead>
 
         <div className="grid gap-6 md:grid-cols-2">
-          {businessDomains.map((d) => (
-            <Reveal key={d.title}>
+          {businessDomains.map((d, i) => (
+            <Reveal key={d.title} className={i === businessDomains.length - 1 && businessDomains.length % 2 === 1 ? 'md:col-span-2' : ''}>
               <article className="flex h-full flex-col border border-line bg-paper p-6 sm:p-8">
                 <p className="eyebrow mb-3">
                   <span className="text-accent-ink">{d.number}</span> — {d.title}

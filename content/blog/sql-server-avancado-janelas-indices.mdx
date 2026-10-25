@@ -4,6 +4,7 @@ date: "2026-10-23"
 excerpt: "Consultas analíticas com janelas e CTEs, quando um índice realmente ajuda e como ler um plano de execução antes de sair otimizando."
 tags: ["SQL Server", "T-SQL", "Performance", "Engenharia de Dados"]
 author: "Evanilson Freitas"
+short: "SQL Server"
 ---
 
 # SQL Server avançado: funções de janela, índices e plano de execução
@@ -103,6 +104,23 @@ BEGIN CATCH
     THROW;
 END CATCH;
 ```
+
+## Views, procedures e jobs
+
+Uma **view** oferece uma leitura estável sobre tabelas que podem mudar, útil para quem consome os dados em BI. Uma **stored procedure** reúne uma rotina em uma unidade com transação e tratamento de erro. O **SQL Server Agent** agenda essas rotinas em jobs, com passos, histórico de execução e notificação em caso de falha.
+
+```sql
+CREATE OR ALTER VIEW dbo.vw_proposta_mensal AS
+SELECT
+    DATEFROMPARTS(YEAR(data_emissao), MONTH(data_emissao), 1) AS mes,
+    cliente_id,
+    COUNT(*) AS propostas,
+    SUM(CASE WHEN status = 'Ganha' THEN 1 ELSE 0 END) AS ganhas
+FROM dbo.proposta
+GROUP BY DATEFROMPARTS(YEAR(data_emissao), MONTH(data_emissao), 1), cliente_id;
+```
+
+Para auditoria, a própria rotina registra o que fez: quem executou, quando e quantas linhas alterou. Em segurança, a procedure permite conceder acesso à operação sem dar acesso direto às tabelas.
 
 ## Em resumo
 

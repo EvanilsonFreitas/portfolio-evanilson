@@ -12,6 +12,8 @@ export const incorrectClaims: { id: string; pattern: RegExp }[] = [
   { id: 'confidencial-tragetta', pattern: /Tragetta/i },
   { id: 'confidencial-solistica', pattern: /Solistica/i },
   { id: 'confidencial-zeus', pattern: /\bZeus\b/ },
+  // Contato: o e-mail validado é o Outlook; o endereço anterior não deve reaparecer.
+  { id: 'email-anterior', pattern: /Evanilson.2631@hotmail/i },
   // Títulos formais que o proprietário não declarou.
   { id: 'titulo-dba', pattern: /\bDBA\b/ },
   { id: 'titulo-arquiteto', pattern: /Arquiteto\s+de\s+(Software|Solu[çc][õo]es|Dados)/i },

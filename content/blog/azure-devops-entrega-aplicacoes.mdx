@@ -1,0 +1,71 @@
+---
+title: "Azure e Azure DevOps: onde a aplicação roda e como ela chega lá"
+date: "2026-10-24"
+excerpt: "Duas plataformas que costumam ser confundidas. Uma hospeda a aplicação; a outra organiza e entrega o código. Decisões de arquitetura e de fluxo de entrega no ecossistema Microsoft."
+tags: ["Azure", "Azure DevOps", "CI/CD", "Arquitetura"]
+author: "Evanilson Freitas"
+short: "Azure e Azure DevOps"
+---
+
+# Azure e Azure DevOps: onde a aplicação roda e como ela chega lá
+
+**Microsoft Azure** e **Azure DevOps** têm o mesmo prefixo e responsabilidades diferentes. Misturá-los leva a conclusões erradas, como achar que um sistema versionado no Azure DevOps está hospedado no Azure. Este é um estudo de arquitetura: não afirma que as soluções descritas estejam implantadas em algum projeto meu.
+
+## Duas perguntas diferentes
+
+| Pergunta | Quem responde |
+|----------|---------------|
+| Onde a aplicação executa? | Azure (ou servidores locais, ou outra nuvem) |
+| Como o código é revisado, construído e entregue? | Azure DevOps (ou GitHub, ou outra ferramenta) |
+
+As duas escolhas são independentes. Azure DevOps entrega para o Azure, mas também para servidores locais.
+
+## Onde hospedar
+
+<Flow id="azure-web" caption="Arquitetura conceitual de aplicação web no Azure" />
+
+Cada componente do desenho cumpre uma função: o Application Gateway é a entrada HTTP com roteamento e firewall de aplicação web; o App Service hospeda a aplicação sem exigir que a equipe administre o sistema operacional; o Azure SQL Database entrega o banco gerenciado; o Key Vault guarda segredos fora do código; o Microsoft Entra ID cuida da identidade; o Azure Monitor reúne métricas e logs.
+
+### Decisões que importam
+
+- **Máquina virtual ou App Service.** A VM dá controle do sistema operacional e serve a software com dependências específicas. O App Service reduz a operação para aplicações web comuns.
+- **SQL Server em VM ou Azure SQL Database.** Em VM, a equipe controla a instância, mas assume backup, atualização e disponibilidade. No serviço gerenciado, a plataforma assume essas tarefas, com algumas limitações de recursos.
+- **Load Balancer ou Application Gateway.** O primeiro distribui tráfego na camada de transporte. O segundo entende HTTP e roteia por caminho ou host, com terminação TLS.
+- **Windows Authentication ou Microsoft Entra ID.** A primeira atende a aplicações internas em domínio local. O Entra ID atende a usuários e aplicações na nuvem. Os dois podem coexistir em um modelo híbrido.
+
+Esses pares não são equivalentes entre si. Cada um atua em uma camada diferente, e a escolha depende do requisito.
+
+## Como o código chega lá
+
+<Flow id="devops-pipeline" caption="Fluxo de entrega com ambientes separados (conceitual)" />
+
+O Azure DevOps reúne quatro serviços: Repos (Git com pull requests e políticas de branch), Boards (itens de trabalho), Pipelines (build, testes e entrega) e Artifacts (pacotes). O fluxo é sempre o mesmo, independentemente da ferramenta: uma alteração passa por revisão, é construída e testada, vira um artefato único e é promovida entre ambientes, com aprovação antes de produção.
+
+```yaml
+trigger:
+  branches:
+    include: [main]
+
+pool:
+  vmImage: windows-latest
+
+steps:
+  - script: python -m pytest
+    displayName: Executar testes
+  - publish: $(Build.SourcesDirectory)
+    artifact: aplicacao
+```
+
+O exemplo é didático, para ilustrar a estrutura de um pipeline de build. Este portfólio não possui pipeline: é publicado manualmente, por decisão.
+
+### CI, entrega contínua e implantação contínua
+
+**Integração contínua** é construir e testar cada alteração. **Entrega contínua** é manter cada versão aprovada pronta para publicar, com a decisão de publicar ainda manual. **Implantação contínua** publica automaticamente. Entrega contínua não significa deploy automático.
+
+## Segurança em cenários
+
+Menor privilégio significa que a aplicação lê só o que precisa. Identidade gerenciada permite acessar o cofre de segredos sem armazenar senha. O banco fica sem exposição pública, acessível pela rede da aplicação. Logs e auditoria registram quem mudou o quê.
+
+## Em resumo
+
+Primeiro decida onde a aplicação roda e quem opera cada parte. Depois defina como o código chega lá, com revisão, testes e aprovação. Nenhuma das duas decisões obriga a outra.

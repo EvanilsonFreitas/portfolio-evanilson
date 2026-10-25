@@ -56,6 +56,12 @@ test('os currículos (texto extraído de PDF e DOCX) não afirmam atribuições 
   assert.deepEqual(findIncorrectClaims(pdf.text), []);
   assert.equal(pdf.pages, 1);
   // Marivan Finance permanece no site, mas não entra nos currículos; a foto e o título novo, sim.
+  // Contato confirmado: telefone e e-mail Outlook em todos os formatos.
+  for (const t of [pdf.text, await docxText(join(dir, 'Evanilson_Freitas_Curriculo.docx')), await docxText(join(dir, 'Evanilson_Freitas_Curriculo_ATS.docx'))]) {
+    assert.ok(t.includes('Evanilson.2631@outlook.com'), 'e-mail ausente');
+    assert.ok(/\+55\s?11\s?96463-9228/.test(t), 'telefone ausente');
+    assert.ok(!t.includes('TypeScript, React e SVG'), 'descrição do demonstrador no currículo');
+  }
   for (const t of [pdf.text, await docxText(join(dir, 'Evanilson_Freitas_Curriculo.docx')), await docxText(join(dir, 'Evanilson_Freitas_Curriculo_ATS.docx'))]) {
     assert.ok(!t.includes('Marivan'), 'currículo cita Marivan Finance');
     assert.ok(t.includes('Business Intelligence'), 'título do currículo ausente');

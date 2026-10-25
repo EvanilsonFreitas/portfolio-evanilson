@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Icon from '../../../components/ui/Icon';
+import Breadcrumbs from '../../../components/layout/Breadcrumbs';
 import ProjectVisual from '../../../components/projects/ProjectVisual';
 import LayerDiagram from '../../../components/projects/LayerDiagram';
 import LegacyRedirect from '../../../components/projects/LegacyRedirect';
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return pageMetadata({ title: 'Projeto atualizado', description: 'Este endereço foi substituído por um projeto atual.', path: `/projetos/${slug}/`, noindex: true });
   }
   return pageMetadata({
-    title: `${project.title} — case study`,
+    title: project.title,
     description: project.summary,
     path: `/projetos/${slug}/`,
   });
@@ -56,11 +57,7 @@ function StudyView({ study }: { study: NonNullable<ReturnType<typeof getStudy>> 
   const next = entryOf(study.next);
   return (
     <article className="wrap pb-24 pt-12">
-      <nav aria-label="Navegação estrutural" className="mb-10 text-sm text-muted">
-        <Link href="/projetos/" className="inline-flex items-center gap-2 hover:text-ink">
-          <Icon name="arrow" className="rotate-180" /> Projetos
-        </Link>
-      </nav>
+      <Breadcrumbs items={[{ label: 'Projetos', href: '/projetos/' }, { label: study.crumb }]} />
 
       <header className="mb-14">
         <p className="eyebrow mb-5"><span className="text-accent-ink">{study.domain}</span> — {study.natureLabel}</p>
@@ -114,11 +111,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
   return (
     <article className="wrap pb-24 pt-12">
-      <nav aria-label="Navegação estrutural" className="mb-10 text-sm text-muted">
-        <Link href="/projetos/" className="inline-flex items-center gap-2 hover:text-ink">
-          <Icon name="arrow" className="rotate-180" /> Projetos
-        </Link>
-      </nav>
+      <Breadcrumbs items={[{ label: 'Projetos', href: '/projetos/' }, { label: project.crumb }]} />
 
       <header className="mb-14">
         <p className="eyebrow mb-5">

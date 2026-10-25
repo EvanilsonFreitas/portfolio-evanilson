@@ -4,6 +4,7 @@ date: "2026-10-24"
 excerpt: "O que separa uma integração que funciona na demonstração de uma que resiste ao uso real: contrato claro, autenticação, tentativas repetidas e idempotência."
 tags: ["API REST", "Integração", "FastAPI", "Arquitetura"]
 author: "Evanilson Freitas"
+short: "API REST"
 ---
 
 # API REST e integração entre sistemas: contrato, falha e repetição
@@ -62,6 +63,12 @@ def registrar(db, chave: str, payload: dict) -> dict:
 ## Webhooks em vez de consultas repetidas
 
 Quando um sistema precisa saber que algo mudou em outro, perguntar a cada minuto desperdiça chamadas e atrasa a notícia. Um webhook inverte o fluxo: o sistema de origem avisa. Em troca, o receptor precisa validar a assinatura da mensagem e aceitar o mesmo evento mais de uma vez.
+
+## Códigos de status, paginação e limites
+
+Os códigos HTTP comunicam o resultado sem ambiguidade: `200` e `201` para sucesso, `400` e `422` para entrada inválida, `401` para falta de autenticação, `403` para falta de permissão, `404` para recurso inexistente, `409` para conflito e `429` quando o limite de uso foi excedido. O corpo do erro deve ter um formato estável, com um código legível por máquina e uma mensagem para pessoas.
+
+Listas grandes precisam de **paginação**. A paginação por cursor, que usa o último item recebido como ponto de partida, é mais estável que a por deslocamento quando os dados mudam durante a leitura. Já o **rate limiting** protege o servidor de excesso de chamadas e deve informar ao cliente quando tentar de novo, com o cabeçalho `Retry-After`.
 
 ## Rastreabilidade
 

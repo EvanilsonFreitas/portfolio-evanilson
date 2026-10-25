@@ -22,22 +22,28 @@ export default function About() {
       <section id="trajetoria" className="section">
         <div className="wrap">
           <SectionHead number="02" label="Trajetória" title="Como a atuação foi se ampliando.">
-            <p>Marcos de evolução, sem cargos ou datas além das comprovadas.</p>
+            <p>Da operação ao produto, em cinco etapas.</p>
           </SectionHead>
-          <ol className="grid gap-px border border-line bg-line md:grid-cols-2 lg:grid-cols-5">
+          <ol className="border-t border-rule">
             {trajectory.map((m, i) => (
-              <li key={m.title} className="flex flex-col bg-paper p-5">
-                <p className="eyebrow mb-3">
+              <li key={m.title} className="grid gap-4 border-b border-rule py-8 md:grid-cols-12 md:gap-10">
+                <p className="eyebrow md:col-span-3">
                   <span className="text-accent-ink">{String(i + 1).padStart(2, '0')}</span> — {m.label}
                 </p>
-                <h3 className="display text-2xl">{m.title}</h3>
-                <p className="mt-3 flex-1 text-[0.9375rem] text-muted">{m.text}</p>
-                {m.when && <p className="mono mt-4 text-[0.8125rem] text-muted">{m.when}</p>}
-                {m.href && (
-                  <Link href={m.href} className="link-arrow mt-4 text-sm">
-                    Ver mais <Icon name="arrow" />
-                  </Link>
-                )}
+                <div className="md:col-span-9">
+                  <h3 className="display text-[clamp(1.75rem,3vw,2.5rem)]">{m.title}</h3>
+                  <p className="mt-4 max-w-2xl text-muted">{m.text}</p>
+                  <ul className="mt-5 flex flex-wrap gap-2">
+                    {m.topics.map((t) => (
+                      <li key={t} className="border border-line px-2.5 py-1 text-[0.8125rem]">{t}</li>
+                    ))}
+                  </ul>
+                  {m.href && (
+                    <Link href={m.href} className="link-arrow mt-5 text-sm">
+                      {m.linkLabel ?? 'Ver mais'} <Icon name="arrow" />
+                    </Link>
+                  )}
+                </div>
               </li>
             ))}
           </ol>

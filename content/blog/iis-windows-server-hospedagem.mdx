@@ -1,0 +1,81 @@
+---
+title: "IIS e Windows Server: como hospedar uma aplicação corporativa sem improviso"
+date: "2026-10-24"
+excerpt: "Sites, application pools, bindings, proxy reverso e autenticação: o papel de cada peça na hospedagem de APIs e aplicações web em ambiente Windows."
+tags: ["IIS", "Windows Server", "Infraestrutura", "Segurança"]
+author: "Evanilson Freitas"
+short: "IIS e Windows Server"
+---
+
+# IIS e Windows Server: como hospedar uma aplicação corporativa sem improviso
+
+Publicar uma aplicação em um servidor Windows parece simples até a primeira falha de permissão, o primeiro certificado vencido ou a primeira requisição que chega à aplicação sem a identidade esperada. Este texto explica o papel de cada peça do IIS e como elas se combinam. É um texto técnico geral: não descreve a topologia de nenhum ambiente real.
+
+## O que o IIS faz de fato
+
+O Internet Information Services recebe a conexão do cliente, resolve qual site deve atendê-la, aplica autenticação e política de acesso e entrega a resposta, seja servindo um arquivo, seja executando ou encaminhando para uma aplicação. Seus conceitos centrais são poucos:
+
+- **Site e binding.** O binding liga um nome de host, uma porta e um certificado a um site. Dois sites podem dividir a mesma porta se os nomes de host forem diferentes.
+- **Application Pool.** É o processo (worker) que executa a aplicação. Cada pool tem identidade própria, o que permite dar a cada aplicação apenas as permissões de que precisa e isolar uma falha do restante.
+- **Autenticação.** Anônima, Windows ou outra, definida por site ou aplicação.
+- **Logs.** O primeiro lugar a olhar quando algo falha.
+
+## Hospedar ASP.NET Core
+
+Em ASP.NET Core, o IIS não executa o código diretamente. O **ASP.NET Core Module** recebe a requisição e a entrega ao **Kestrel**, o servidor web da aplicação. O módulo vem com o Hosting Bundle, que também instala o runtime.
+
+Há dois modelos. No modo **em processo**, a aplicação roda dentro do processo do pool, com menos saltos e melhor desempenho. No modo **fora de processo**, o IIS atua como proxy para um processo Kestrel separado, o que dá mais isolamento. A configuração fica no `web.config` gerado pela publicação:
+
+```xml
+<configuration>
+  <system.webServer>
+    <handlers>
+      <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModuleV2" resourceType="Unspecified" />
+    </handlers>
+    <aspNetCore processPath="dotnet" arguments=".\Aplicacao.dll" hostingModel="inprocess" />
+  </system.webServer>
+</configuration>
+```
+
+Não existe uma configuração única correta: a escolha depende de isolamento, desempenho e do modo de operação da equipe.
+
+## IIS na frente de uma API Python
+
+Uma API FastAPI roda em um servidor ASGI, como o Uvicorn, que não é um módulo do IIS. O desenho comum é manter o Uvicorn escutando apenas em `127.0.0.1`, como serviço do Windows, e usar o IIS como camada de entrada com **URL Rewrite** e **Application Request Routing**:
+
+<Flow id="iis-proxy" caption="Hospedagem com proxy reverso (arquitetura ilustrativa)" />
+
+As responsabilidades ficam claras. O IIS termina o TLS e é o único ponto exposto. A aplicação escuta somente localmente e confia nos cabeçalhos que o IIS define. O banco aceita conexões apenas da aplicação.
+
+```xml
+<rule name="api" stopProcessing="true">
+  <match url="^api/(.*)" />
+  <action type="Rewrite" url="http://127.0.0.1:8000/api/{R:1}" />
+</rule>
+```
+
+Um cuidado importante: se a aplicação confia em cabeçalhos de identidade ou de IP repassados pelo proxy, o proxy precisa sobrescrever esses cabeçalhos, e a aplicação não pode ser alcançada por outro caminho.
+
+## Autenticação: Windows, Kerberos e tokens
+
+Com **Windows Authentication**, o IIS autentica o usuário do domínio e repassa a identidade. O protocolo usado é negociado (Negotiate): o **Kerberos**, baseado em tíquetes do Active Directory, é o preferido, e o **NTLM** fica como compatibilidade. A aplicação recebe o usuário e decide as permissões por grupos ou perfis. Autenticar e autorizar são etapas diferentes.
+
+**JWT** e **OAuth** resolvem outro problema: levar identidade entre serviços ou a clientes fora do domínio. Em uma aplicação interna, só com usuários de domínio, a autenticação integrada costuma bastar. Tokens passam a ser necessários quando há integração entre sistemas independentes ou clientes externos.
+
+## Máquinas virtuais e segurança
+
+Uma VM de aplicação separada da VM do banco permite regras de rede distintas e isola falhas. Algumas práticas valem em qualquer ambiente:
+
+1. expor apenas a entrada HTTPS; o banco só deve aceitar conexões da origem da aplicação;
+2. usar contas de serviço dedicadas, sem privilégios de administrador;
+3. manter permissões de pasta mínimas para a identidade do pool;
+4. guardar logs, testar backup e restauração;
+5. manter certificados com renovação planejada.
+
+## Diagnóstico
+
+Quando algo falha, a ordem de investigação ajuda: o log do IIS mostra o código de status; o log de eventos do Windows revela falhas de inicialização do pool; o log da aplicação mostra o que ela fez com a requisição. Um 502 costuma indicar que o IIS não alcançou a aplicação, enquanto um 500.30 em ASP.NET Core indica falha na inicialização.
+
+## Em resumo
+
+Hospedar bem é decidir quem fala com quem, com qual identidade e com quais permissões. O IIS concentra TLS e política de acesso; a aplicação concentra as regras; o banco aceita só a aplicação. Cada camada sabe pouco sobre as outras, e é isso que mantém o ambiente fácil de operar e difícil de comprometer.

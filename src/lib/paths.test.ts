@@ -20,6 +20,12 @@ test('os currículos configurados existem em /public', () => {
   }
 });
 
+test('contato confirmado: e-mail Outlook, telefone e WhatsApp coerentes', () => {
+  assert.equal(site.email, 'Evanilson.2631@outlook.com');
+  assert.equal(site.phone, '+55 11 96463-9228');
+  assert.equal(site.whatsapp, `https://wa.me/${site.phone.replace(/\D/g, '')}`);
+});
+
 test('o GitHub configurado é o oficial', () => {
   assert.equal(site.github, 'https://github.com/EvanilsonFreitas');
 });

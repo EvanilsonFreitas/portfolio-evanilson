@@ -1,4 +1,4 @@
-type IconName = 'arrow' | 'arrow-down' | 'download' | 'github' | 'linkedin' | 'mail' | 'sun' | 'moon' | 'menu' | 'close' | 'chevron';
+type IconName = 'arrow' | 'arrow-down' | 'download' | 'github' | 'linkedin' | 'mail' | 'sun' | 'moon' | 'menu' | 'close' | 'chevron' | 'whatsapp' | 'phone';
 
 const paths: Record<IconName, React.ReactNode> = {
   arrow: <path d="M5 12h14M13 6l6 6-6 6" />,
@@ -30,6 +30,13 @@ const paths: Record<IconName, React.ReactNode> = {
   menu: <path d="M4 7h16M4 12h16M4 17h16" />,
   close: <path d="M6 6l12 12M18 6 6 18" />,
   chevron: <path d="m6 9 6 6 6-6" />,
+  whatsapp: (
+    <>
+      <path d="M3 21l1.65-4.9A8.5 8.5 0 1 1 8 19.4L3 21z" />
+      <path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8c-1-.4-2-1.4-2.4-2.4l.8-1-1-2-1.9.6z" />
+    </>
+  ),
+  phone: <path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z" />,
 };
 
 export default function Icon({ name, size = 16, className }: { name: IconName; size?: number; className?: string }) {

@@ -39,6 +39,14 @@ export default function Hero() {
               Versão em Word
             </a>
             <a
+              href={site.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 underline underline-offset-4 hover:text-ink"
+            >
+              <Icon name="whatsapp" size={16} /> WhatsApp
+            </a>
+            <a
               href={site.github}
               target="_blank"
               rel="noopener noreferrer"

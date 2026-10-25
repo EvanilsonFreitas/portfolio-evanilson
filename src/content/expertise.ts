@@ -11,6 +11,7 @@ export const expertise: ExpertisePillar[] = [
       { label: 'BI operacional com dados simulados', kind: 'demonstration', href: '/projetos/bi-operacional-logistica/' },
       { label: 'Inteligência comercial e CRM', kind: 'study', href: '/projetos/inteligencia-comercial-crm/' },
       { label: 'Artigos sobre DAX e Star Schema', kind: 'article', href: '/blog/' },
+      { label: 'Análise preditiva operacional', kind: 'study', href: '/projetos/analise-preditiva-operacional/' },
     ],
   },
   {
@@ -63,6 +64,18 @@ export const expertise: ExpertisePillar[] = [
     evidence: [
       { label: 'MBA em Data Science', kind: 'academic', href: '/educacao/' },
       { label: 'IA aplicada: RAG e agentes', kind: 'study', href: '/projetos/ia-rag-agentes/' },
+    ],
+  },
+  {
+    number: '07',
+    title: 'Infraestrutura, cloud e entrega',
+    solves: 'Hospedar, proteger e publicar aplicações com controle: proxy reverso, identidade, ambientes separados e fluxo de entrega revisável.',
+    tech: ['IIS', 'Windows Server', 'Proxy reverso', 'Git e pull requests', 'CI/CD (conceitos)', 'Azure e Azure DevOps (estudo)'],
+    evidence: [
+      { label: 'IIS e Windows Server', kind: 'study', href: '/projetos/iis-windows-server/' },
+      { label: 'Microsoft Azure', kind: 'study', href: '/projetos/arquitetura-azure/' },
+      { label: 'Azure DevOps e CI/CD', kind: 'study', href: '/projetos/azure-devops-cicd/' },
+      { label: 'Arquitetura e implantação do EasyPrice', kind: 'applied', href: '/projetos/simulador-preco-rodoviario/' },
     ],
   },
 ];

@@ -140,19 +140,19 @@ export default function Header() {
           <span className="display text-2xl">Evanilson Freitas</span>
         </Link>
 
-        <nav aria-label="Principal" className="hidden xl:block">
+        <nav aria-label="Principal" className="hidden lg:block">
           <ol className="flex items-start">
             {NAV.map((item, i) => {
               const current = activeId === item.id;
               const reached = i <= activeIndex;
               const last = i === NAV.length - 1;
               return (
-                <li key={item.id} className={`flex flex-col ${last ? '' : 'pr-4'}`}>
+                <li key={item.id} className={`flex flex-col ${last ? '' : 'pr-10 xl:pr-16'}`}>
                   <Link
                     href={item.href}
                     onClick={(e) => go(e, item.href)}
                     aria-current={current ? (pathname === '/' ? 'location' : 'page') : undefined}
-                    className={`text-sm leading-5 transition-colors ${current ? 'font-semibold text-ink' : 'text-muted hover:text-ink'}`}
+                    className={`text-[0.9375rem] leading-5 transition-colors ${current ? 'font-semibold text-ink' : 'text-muted hover:text-ink'}`}
                   >
                     {item.label}
                   </Link>
@@ -173,7 +173,7 @@ export default function Header() {
           <ThemeToggle />
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-[3px] border border-line xl:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-[3px] border border-line lg:hidden"
             aria-expanded={open}
             aria-controls="menu-mobile"
             aria-label={open ? 'Fechar menu' : 'Abrir menu'}
@@ -186,7 +186,7 @@ export default function Header() {
 
     </header>
     {open && (
-      <div id="menu-mobile" className="fixed inset-x-0 top-16 bottom-0 z-30 overflow-y-auto bg-paper xl:hidden">
+      <div id="menu-mobile" className="fixed inset-x-0 top-16 bottom-0 z-30 overflow-y-auto bg-paper lg:hidden">
         <nav aria-label="Principal (móvel)" className="wrap flex flex-col py-6">
           <ol>
             {NAV.map((item, i) => {

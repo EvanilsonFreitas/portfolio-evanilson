@@ -10,6 +10,8 @@ export interface BlogPostMeta {
   date: string;
   readTime: string;
   excerpt: string;
+  /** Rótulo curto para trilhas de navegação. */
+  crumb: string;
   category: string;
   tags: string[];
   author: string;
@@ -40,6 +42,7 @@ function parse(slug: string): BlogPost {
     date: data.date ?? '',
     readTime: readingTime(body),
     excerpt: data.excerpt ?? '',
+    crumb: data.short ?? data.title,
     category: tags[0] ?? 'Artigo',
     tags,
     author: data.author ?? 'Evanilson Freitas',

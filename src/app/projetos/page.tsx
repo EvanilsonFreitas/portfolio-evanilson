@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import Breadcrumbs from '../../components/layout/Breadcrumbs';
 import Icon from '../../components/ui/Icon';
 import { projects } from '../../content/projects';
 import { studies } from '../../content/studies';
@@ -15,12 +16,13 @@ export const metadata: Metadata = pageMetadata({
 
 const DOMAIN_ORDER: DomainName[] = [
   'Precificação e Rentabilidade',
-  'Inteligência Comercial e CRM',
+  'Business Intelligence Comercial',
   'Business Intelligence Operacional',
   'Engenharia de Dados',
   'Engenharia de Software',
   'Integrações e Automações',
   'Inteligência Artificial Aplicada',
+  'Cloud e Infraestrutura',
 ];
 
 interface Item {
@@ -41,7 +43,8 @@ export default function ProjetosPage() {
   const groups = DOMAIN_ORDER.map((domain) => ({ domain, list: items.filter((i) => i.domain === domain) })).filter((g) => g.list.length > 0);
 
   return (
-    <div className="wrap pb-24 pt-16">
+    <div className="wrap pb-24 pt-12">
+      <Breadcrumbs items={[{ label: 'Projetos' }]} />
       <p className="eyebrow mb-4">Projetos e estudos</p>
       <h1 className="display mb-6 text-[clamp(2.75rem,7vw,5.5rem)]">Trabalho por área.</h1>
       <p className="mb-14 max-w-xl text-lg text-muted">

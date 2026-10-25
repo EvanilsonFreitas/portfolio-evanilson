@@ -24,7 +24,7 @@ export function pageMetadata(opts: {
     alternates: { canonical: url },
     robots: opts.noindex ? { index: false, follow: true } : undefined,
     openGraph: {
-      title: `${opts.title} — ${site.name}`,
+      title: `${opts.title} • ${site.name}`,
       description: opts.description,
       url,
       siteName: site.name,
@@ -33,7 +33,7 @@ export function pageMetadata(opts: {
       publishedTime: opts.publishedTime,
       images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${site.name} — ${site.areas}` }],
     },
-    twitter: { card: 'summary_large_image', title: `${opts.title} — ${site.name}`, description: opts.description, images: [OG_IMAGE] },
+    twitter: { card: 'summary_large_image', title: `${opts.title} • ${site.name}`, description: opts.description, images: [OG_IMAGE] },
   };
 }
 

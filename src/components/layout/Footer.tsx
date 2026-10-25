@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Icon from '../ui/Icon';
-import { site } from '../../content/site';
+import { resumeFiles, site } from '../../content/site';
+import { withBasePath } from '../../lib/paths';
 
 export default function Footer() {
   return (
@@ -14,6 +15,15 @@ export default function Footer() {
           <Link href="/projetos/" className="hover:underline">Projetos</Link>
           <Link href="/educacao/" className="hover:underline">Formação</Link>
           <Link href="/blog/" className="hover:underline">Artigos</Link>
+          <a href={`mailto:${site.email}`} className="inline-flex items-center gap-1.5 hover:underline">
+            <Icon name="mail" size={15} /> E-mail
+          </a>
+          <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:underline">
+            <Icon name="whatsapp" size={15} /> WhatsApp
+          </a>
+          <a href={withBasePath(resumeFiles.pdf.path)} download className="inline-flex items-center gap-1.5 hover:underline">
+            <Icon name="download" size={15} /> Currículo
+          </a>
           <a href={site.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:underline">
             <Icon name="github" size={15} /> GitHub
           </a>

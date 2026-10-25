@@ -3,6 +3,7 @@ import type { Project } from './types.ts';
 export const projects: Project[] = [
   {
     slug: 'simulador-preco-rodoviario',
+    crumb: 'EasyPrice',
     domain: 'Precificação e Rentabilidade',
     number: '01',
     title: 'EasyPrice',
@@ -92,6 +93,27 @@ export const projects: Project[] = [
         ],
       },
       {
+        title: 'Arquitetura e implantação',
+        blocks: [
+          { kind: 'p', text: 'A plataforma separa interface, API e banco. A documentação do projeto registra a entrada por IIS como proxy reverso HTTPS, na mesma origem do frontend, com a API escutando apenas em endereço local. O ambiente foi definido com a área de infraestrutura como uma VM dedicada, com SQL Server e ambientes de homologação e produção separados.' },
+          { kind: 'diagram', id: 'infra-app', caption: 'Arquitetura de referência da plataforma. Cache e identidade aparecem tracejados por serem componentes opcionais ou externos.' },
+          {
+            kind: 'table',
+            title: 'Implantado, planejado e futuro',
+            head: ['Tema', 'Situação', 'Observação'],
+            rows: [
+              ['IIS como proxy reverso HTTPS', 'Documentado como decisão de arquitetura', 'Aplicação local atrás do IIS, na mesma origem.'],
+              ['VM dedicada com SQL Server, homologação e produção', 'Ambiente definido com a infraestrutura', 'Dimensões, nomes e endereços não são publicados.'],
+              ['Autenticação', 'Login com credenciais corporativas validadas por um serviço de identidade', 'Windows Authentication foi avaliada e substituída. Sessão segura, bloqueio progressivo e autorização por perfil no servidor.'],
+              ['Cache com Redis', 'Adaptador opcional no código', 'A aplicação funciona sem Redis. Não afirmo implantação.'],
+              ['Migração do repositório para Azure DevOps', 'Planejada', 'Prevista após a migração do banco; não concluída.'],
+              ['Balanceamento de carga e Azure Cloud', 'Não aplicável', 'Não fazem parte do que está documentado.'],
+            ],
+          },
+          { kind: 'p', text: 'Com o SQL Server como fonte de verdade, uma simulação nasce no banco, recebe um identificador único e acompanha todo o fluxo: parâmetros, resultado, usuário, data e versão. Isso dá histórico e permite recuperar qualquer simulação.' },
+        ],
+      },
+      {
         title: 'O que não é publicado',
         blocks: [
           { kind: 'p', text: 'Fórmulas, tabelas de custo, parâmetros comerciais, endpoints, nomes de servidores e dados de clientes são confidenciais. As demonstrações do portfólio usam modelos didáticos com dados sintéticos.' },
@@ -128,24 +150,25 @@ export const projects: Project[] = [
   },
   {
     slug: 'marivan-finance',
+    crumb: 'Marivan Finance',
     domain: 'Engenharia de Software',
     number: '02',
     title: 'Marivan Finance',
-    category: 'Aplicação web · planejamento financeiro',
+    category: 'Aplicação web · gestão financeira',
     summary:
-      'Aplicação web para controle e planejamento financeiro: despesas, categorias, rateios, comprovantes e indicadores.',
+      'Aplicação web de gestão financeira pessoal e familiar, construída como monólito modular: receitas, despesas recorrentes e parceladas, categorias, rateios e indicadores.',
     nature: 'personal',
     natureLabel: 'Projeto autoral',
-    role: 'Desenvolvimento da aplicação.',
-    status: 'Estado de implantação não divulgado.',
-    access: 'Repositório privado. Não há link público e nenhum dado financeiro é exibido.',
-    stack: ['ASP.NET Core 10', 'C#', 'Entity Framework Core', 'SQL Server', 'Windows Authentication', 'IIS', 'GitHub'],
+    role: 'Concepção e desenvolvimento da aplicação, incluindo a migração de arquitetura.',
+    status: 'Segundo a documentação do próprio projeto, em produção. Endereço e dados não são divulgados.',
+    access: 'Repositório privado. Nenhum dado financeiro é exibido.',
+    stack: ['Python', 'FastAPI', 'SQLAlchemy', 'PostgreSQL', 'React', 'TypeScript', 'Vite', 'Vercel'],
     context: {
       problem:
-        'Planejar o orçamento e acompanhar despesas exige categorizar gastos, dividir custos e guardar comprovantes. Essas tarefas costumam ficar espalhadas entre planilhas e arquivos.',
-      environment: 'Aplicação web hospedada em IIS, com identidade integrada ao Windows.',
+        'Planejar o orçamento e acompanhar despesas exige categorizar gastos, dividir custos e lidar com lançamentos recorrentes e parcelados. Essas tarefas costumam ficar espalhadas entre planilhas.',
+      environment: 'Aplicação web de uso pessoal e familiar, com custo operacional mínimo como requisito.',
       objective:
-        'Reunir planejamento, despesas, categorias, rateios, comprovantes e indicadores em uma única aplicação.',
+        'Reunir receitas, despesas, categorias, rateios e indicadores em uma única aplicação, com regras financeiras explícitas e testadas.',
       constraints: [
         'O repositório é privado.',
         'Nenhuma informação financeira real é apresentada neste portfólio.',
@@ -153,59 +176,75 @@ export const projects: Project[] = [
     },
     strategy: {
       approach:
-        'Aplicação em camadas sobre o ecossistema .NET: interface web, regras de negócio em C# e persistência com Entity Framework Core sobre SQL Server.',
+        'Monólito modular: um único serviço, dividido em módulos com dependências verificadas por ferramenta, antes de qualquer separação em serviços.',
       decisions: [
         {
-          decision: 'Arquitetura em camadas',
-          reason: 'Mantém regras de planejamento e rateio fora da interface e do acesso a dados.',
+          decision: 'Monólito modular',
+          reason: 'Mantém o custo e a operação baixos e preserva fronteiras claras entre módulos.',
         },
         {
-          decision: 'Entity Framework Core sobre SQL Server',
-          reason: 'Modelo de dados versionável e consultas tipadas.',
+          decision: 'Migração de arquitetura registrada em decisão',
+          reason: 'A fundação inicial em .NET, SQL Server e IIS foi substituída por Python, PostgreSQL e hospedagem serverless, com o histórico preservado no Git.',
         },
         {
-          decision: 'Windows Authentication',
-          reason: 'A identidade vem do ambiente, sem gerenciar senhas na aplicação.',
+          decision: 'Autenticação com segundo fator opcional',
+          reason: 'Reduz o risco de acesso indevido a dados financeiros.',
         },
         {
-          decision: 'Versionamento e CI/CD no GitHub',
-          reason: 'Histórico rastreável e entrega repetível da aplicação.',
+          decision: 'Integração contínua no repositório',
+          reason: 'Lint, tipos e testes rodam a cada alteração.',
         },
       ],
     },
     architecture: {
-      caption: 'Visão em camadas da aplicação.',
+      caption: 'Visão em camadas da arquitetura atual.',
       layers: [
-        { title: 'Hospedagem', nodes: [{ name: 'IIS', note: 'Servidor da aplicação' }] },
-        { title: 'Aplicação', nodes: [{ name: 'ASP.NET Core 10 · C#', note: 'Interface web e regras de negócio' }] },
-        { title: 'Persistência', nodes: [{ name: 'Entity Framework Core', note: 'Mapeamento e consultas' }, { name: 'SQL Server', note: 'Armazenamento' }] },
+        { title: 'Interface', nodes: [{ name: 'React · TypeScript · Vite', note: 'Aplicação de página única' }] },
+        { title: 'API', nodes: [{ name: 'Python · FastAPI', note: 'Regras de negócio e contratos' }] },
+        { title: 'Persistência', nodes: [{ name: 'SQLAlchemy · Alembic', note: 'Mapeamento e migrations' }, { name: 'PostgreSQL', note: 'Armazenamento' }] },
       ],
-      crosscutting: 'Windows Authentication em toda a aplicação',
+      crosscutting: 'Autenticação, papéis e auditoria em toda a aplicação',
     },
     implementation: {
-      intro: 'O escopo funcional organiza a vida financeira em cinco áreas, todas sobre o mesmo modelo de dados.',
+      intro: 'O escopo funcional organiza a vida financeira em áreas, todas sobre o mesmo modelo de dados.',
       flowTitle: 'Áreas funcionais',
       flow: [
-        'Planejamento financeiro',
-        'Organização de despesas',
+        'Receitas e despesas',
+        'Lançamentos recorrentes e parcelados',
         'Categorias',
         'Rateios',
-        'Comprovantes',
+        'Rotina diária de geração de lançamentos',
         'Indicadores financeiros',
       ],
     },
+    deepDive: [
+      {
+        title: 'Evolução da arquitetura',
+        blocks: [
+          { kind: 'p', text: 'A primeira fundação do projeto usou ASP.NET Core, SQL Server e hospedagem em IIS, com publicação por runner próprio. Essa etapa gerou prática concreta de hospedagem Windows. Depois, uma decisão de arquitetura registrada trocou a stack por Python, PostgreSQL e hospedagem serverless, pelo menor custo operacional. A versão anterior continua acessível por tag e branch de histórico.' },
+          {
+            kind: 'status',
+            items: [
+              { label: 'Arquitetura atual: Python, FastAPI, PostgreSQL, React e Vercel', status: 'codigo', note: 'Repositório privado.' },
+              { label: 'Fundação inicial em .NET, SQL Server e IIS', status: 'declarado', note: 'Etapa histórica, superada por decisão registrada.' },
+              { label: 'Pipeline de integração contínua do projeto', status: 'codigo', note: 'Aplica-se a este projeto; o portfólio não possui pipeline.' },
+            ],
+          },
+        ],
+      },
+    ],
     challenges: [
       {
         title: 'Rateios exatos',
         text: 'Dividir um valor entre categorias ou pessoas exige uma regra explícita para arredondamento, de modo que as partes somem sempre o total.',
       },
       {
-        title: 'Comprovantes',
-        text: 'Arquivos associados a registros financeiros pedem controle de acesso e de tamanho.',
+        title: 'Migração sem perder a rastreabilidade',
+        text: 'Trocar a base tecnológica exigiu preservar o histórico e registrar a decisão, para que o motivo continue legível.',
       },
     ],
     outcomes: [
-      'Demonstra desenvolvimento de ponta a ponta no ecossistema .NET, do banco à interface.',
+      'Demonstra desenvolvimento de ponta a ponta, da regra financeira à interface, e a capacidade de rever uma arquitetura.',
       'Não há métricas de uso divulgadas.',
     ],
     learning: 'Regras financeiras pedem precisão: tipos decimais, testes de arredondamento e totais conferíveis.',
@@ -213,17 +252,18 @@ export const projects: Project[] = [
   },
   {
     slug: 'bi-operacional-logistica',
+    crumb: 'BI Operacional',
     domain: 'Business Intelligence Operacional',
     number: '03',
     title: 'BI operacional em logística',
     category: 'Business Intelligence · análise operacional',
     summary:
-      'Estudo de BI aplicado a operações logísticas, com dados simulados: volume, entregas, ocorrências e SLA por período e região.',
+      'Inteligência operacional de coleta, entrega, SLA, extravio e avaria. Os painéis corporativos não são públicos; esta página apresenta o método, os módulos e uma demonstração com dados simulados.',
     nature: 'demonstration',
-    natureLabel: 'Demonstração',
-    role: 'Concepção do modelo analítico e implementação da demonstração.',
-    status: 'Demonstração com dados simulados. Não é um projeto corporativo.',
-    access: 'Os números não pertencem a nenhuma empresa e não representam resultados reais.',
+    natureLabel: 'Atuação em BI e demonstração',
+    role: 'Modelagem e construção de soluções de BI operacional; implementação da demonstração desta página.',
+    status: 'Atuação profissional declarada. A demonstração desta página usa dados simulados.',
+    access: 'Painéis, dados e números reais não são públicos. Os números da demonstração são sintéticos.',
     stack: ['Modelagem dimensional', 'SQL', 'ETL', 'Power BI', 'DAX'],
     stackNote:
       'Ferramentas descritas como abordagem. A demonstração interativa desta página é implementada em TypeScript, React e SVG.',
@@ -282,6 +322,37 @@ export const projects: Project[] = [
       },
     },
     deepDive: [
+      {
+        title: 'Módulos da solução operacional',
+        blocks: [
+          { kind: 'p', text: 'A inteligência operacional foi organizada em módulos que partilham um único modelo de dados. Cada módulo responde a uma pergunta de gestão e termina em uma decisão, e a visão executiva reúne os desvios mais relevantes.' },
+          { kind: 'diagram', id: 'modulos-bi-operacional', caption: 'Módulos de BI operacional sobre um modelo dimensional comum (conceitual)' },
+          {
+            kind: 'table',
+            head: ['Módulo', 'Indicadores', 'Decisão apoiada'],
+            rows: [
+              ['Produtividade', 'Coletas e entregas por equipe, filial e período; capacidade versus realizado.', 'Dimensionar equipe e redistribuir carga.'],
+              ['Coleta e entrega', 'Volume, cumprimento de janela, tentativas.', 'Corrigir rotas e janelas problemáticas.'],
+              ['SLA e prazo', 'Entregas no prazo ÷ entregas, por região e período.', 'Priorizar regiões com desvio.'],
+              ['Extravio e avaria', 'Ocorrências por mil entregas, por filial e tipo.', 'Atacar a causa: embalagem, manuseio ou rota.'],
+              ['Ocorrências e qualidade', 'Motivos, reincidência e tempo de resolução.', 'Priorizar planos de ação.'],
+              ['Análise por filial e metas', 'Realizado ÷ meta, ranking e tendência.', 'Cobrar e apoiar com dados comparáveis.'],
+              ['Visão executiva', 'Poucos indicadores, com desvio destacado e comparação com o período anterior.', 'Decidir onde olhar primeiro.'],
+            ],
+          },
+          {
+            kind: 'table',
+            title: 'Evidências técnicas',
+            head: ['Tema', 'Prática'],
+            rows: [
+              ['SQL e Power Query', 'Preparação e tratamento dos dados na origem, com tipos e chaves consistentes.'],
+              ['Modelagem e modelo semântico', 'Fatos aditivos, dimensões de tempo, filial e região, e medidas centralizadas em DAX.'],
+              ['Visualização e UX/UI', 'Uma pergunta por página, hierarquia visual e storytelling com dados, em vez de excesso de indicadores.'],
+              ['Governança e desempenho', 'Definição única de cada indicador, controle de acesso e modelos enxutos para consulta rápida.'],
+            ],
+          },
+        ],
+      },
       {
         title: 'Como cada painel é apresentado',
         blocks: [

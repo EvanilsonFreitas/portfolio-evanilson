@@ -11,7 +11,14 @@ export type DiagramId =
   | 'pipeline-bi'
   | 'pricing-engine'
   | 'cidades-pipeline'
-  | 'infra-app';
+  | 'infra-app'
+  | 'iis-proxy'
+  | 'azure-web'
+  | 'devops-pipeline'
+  | 'modulos-bi-operacional'
+  | 'fluxo-comercial'
+  | 'power-automate-aprovacao'
+  | 'analise-preditiva';
 
 /** Todos os diagramas são conceituais; o estado real de cada tecnologia está nas tabelas de cada página. */
 export const diagrams: Record<DiagramId, Diagram> = {
@@ -243,6 +250,151 @@ export const diagrams: Record<DiagramId, Diagram> = {
       { from: 'api', to: 'sql' },
       { from: 'api', to: 'auth', dashed: true, fromOffset: 30 },
       { from: 'api', to: 'cache', dashed: true, fromOffset: -30 },
+    ],
+  },
+  'iis-proxy': {
+    id: 'iis-proxy',
+    title: 'IIS como proxy reverso: cliente, HTTPS, IIS, frontend, API local, SQL Server e autenticação',
+    nodes: [
+      { id: 'cli', label: 'Cliente', sub: 'navegador · HTTPS', col: 0, row: 0 },
+      { id: 'iis', label: 'IIS', sub: 'TLS · proxy reverso', col: 1, row: 0, tone: 'strong' },
+      { id: 'api', label: 'Aplicação\nbackend', sub: 'HTTP local', col: 2, row: 0 },
+      { id: 'sql', label: 'SQL Server', col: 3, row: 0 },
+      { id: 'front', label: 'Frontend', sub: 'arquivos ou processo', col: 1, row: 1 },
+      { id: 'auth', label: 'Identidade', sub: 'serviço corporativo', col: 2, row: 1, tone: 'dashed' },
+    ],
+    edges: [
+      { from: 'cli', to: 'iis' },
+      { from: 'iis', to: 'api' },
+      { from: 'api', to: 'sql' },
+      { from: 'iis', to: 'front', fromSide: 'bottom', toSide: 'top' },
+      { from: 'api', to: 'auth', dashed: true, fromSide: 'bottom', toSide: 'top' },
+    ],
+  },
+  'azure-web': {
+    id: 'azure-web',
+    title: 'Arquitetura conceitual no Azure: usuário, entrada HTTPS, aplicação, banco gerenciado, segredos, identidade e monitoramento',
+    nodes: [
+      { id: 'user', label: 'Usuário', sub: 'HTTPS', col: 0, row: 0 },
+      { id: 'entry', label: 'Entrada HTTPS', sub: 'Application Gateway', col: 1, row: 0 },
+      { id: 'app', label: 'Aplicação', sub: 'App Service', col: 2, row: 0, tone: 'strong' },
+      { id: 'sql', label: 'Banco gerenciado', sub: 'Azure SQL Database', col: 3, row: 0 },
+      { id: 'id', label: 'Identidade', sub: 'Microsoft Entra ID', col: 1, row: 1, tone: 'dashed' },
+      { id: 'kv', label: 'Segredos', sub: 'Key Vault', col: 2, row: 1, tone: 'dashed' },
+      { id: 'mon', label: 'Monitoramento', sub: 'Azure Monitor', col: 3, row: 1, tone: 'dashed' },
+    ],
+    edges: [
+      { from: 'user', to: 'entry' },
+      { from: 'entry', to: 'app' },
+      { from: 'app', to: 'sql' },
+      { from: 'entry', to: 'id', dashed: true, fromSide: 'bottom', toSide: 'top' },
+      { from: 'app', to: 'kv', dashed: true, fromSide: 'bottom', toSide: 'top' },
+      { from: 'sql', to: 'mon', dashed: true, fromSide: 'bottom', toSide: 'top' },
+    ],
+  },
+  'devops-pipeline': {
+    id: 'devops-pipeline',
+    title: 'Fluxo de entrega: código, pull request, revisão, build, testes, artefato, homologação, aprovação, produção e validação',
+    nodes: [
+      { id: 'code', label: 'Código', sub: 'branch', col: 0, row: 0 },
+      { id: 'pr', label: 'Pull request', sub: 'revisão aprovada', col: 1, row: 0 },
+      { id: 'build', label: 'Build', sub: 'integração contínua', col: 2, row: 0 },
+      { id: 'test', label: 'Testes', col: 3, row: 0 },
+      { id: 'art', label: 'Artefato', sub: 'versão única', col: 4, row: 0 },
+      { id: 'hml', label: 'Deploy\nhomologação', col: 4, row: 1 },
+      { id: 'apr', label: 'Aprovação', sub: 'manual', col: 3, row: 1, tone: 'dashed' },
+      { id: 'prod', label: 'Deploy\nprodução', col: 2, row: 1, tone: 'strong' },
+      { id: 'val', label: 'Validação', sub: 'e rollback', col: 1, row: 1 },
+    ],
+    edges: [
+      { from: 'code', to: 'pr' },
+      { from: 'pr', to: 'build' },
+      { from: 'build', to: 'test' },
+      { from: 'test', to: 'art' },
+      { from: 'art', to: 'hml' },
+      { from: 'hml', to: 'apr' },
+      { from: 'apr', to: 'prod' },
+      { from: 'prod', to: 'val' },
+    ],
+  },
+  'modulos-bi-operacional': {
+    id: 'modulos-bi-operacional',
+    title: 'BI operacional: fontes, modelo dimensional, módulos de produtividade, qualidade e prazo, e visão executiva',
+    nodes: [
+      { id: 'src', label: 'Fontes', sub: 'coletas · entregas', col: 0, row: 1 },
+      { id: 'model', label: 'Modelo\ndimensional', sub: 'fatos e dimensões', col: 1, row: 1, tone: 'strong' },
+      { id: 'prod', label: 'Produtividade', sub: 'coleta e entrega', col: 2, row: 0 },
+      { id: 'qual', label: 'Qualidade', sub: 'extravio · avaria', col: 2, row: 1 },
+      { id: 'sla', label: 'Prazo', sub: 'SLA · ocorrências', col: 2, row: 2 },
+      { id: 'exec', label: 'Visão\nexecutiva', sub: 'metas e desvios', col: 3, row: 1 },
+    ],
+    edges: [
+      { from: 'src', to: 'model' },
+      { from: 'model', to: 'prod' },
+      { from: 'model', to: 'qual' },
+      { from: 'model', to: 'sla' },
+      { from: 'prod', to: 'exec' },
+      { from: 'qual', to: 'exec' },
+      { from: 'sla', to: 'exec' },
+    ],
+  },
+  'fluxo-comercial': {
+    id: 'fluxo-comercial',
+    title: 'Fluxo comercial: oportunidade, proposta, conversão, receita, margem e rentabilidade',
+    nodes: [
+      { id: 'op', label: 'Oportunidade', sub: 'CRM', col: 0, row: 0 },
+      { id: 'pp', label: 'Proposta', sub: 'preço e condições', col: 1, row: 0 },
+      { id: 'cv', label: 'Conversão', sub: 'hit rate', col: 2, row: 0 },
+      { id: 'rc', label: 'Receita', sub: 'frete fechado', col: 2, row: 1 },
+      { id: 'mg', label: 'Margem', sub: 'preço − custo', col: 1, row: 1 },
+      { id: 'rt', label: 'Rentabilidade', sub: 'por cliente e rota', col: 0, row: 1, tone: 'strong' },
+    ],
+    edges: [
+      { from: 'op', to: 'pp' },
+      { from: 'pp', to: 'cv' },
+      { from: 'cv', to: 'rc' },
+      { from: 'rc', to: 'mg' },
+      { from: 'mg', to: 'rt' },
+    ],
+  },
+  'power-automate-aprovacao': {
+    id: 'power-automate-aprovacao',
+    title: 'Fluxo de aprovação automatizado: solicitação, gatilho, regra, aprovação, atualização, notificação e registro',
+    nodes: [
+      { id: 'sol', label: 'Solicitação', sub: 'formulário ou CRM', col: 0, row: 0 },
+      { id: 'trg', label: 'Gatilho', sub: 'fluxo automatizado', col: 1, row: 0 },
+      { id: 'cond', label: 'Regra', sub: 'condição de alçada', col: 2, row: 0 },
+      { id: 'apv', label: 'Aprovação', sub: 'responsável', col: 3, row: 0, tone: 'strong' },
+      { id: 'upd', label: 'Atualizar\nregistro', sub: 'sistema de destino', col: 3, row: 1 },
+      { id: 'mail', label: 'Notificação', sub: 'e-mail', col: 2, row: 1 },
+      { id: 'log', label: 'Registro e\nerros', sub: 'rastreabilidade', col: 1, row: 1, tone: 'dashed' },
+    ],
+    edges: [
+      { from: 'sol', to: 'trg' },
+      { from: 'trg', to: 'cond' },
+      { from: 'cond', to: 'apv' },
+      { from: 'apv', to: 'upd' },
+      { from: 'upd', to: 'mail' },
+      { from: 'mail', to: 'log' },
+    ],
+  },
+  'analise-preditiva': {
+    id: 'analise-preditiva',
+    title: 'Ciclo de análise preditiva: dados históricos, variáveis, treino e validação, avaliação, pontuação de risco e decisão',
+    nodes: [
+      { id: 'hist', label: 'Dados\nhistóricos', sub: 'ocorrências', col: 0, row: 0 },
+      { id: 'feat', label: 'Variáveis', sub: 'feature engineering', col: 1, row: 0 },
+      { id: 'fit', label: 'Treino', sub: 'e validação temporal', col: 2, row: 0 },
+      { id: 'eval', label: 'Avaliação', sub: 'métricas e limites', col: 2, row: 1 },
+      { id: 'score', label: 'Pontuação\nde risco', col: 1, row: 1 },
+      { id: 'dec', label: 'Decisão', sub: 'revisão humana', col: 0, row: 1, tone: 'strong' },
+    ],
+    edges: [
+      { from: 'hist', to: 'feat' },
+      { from: 'feat', to: 'fit' },
+      { from: 'fit', to: 'eval' },
+      { from: 'eval', to: 'score' },
+      { from: 'score', to: 'dec' },
     ],
   },
 };

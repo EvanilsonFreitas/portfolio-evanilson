@@ -15,7 +15,7 @@ export default function Expertise() {
 
         <div className="mb-14 grid items-center gap-8 lg:grid-cols-12">
           <p className="max-w-xl text-lg text-muted lg:col-span-6">
-            O caminho comum às seis áreas: fontes diversas viram um modelo, o modelo sustenta uma API e uma interface, e o resultado é um indicador para decisão.
+            O caminho comum às áreas: fontes diversas viram um modelo, o modelo sustenta uma API e uma interface, e o resultado é um indicador para decisão.
           </p>
           <div className="lg:col-span-6">
             <HeroFigure />

@@ -7,8 +7,21 @@ test('todos os itens têm id único e destino iniciado em "/"', () => {
   for (const n of NAV) assert.ok(n.href.startsWith('/'), n.href);
 });
 
-test('a ordem do menu segue a ordem das seções da home', () => {
+test('o menu tem exatamente cinco itens, na ordem combinada', () => {
+  assert.deepEqual(NAV.map((n) => n.label), ['Início', 'Sobre', 'Atuação', 'Projetos', 'Artigos']);
+});
+
+test('as seções da home seguem a ordem da página e pertencem a um único item', () => {
   assert.deepEqual(HOME_SECTIONS, ['inicio', 'sobre', 'trajetoria', 'formacao', 'atuacao', 'especialidades', 'projetos', 'artigos', 'contato']);
+  assert.equal(new Set(HOME_SECTIONS).size, HOME_SECTIONS.length);
+});
+
+test('agrupamento: cada seção ativa o item correto', () => {
+  const esperado: Record<string, string> = {
+    inicio: 'inicio', sobre: 'sobre', trajetoria: 'sobre', formacao: 'sobre',
+    atuacao: 'atuacao', especialidades: 'atuacao', projetos: 'projetos', artigos: 'artigos', contato: 'artigos',
+  };
+  for (const [sec, item] of Object.entries(esperado)) assert.equal(activeNavId('/', sec), item, sec);
 });
 
 test('hashOf extrai o fragmento', () => {
@@ -18,12 +31,12 @@ test('hashOf extrai o fragmento', () => {
 
 test('na home, "Início" volta ao topo e as âncoras rolam sem recarregar', () => {
   assert.deepEqual(clickAction('/', '/'), { kind: 'top' });
-  assert.deepEqual(clickAction('/', '/#especialidades'), { kind: 'section', id: 'especialidades' });
+  assert.deepEqual(clickAction('/', '/#atuacao'), { kind: 'section', id: 'atuacao' });
 });
 
 test('fora da home, o roteador navega (inclusive "Início" a partir de Artigos)', () => {
   assert.deepEqual(clickAction('/blog/', '/'), { kind: 'navigate' });
-  assert.deepEqual(clickAction('/blog/x/', '/#especialidades'), { kind: 'navigate' });
+  assert.deepEqual(clickAction('/blog/x/', '/#atuacao'), { kind: 'navigate' });
   assert.deepEqual(clickAction('/projetos/', '/#contato'), { kind: 'navigate' });
 });
 
@@ -39,11 +52,11 @@ test('a seção atual é a última acima da linha de leitura', () => {
 });
 
 test('item ativo na home vem da seção; fora dela, do caminho', () => {
-  assert.equal(activeNavId('/', 'especialidades'), 'especialidades');
+  assert.equal(activeNavId('/', 'especialidades'), 'atuacao');
   assert.equal(activeNavId('/', 'inicio'), 'inicio');
   assert.equal(activeNavId('/projetos/', 'inicio'), 'projetos');
   assert.equal(activeNavId('/projetos/simulador-preco-rodoviario/', ''), 'projetos');
-  assert.equal(activeNavId('/educacao/', ''), 'formacao');
+  assert.equal(activeNavId('/educacao/', ''), 'sobre');
   assert.equal(activeNavId('/blog/algum-post/', ''), 'artigos');
   assert.equal(activeNavId('/nao-existe/', ''), undefined);
 });

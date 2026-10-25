@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Breadcrumbs from '../../components/layout/Breadcrumbs';
 import Icon from '../../components/ui/Icon';
 import { education } from '../../content/education';
 import { diplomaFile } from '../../content/site';
@@ -15,7 +16,8 @@ export const metadata: Metadata = pageMetadata({
 export default function EducacaoPage() {
   const [mba, ...others] = education;
   return (
-    <div className="wrap pb-24 pt-16">
+    <div className="wrap pb-24 pt-12">
+      <Breadcrumbs items={[{ label: 'Formação' }]} />
       <p className="eyebrow mb-4">Formação</p>
       <h1 className="display mb-16 max-w-4xl text-[clamp(2.75rem,7vw,5.5rem)]">
         Base acadêmica em <em>dados e software.</em>

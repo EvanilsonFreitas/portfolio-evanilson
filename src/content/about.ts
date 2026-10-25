@@ -1,9 +1,9 @@
 /** Textos de apresentação. Redação em primeira pessoa, apenas com escopo declarado ou comprovado. */
 export const about = {
   paragraphs: [
-    'Meu ponto de partida é o problema de negócio. Antes de modelar dados ou escrever código, procuro entender como a operação funciona: quem decide, com que informação e o que muda quando um número muda.',
+    'Comecei na operação logística, entre controles em Excel e indicadores de produtividade e qualidade. Dali veio meu ponto de partida: o problema de negócio. Antes de modelar dados ou escrever código, procuro entender como o processo funciona, quem decide, com que informação e o que muda quando um número muda.',
     'Uso dados para enxergar a operação com precisão. Defino cada indicador com fórmula e granularidade explícitas, modelo o dado de forma dimensional e construo análises de BI comerciais e operacionais.',
-    'Quando a necessidade vai além do relatório, transformo requisitos em sistemas e automações: APIs, regras de negócio, integrações entre sistemas e aplicações web. O EasyPrice, motor de precificação em cujo desenvolvimento atuo, é o exemplo mais completo.',
+    'Quando a necessidade vai além do relatório, transformo requisitos em sistemas e automações: APIs, regras de negócio, integrações entre sistemas e aplicações web, sempre pensando em como serão hospedadas e operadas. O EasyPrice, motor de precificação em cujo desenvolvimento atuo, é o exemplo mais completo.',
     'O que une essas frentes é a decisão. O trabalho só termina quando alguém consegue agir melhor com o que foi entregue.',
   ],
 };
@@ -12,44 +12,52 @@ export interface Milestone {
   label: string;
   title: string;
   text: string;
-  /** Apenas quando há data comprovada. */
-  when?: string;
+  /** Temas da etapa. */
+  topics: string[];
   href?: string;
+  linkLabel?: string;
 }
 
-/** Marcos de evolução. Sem cargos e sem cronologia inventada: só há datas onde existem registros. */
+/**
+ * Evolução profissional, em etapas. Sem datas, empregadores ou cargos: o proprietário descreve
+ * a sequência, e o portfólio não acrescenta o que não foi confirmado.
+ */
 export const trajectory: Milestone[] = [
   {
-    label: 'Fundação',
-    title: 'Sistemas de informação',
-    text: 'Graduação em Análise e Desenvolvimento de Sistemas, base de programação, banco de dados e engenharia de software.',
-    when: 'Concluída em 2024',
-    href: '/educacao/',
+    label: 'Operação e Excel',
+    title: 'Onde tudo começou: a operação logística',
+    text: 'O ponto de partida foi a rotina da operação: controles em Excel, acompanhamento de coletas e entregas, e os indicadores que mostravam se o dia tinha ido bem. Dali vieram o hábito de medir produtividade, qualidade e ocorrências, e o primeiro contato com análise de risco e de tendência. Foi nessa fase que o pensamento analítico nasceu, ao lado de quem executa o processo.',
+    topics: ['Controles em Excel', 'Produtividade', 'Coletas e entregas', 'Extravio e avaria', 'Qualidade operacional'],
   },
   {
-    label: 'Dados',
-    title: 'Indicadores, análises e BI',
-    text: 'Construção de análises e soluções de Business Intelligence com modelagem dimensional, Power Query e DAX, voltadas à gestão comercial e operacional.',
+    label: 'Gestão e diretoria',
+    title: 'Do controle da operação à leitura gerencial',
+    text: 'Com a responsabilidade crescendo, os números deixaram de servir só ao dia a dia e passaram a sustentar conversas com gestão e diretoria. O trabalho passou a ser apontar desvios, propor planos de melhoria, antecipar riscos e apresentar resultados de forma que apoiasse uma decisão.',
+    topics: ['Indicadores gerenciais e executivos', 'Análise de desvios', 'Planos de melhoria', 'Análise de risco', 'Apresentação de resultados'],
+  },
+  {
+    label: 'Business Intelligence',
+    title: 'Estruturar o dado para durar',
+    text: 'Planilhas chegaram ao limite. A etapa seguinte foi organizar o dado: consultas em SQL, tratamento no Power Query, modelagem dimensional e medidas em DAX, publicados em workspaces com definições únicas. Aqui entraram também o cuidado com a experiência de quem lê o painel e com a governança dos indicadores.',
+    topics: ['Power BI', 'SQL', 'Power Query', 'DAX', 'Modelagem dimensional', 'Modelo semântico', 'UX/UI e visualização de dados'],
     href: '/projetos/bi-operacional-logistica/',
+    linkLabel: 'BI operacional',
   },
   {
-    label: 'Integração',
-    title: 'Automação e integração de sistemas',
-    text: 'Automação de processos e integração entre sistemas por APIs, com atenção a validação, rastreabilidade e tratamento de erros.',
-    href: '/projetos/integracoes-automacoes/',
+    label: 'Inteligência comercial e integrações',
+    title: 'Do indicador ao processo comercial',
+    text: 'O olhar de dados chegou à área comercial: oportunidades, propostas, conversão, preço e rentabilidade. Para isso foi preciso entender CRM e as ligações com ERP e TMS, e automatizar o que dependia de repetição manual, como aprovações, solicitações e notificações.',
+    topics: ['CRM e Salesforce', 'Funil, hit rate e tracker', 'Rentabilidade e price', 'Power Automate', 'Integrações', 'SQL Server'],
+    href: '/projetos/inteligencia-comercial-crm/',
+    linkLabel: 'BI comercial',
   },
   {
-    label: 'Produto',
-    title: 'Aplicações e motor de precificação',
-    text: 'Desenvolvimento do EasyPrice (Python, FastAPI, Next.js, SQL Server) e de outras aplicações, da regra de negócio à interface.',
-    when: 'EasyPrice: histórico de código desde maio de 2026',
+    label: 'Produtos e engenharia',
+    title: 'Construir a solução, e não só o relatório',
+    text: 'Quando o problema pedia mais do que um painel, a resposta passou a ser software. O EasyPrice reúne regras de negócio, API, interface e banco em uma plataforma de precificação, com decisões de arquitetura, autenticação e hospedagem em ambiente Windows.',
+    topics: ['EasyPrice', 'Python e FastAPI', 'Next.js, React e TypeScript', 'SQL Server', 'Arquitetura', 'IIS e Windows Server'],
     href: '/projetos/simulador-preco-rodoviario/',
-  },
-  {
-    label: 'Ciência de dados',
-    title: 'MBA em Data Science',
-    text: 'Pós-graduação lato sensu pela USP/ESALQ, concluída, que reforça a base quantitativa dos projetos.',
-    href: '/educacao/',
+    linkLabel: 'EasyPrice',
   },
 ];
 
@@ -100,5 +108,14 @@ export const businessDomains: BusinessDomain[] = [
     topics: ['CRM, ERP e TMS', 'APIs e contratos', 'Identificadores de integração', 'Consistência e auditoria', 'Automação de processos'],
     href: '/projetos/integracoes-automacoes/',
     linkLabel: 'Integrações e automações',
+  },
+  {
+    number: 'E',
+    title: 'Infraestrutura e entrega',
+    question: 'Como a aplicação chega ao ar, com segurança e com controle de versão?',
+    text: 'Uma boa solução precisa ser publicada, protegida e observada. Isso envolve hospedagem, identidade, rede, ambientes separados e um caminho de entrega que permita revisar e voltar atrás.',
+    topics: ['IIS e proxy reverso', 'Windows Server e VMs', 'Autenticação e permissões', 'Azure e Azure DevOps (estudo)', 'CI/CD'],
+    href: '/projetos/iis-windows-server/',
+    linkLabel: 'IIS e Windows Server',
   },
 ];

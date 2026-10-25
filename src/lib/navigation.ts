@@ -10,26 +10,23 @@ export interface NavItem {
   label: string;
   /** Destino absoluto no site, sem basePath. Âncoras da home usam `/#id`. */
   href: string;
-  /** Seção da home que representa o item (ausente em itens que são apenas páginas). */
-  section?: string;
+  /** Seções da home que este item representa (contíguas, na ordem da página). */
+  sections: string[];
   /** Prefixos de caminho que também marcam o item como ativo. */
   paths?: string[];
 }
 
+/** Cinco itens. Cada seção da home pertence a exatamente um item. */
 export const NAV: NavItem[] = [
-  { id: 'inicio', label: 'Início', href: '/', section: 'inicio' },
-  { id: 'sobre', label: 'Sobre', href: '/#sobre', section: 'sobre' },
-  { id: 'trajetoria', label: 'Trajetória', href: '/#trajetoria', section: 'trajetoria' },
-  { id: 'formacao', label: 'Formação', href: '/#formacao', section: 'formacao', paths: ['/educacao'] },
-  { id: 'atuacao', label: 'Atuação', href: '/#atuacao', section: 'atuacao' },
-  { id: 'especialidades', label: 'Especialidades', href: '/#especialidades', section: 'especialidades' },
-  { id: 'projetos', label: 'Projetos', href: '/#projetos', section: 'projetos', paths: ['/projetos'] },
-  { id: 'artigos', label: 'Artigos', href: '/#artigos', section: 'artigos', paths: ['/blog'] },
-  { id: 'contato', label: 'Contato', href: '/#contato', section: 'contato' },
+  { id: 'inicio', label: 'Início', href: '/', sections: ['inicio'] },
+  { id: 'sobre', label: 'Sobre', href: '/#sobre', sections: ['sobre', 'trajetoria', 'formacao'], paths: ['/educacao'] },
+  { id: 'atuacao', label: 'Atuação', href: '/#atuacao', sections: ['atuacao', 'especialidades'] },
+  { id: 'projetos', label: 'Projetos', href: '/#projetos', sections: ['projetos'], paths: ['/projetos'] },
+  { id: 'artigos', label: 'Artigos', href: '/#artigos', sections: ['artigos', 'contato'], paths: ['/blog'] },
 ];
 
 /** Ordem das seções da home (de cima para baixo). */
-export const HOME_SECTIONS = NAV.map((n) => n.section!).filter(Boolean);
+export const HOME_SECTIONS = NAV.flatMap((n) => n.sections);
 
 export type ClickAction =
   | { kind: 'top' }
@@ -69,7 +66,7 @@ export function currentSection(tops: { id: string; top: number }[], line: number
 
 /** Id do item de menu ativo para o caminho e a seção atuais. */
 export function activeNavId(pathname: string, section: string): string | undefined {
-  if (isHome(pathname)) return NAV.find((n) => n.section === section)?.id;
+  if (isHome(pathname)) return NAV.find((n) => n.sections.includes(section))?.id;
   const normalized = pathname.replace(/\/$/, '');
   return NAV.find((n) => n.paths?.some((p) => normalized === p || normalized.startsWith(`${p}/`)))?.id;
 }

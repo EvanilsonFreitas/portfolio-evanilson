@@ -45,6 +45,8 @@ export type ProjectNature = 'corporate' | 'personal' | 'demonstration';
 
 export interface Project {
   slug: string;
+  /** Rótulo curto para trilhas de navegação. */
+  crumb: string;
   domain: DomainName;
   /** Aprofundamento técnico em blocos, exibido entre Implementação e Demonstração. */
   deepDive?: Section[];
@@ -89,7 +91,9 @@ export type DomainName =
   | 'Engenharia de Dados'
   | 'Engenharia de Software'
   | 'Integrações e Automações'
-  | 'Inteligência Artificial Aplicada';
+  | 'Inteligência Artificial Aplicada'
+  | 'Business Intelligence Comercial'
+  | 'Cloud e Infraestrutura';
 
 export type Block =
   | { kind: 'p'; text: string }
@@ -107,6 +111,7 @@ export interface Section {
 
 export interface Study {
   slug: string;
+  crumb: string;
   title: string;
   domain: DomainName;
   summary: string;

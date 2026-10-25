@@ -13,14 +13,14 @@ const description =
 
 export const metadata: Metadata = {
   metadataBase: new URL(`${siteUrl}/`),
-  title: { default: `${site.name} — Business Intelligence, Inteligência de Negócios e Software`, template: `%s — ${site.name}` },
+  title: { default: `${site.name} • Portfólio`, template: `%s • ${site.name}` },
   description,
   authors: [{ name: site.fullName, url: site.github }],
   creator: site.fullName,
   keywords: ['Business Intelligence', 'Inteligência de Negócios', 'Engenharia de Software', 'Data Science', 'SQL Server', 'Integração de sistemas', 'Python', 'TypeScript'],
   alternates: { canonical: `${siteUrl}/` },
   openGraph: {
-    title: `${site.name} — Business Intelligence, Inteligência de Negócios e Software`,
+    title: `${site.name} • Portfólio`,
     description,
     url: `${siteUrl}/`,
     siteName: site.name,
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: `${site.name} — ${site.areas}` }],
   },
-  twitter: { card: 'summary_large_image', title: site.name, description, images: [OG_IMAGE] },
+  twitter: { card: 'summary_large_image', title: `${site.name} • Portfólio`, description, images: [OG_IMAGE] },
 };
 
 export const viewport: Viewport = {

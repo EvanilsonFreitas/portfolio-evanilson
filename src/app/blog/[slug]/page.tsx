@@ -5,7 +5,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypePrettyCode from 'rehype-pretty-code';
-import Icon from '../../../components/ui/Icon';
+import Breadcrumbs from '../../../components/layout/Breadcrumbs';
 import Flow from '../../../components/diagrams/Flow';
 import { formatDate, getAllSlugs, getPostBySlug, getRelatedPosts } from '../../../lib/blog';
 import { absoluteUrl, jsonLd, pageMetadata } from '../../../lib/seo';
@@ -60,11 +60,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   return (
     <article className="wrap pb-24 pt-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(article) }} />
-      <nav aria-label="Navegação estrutural" className="mb-10 text-sm text-muted">
-        <Link href="/blog/" className="inline-flex items-center gap-2 hover:text-ink">
-          <Icon name="arrow" className="rotate-180" /> Artigos
-        </Link>
-      </nav>
+      <Breadcrumbs items={[{ label: 'Artigos', href: '/blog/' }, { label: post.crumb }]} />
 
       <header className="mb-12 max-w-4xl">
         <p className="eyebrow mb-5">

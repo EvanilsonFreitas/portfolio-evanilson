@@ -1,0 +1,67 @@
+---
+title: "Análise preditiva em operações logísticas: do desvio ao risco"
+date: "2026-10-24"
+excerpt: "O que a estatística resolve sozinha, quando o aprendizado de máquina agrega valor e quais cuidados evitam um modelo que parece bom e não funciona."
+tags: ["Análise Preditiva", "Machine Learning", "Estatística", "Operações"]
+author: "Evanilson Freitas"
+short: "Análise preditiva"
+---
+
+# Análise preditiva em operações logísticas: do desvio ao risco
+
+Extravio, avaria e atraso são eventos relativamente raros e caros. Antecipá-los vale a pena, mas "prever" é uma palavra que esconde níveis bem diferentes de trabalho. Este texto separa o que é estatística, o que é aprendizado de máquina e o que é cuidado de validação. É um estudo conceitual: os exemplos são sintéticos e não apresento nenhum modelo treinado nem métrica de acurácia.
+
+## Primeiro, o descritivo
+
+Antes de qualquer modelo, é preciso saber o que aconteceu, com definição única: taxa de avarias por mil entregas, por filial e por período, tratando meses sem dados como ausência, não como zero. A maior parte do valor de um painel operacional vem daqui.
+
+## Estatística para apontar desvios
+
+Uma média móvel ou um limite de controle já indicam quando um valor sai do padrão. Isso é estatística, não aprendizado de máquina:
+
+```python
+import statistics
+
+
+def desvios(serie: list[float], janela: int = 8, limite: float = 3.0) -> list[int]:
+    achados = []
+    for i in range(janela, len(serie)):
+        base = serie[i - janela : i]
+        media = statistics.fmean(base)
+        dp = statistics.pstdev(base)
+        if dp > 0 and abs(serie[i] - media) / dp > limite:
+            achados.append(i)
+    return achados
+```
+
+O resultado é uma lista de pontos para investigar. Ele não explica a causa nem prevê o próximo valor.
+
+## Quando um modelo preditivo faz sentido
+
+<Flow id="analise-preditiva" caption="Ciclo de um modelo preditivo supervisionado (conceitual)" />
+
+Se a pergunta é "qual a probabilidade de uma carga ser extraviada antes do embarque?", o problema é de **classificação**. Se é "quantas coletas teremos na semana?", é de **regressão**. Em ambos, o trabalho está menos no algoritmo do que nos dados e na validação.
+
+### Variáveis
+
+Só entram informações disponíveis **antes** do evento: rota, tipo de carga, filial, histórico recente do cliente. Usar um dado que só se conhece depois, como o motivo de uma ocorrência, produz um modelo que parece excelente e não funciona na prática. Esse erro se chama vazamento de dados.
+
+### Validação
+
+Dados de operação têm tempo. A divisão entre treino e teste deve respeitar a ordem cronológica: treinar com o passado e testar com o período seguinte, como será o uso real. Embaralhar ao acaso mascara o problema.
+
+### Métricas
+
+Em eventos raros, a acurácia engana: um modelo que sempre responde "não haverá extravio" acerta mais de 99% das vezes e não serve para nada. Por isso se olham **precisão** (dos alertas, quantos eram reais), **revocação** (dos eventos reais, quantos foram alertados) e a relação entre as duas conforme o custo de cada erro.
+
+## E o aprendizado profundo?
+
+Redes neurais profundas brilham com grande volume de dados não estruturados, como imagens, texto e sinais. Para dados tabulares de operação, modelos mais simples costumam ter desempenho comparável e são muito mais fáceis de explicar, auditar e manter. Adotar aprendizado profundo sem essa necessidade só aumenta o custo.
+
+## Limites e responsabilidade
+
+Um escore de risco apoia a decisão de uma pessoa, que conhece o contexto. Ele precisa de monitoramento, porque o comportamento da operação muda e o modelo envelhece. E precisa de transparência sobre o que sabe e o que não sabe.
+
+## Em resumo
+
+Comece pelo descritivo bem definido, use estatística para apontar desvios e só então avalie um modelo preditivo, com variáveis legítimas, validação cronológica e métricas adequadas a eventos raros. Enquanto isso não existe, o honesto é chamar de estudo.

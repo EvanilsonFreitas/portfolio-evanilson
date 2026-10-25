@@ -22,6 +22,12 @@ export default function Contact() {
             </a>
           </li>
           <li>
+            <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" className={row} aria-label={`WhatsApp, ${site.phone}`}>
+              <span className="inline-flex items-center gap-3"><Icon name="whatsapp" /> WhatsApp · {site.phone}</span>
+              <Icon name="arrow" />
+            </a>
+          </li>
+          <li>
             <a href={site.linkedin} target="_blank" rel="noopener noreferrer" className={row}>
               <span className="inline-flex items-center gap-3"><Icon name="linkedin" /> LinkedIn</span>
               <Icon name="arrow" />

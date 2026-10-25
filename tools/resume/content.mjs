@@ -4,19 +4,10 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { site, resumeFiles } from '../../src/content/site.ts';
 import { education } from '../../src/content/education.ts';
-import { expertise } from '../../src/content/expertise.ts';
-import { projects } from '../../src/content/projects.ts';
-import { studies } from '../../src/content/studies.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const display = (url) => url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '');
 const PORTFOLIO = 'https://evanilsonfreitas.github.io/portfolio-evanilson/';
-
-const projectNote = {
-  corporate: 'Código e dados não públicos.',
-  personal: 'Repositório privado.',
-  demonstration: '',
-};
 
 /** Fotografia profissional opcional. Quando o arquivo existe, entra automaticamente nos documentos. */
 export const photoPath = join(root, 'public', 'assets', 'curriculo', 'foto-profissional.jpg');
@@ -30,14 +21,20 @@ export const resume = {
   location: site.location,
   contact: [
     { label: 'E-mail', text: site.email, href: `mailto:${site.email}` },
-    ...(site.phone ? [{ label: 'Telefone', text: site.phone, href: `tel:${site.phone.replace(/[^+d]/g, '')}` }] : []),
+    ...(site.phone ? [{ label: 'Telefone', text: site.phone, href: `tel:${site.phone.replace(/[^+\d]/g, '')}` }] : []),
     { label: 'LinkedIn', text: display(site.linkedin), href: site.linkedin },
     { label: 'GitHub', text: display(site.github), href: site.github },
     { label: 'Portfólio', text: display(PORTFOLIO), href: PORTFOLIO },
   ],
   summary: site.resumeSummary,
   projects: resumeProjects(),
-  skills: expertise.map((p) => ({ group: p.title, items: p.tech })),
+  skills: [
+    { group: 'Business Intelligence', items: ['Power BI', 'DAX', 'Power Query', 'Modelagem dimensional', 'Data visualization', 'UX/UI de dashboards'] },
+    { group: 'Dados e SQL', items: ['SQL Server', 'T-SQL', 'Procedures e views', 'ETL', 'Python'] },
+    { group: 'Engenharia de Software', items: ['Python', 'FastAPI', 'TypeScript', 'React', 'Next.js', 'C#', 'ASP.NET Core', 'APIs REST'] },
+    { group: 'Automação e integrações', items: ['Power Automate', 'REST', 'CRM', 'ERP e TMS'] },
+    { group: 'Infraestrutura e entrega', items: ['IIS', 'Windows Server', 'Proxy reverso', 'Git', 'CI/CD (conceitos)', 'Azure e Azure DevOps (estudo)'] },
+  ],
   education: education.map((e) => ({
     title: e.title,
     institution: e.institution,
@@ -50,27 +47,38 @@ export const resume = {
 
 /**
  * Projetos do currículo, em ordem de prioridade. Marivan Finance não entra nos currículos
- * (permanece no site). Entradas de estudo usam o resumo e a natureza do próprio estudo.
+ * (permanece no site). Os textos descrevem a atuação em BI com as ferramentas de BI;
+ * o demonstrador do portfólio (TypeScript, React e SVG) não é citado aqui.
  */
 function resumeProjects() {
-  const byProject = (slug) => {
-    const p = projects.find((x) => x.slug === slug);
-    return {
-      title: p.title,
-      kind: p.natureLabel,
-      text: [p.summary, projectNote[p.nature], p.stackNote ? 'Demonstração implementada em TypeScript, React e SVG.' : ''].filter(Boolean).join(' '),
-      stackLabel: p.stackNote ? 'Conceitos e ferramentas' : 'Tecnologias',
-      stack: p.stack.join(', '),
-    };
-  };
-  const byStudy = (slug, stack) => {
-    const st = studies.find((x) => x.slug === slug);
-    return { title: st.title, kind: st.natureLabel, text: st.summary, stackLabel: 'Conceitos e ferramentas', stack };
-  };
   return [
-    byProject('simulador-preco-rodoviario'),
-    byStudy('inteligencia-comercial-crm', 'Modelagem dimensional, DAX, Power BI, indicadores comerciais'),
-    byProject('bi-operacional-logistica'),
-    byStudy('normalizacao-cidades-ibge', 'Python, normalização de texto, similaridade, SQL'),
+    {
+      title: 'BI operacional',
+      kind: 'Business Intelligence',
+      text: 'Soluções de inteligência operacional: produtividade, coleta e entrega, SLA, extravio e avaria, ocorrências, qualidade e metas por filial, com visão executiva. Dados e telas não públicos.',
+      stackLabel: 'Ferramentas',
+      stack: 'Power BI, DAX, Power Query, SQL, modelagem dimensional, data visualization, UX/UI',
+    },
+    {
+      title: 'BI comercial',
+      kind: 'Business Intelligence',
+      text: 'Inteligência comercial: funil e oportunidades, hit rate, tracker comercial, price e frete por kg, margem e rentabilidade. Dados e telas não públicos.',
+      stackLabel: 'Ferramentas',
+      stack: 'Power BI, DAX, Power Query, SQL Server, CRM, Power Automate, storytelling com dados',
+    },
+    {
+      title: 'EasyPrice',
+      kind: 'Corporativo',
+      text: 'Plataforma web de simulação de preços de frete rodoviário (LTL e FTL), com regras de pricing, API, banco e hospedagem em ambiente Windows com IIS. Código e dados não públicos.',
+      stackLabel: 'Tecnologias',
+      stack: 'Python, FastAPI, Next.js, React, TypeScript, SQL Server, IIS',
+    },
+    {
+      title: 'Normalização de municípios',
+      kind: 'Módulo do EasyPrice',
+      text: 'Conciliação de cidades digitadas com a base oficial de municípios, usando regras, aliases e similaridade de texto, com referência do IBGE e confirmação quando há dúvida.',
+      stackLabel: 'Tecnologias',
+      stack: 'Python, normalização de texto, similaridade, SQL',
+    },
   ];
 }
