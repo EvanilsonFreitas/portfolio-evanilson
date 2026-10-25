@@ -18,9 +18,8 @@ test('slugs de estudos e projetos são únicos', () => {
   assert.equal(slugs.size, studies.length + projects.length);
 });
 
-test('o encadeamento "próximo" aponta para um estudo ou projeto existente', () => {
-  for (const s of studies) assert.ok(slugs.has(s.next), `${s.slug} → ${s.next}`);
-  for (const p of projects) assert.ok(slugs.has(p.next), `${p.slug} → ${p.next}`);
+test('projetos e estudos não declaram encadeamento sequencial', () => {
+  for (const e of [...studies, ...projects]) assert.equal('next' in e, false, `${e.slug} declara "next"`);
 });
 
 test('links internos de trajetória e domínios apontam para páginas existentes', () => {

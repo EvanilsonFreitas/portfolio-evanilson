@@ -7,7 +7,7 @@ import { findIncorrectClaims } from '../content/identity-guard.ts';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const SKIP = new Set(['node_modules', '.next', '.git', 'dist', 'out']);
-const SELF = new Set(['identity-guard.ts', 'identity.test.ts']);
+const SELF = new Set(['identity-guard.ts', 'identity.test.ts', 'catalog.test.ts']);
 
 function walk(dir: string, exts: RegExp): string[] {
   return readdirSync(dir).flatMap((name) => {
@@ -63,7 +63,7 @@ test('os currículos (texto extraído de PDF e DOCX) não afirmam atribuições 
     assert.ok(flat.includes('Tecnologia em Análise e Desenvolvimento de Sistemas'), 'denominação do curso conforme o diploma');
     assert.ok(!/Marina|Souza/.test(flat), 'dados de terceiros no currículo');
   }
-  // Marivan Finance permanece no site, mas não entra nos currículos; a foto e o título novo, sim.
+  // O projeto de gestão financeira permanece no site, mas não entra nos currículos; a foto e o título novo, sim.
   // Contato confirmado: telefone e e-mail Outlook em todos os formatos.
   for (const t of [pdf.text, await docxText(join(dir, 'Evanilson_Freitas_Curriculo.docx')), await docxText(join(dir, 'Evanilson_Freitas_Curriculo_ATS.docx'))]) {
     assert.ok(t.includes('Evanilson.2631@outlook.com'), 'e-mail ausente');

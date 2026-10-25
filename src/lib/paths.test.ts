@@ -49,10 +49,8 @@ test('links internos de especialidades apontam para rotas existentes', () => {
   for (const target of Object.values(legacySlugs)) assert.ok(slugs.has(target));
 });
 
-test('cada projeto aponta para um próximo projeto existente e é identificado como demonstração quando sintético', () => {
-  const slugs = new Set(projects.map((p) => p.slug));
+test('o projeto com dados sintéticos é identificado como demonstração', () => {
   for (const p of projects) {
-    assert.ok(slugs.has(p.next));
     if (p.slug === 'bi-operacional-logistica') assert.equal(p.nature, 'demonstration');
   }
 });
