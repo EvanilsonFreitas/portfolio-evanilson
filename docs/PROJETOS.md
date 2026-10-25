@@ -53,7 +53,7 @@ Gerado por `node tools/inventory.mjs` a partir de `src/content/catalog.ts`. A fo
 | Apresentações de Resultados Operacionais | BI Operacional | — | Novo | `apresentacoes-resultados-operacionais` | Compacto | — |
 | Central de Buscas e Avarias | BI Operacional | — | Novo | `central-buscas-avarias` | Compacto | — |
 | Briefings e Reuniões de Resultados | BI Operacional | — | Novo | `briefings-reunioes-resultados` | Compacto | — |
-| Inteligência comercial e CRM | BI Comercial | Power BI | Existente (preservado) | `inteligencia-comercial-crm` | Estudo técnico | — |
+| Inteligência comercial e CRM | BI Comercial | Power BI, Salesforce | Existente (preservado) | `inteligencia-comercial-crm` | Estudo técnico | — |
 | Integrações e automações | Integrações e Processos | Power Automate, SQL Server | Existente (preservado) | `integracoes-automacoes` | Estudo técnico | — |
 | SQL Server em profundidade | SQL / Engenharia de Dados | SQL Server | Existente (preservado) | `sql-server-avancado` | Estudo técnico | — |
 | Engenharia de sistemas e infraestrutura | Software / Aplicações | — | Existente (preservado) | `engenharia-sistemas-infraestrutura` | Estudo técnico | — |
@@ -178,6 +178,13 @@ O proprietário corrigiu a arquitetura: **Gestão de Coletas e Logística Revers
 - "Inteligência operacional" continua sendo a classificação analítica (tipo de solução e categoria "BI Operacional"); não indica a ferramenta Microsoft Power BI.
 - **Não atribuídas** aos demais painéis (Comprovantes Retidos, Ocorrências na Origem, Desvio Operacional · GRU, Pendências de Digitalização) nem aos sete projetos em Excel/VBA, que seguem com as tecnologias já confirmadas. Prazo de Coleta mantém Power BI (identificação do arquivo de evidência, confirmação formal pendente). Qualquer ampliação depende de confirmação individual.
 
+### CRM e Salesforce (V3.3.1)
+
+O proprietário informou que participou da construção do **Salesforce**, feita em conjunto com uma **consultoria externa**, e que **implementou as regras de negócio** no CRM. O relato entra no estudo "Inteligência comercial e CRM" (`inteligencia-comercial-crm`), que passa a exibir Salesforce nas tecnologias e a constar nos destaques da home; o catálogo segue com 42 itens. O texto público não nomeia empresa nem consultoria e não descreve objetos, fluxos ou configurações. A integração com Salesforce do estudo "Integrações e automações" continua **planejada, não implantada**, e é distinta desta implementação.
+
+- Pendência de detalhamento (não publicada): período, empresa, objetos, regras e automações implementados, e a relação do CRM com os painéis comerciais.
+- Hit Rate Comercial também passou a constar nos destaques da home.
+
 ### Entregas independentes confirmadas
 
 - **Ocorrências na Origem**: o painel de Business Intelligence (`ocorrencias-origem`) e a solução automatizada em Excel/VBA (`relatorio-ocorrencias-origem`) são entregas distintas, embora tratem do mesmo contexto operacional. Permanecem como dois cases, com referência cruzada.
@@ -246,5 +253,5 @@ As 10 capturas foram autorizadas pelo proprietário como estão (confirmado em 2
 1. Crie o case em um dos arquivos `src/content/cases-*.ts` (ou um novo, importado em `catalog.ts`) com `id`, `slug` (kebab-case estável), `category`, `types`, `tech`, `techNote` (interno), `caseType`, `summary`, `sections` e, se houver, `related` e `pending`. Os atalhos de `cases-shared.ts` (`sec`, `p`, `list`, `table`, `limits`, `open`, `decide`) mantêm o padrão.
 2. Só preencha `tech` com tecnologia confirmada pelo proprietário. Sem confirmação, deixe `[]`: a página omite o campo e a pendência fica em `pending`.
 3. Imagem: coloque o PNG original em `../portfolio_Evan_privado/projetos-originais`, acrescente a entrada em `tools/project-images.config.mjs` e rode `node tools/build-project-images.mjs`. Nada de camadas adicionais sobre a captura. Associe o `id` no case (`images`).
-4. Para destacar na home, inclua o slug em `homeFeatured` (`catalog.ts`); a curadoria mantém todas as categorias e no máximo 2 itens de software.
+4. Para destacar na home, inclua o slug em `homeFeatured` (`catalog.ts`); a curadoria (hoje 11 itens) mantém todas as categorias e no máximo 2 itens de software.
 5. Rode `node tools/inventory.mjs` para regenerar este documento e `npm run check` para validar. Os testes barram duplicações, tecnologias fora do vocabulário, mensagens internas no texto público e a presença de PNGs originais nos artefatos.

@@ -58,7 +58,7 @@ const existing: Record<string, Taxonomy> = {
     tech: ['power-bi', 'dax'],
     aliases: ['SLA', 'logística'],
   },
-  'inteligencia-comercial-crm': { category: 'bi-comercial', types: ['estudo', 'inteligencia-comercial'], tech: ['power-bi'] },
+  'inteligencia-comercial-crm': { category: 'bi-comercial', types: ['estudo', 'inteligencia-comercial'], tech: ['power-bi', 'salesforce'] },
   'integracoes-automacoes': { category: 'integracoes-processos', types: ['estudo', 'automacao'], tech: ['power-automate', 'sql-server'] },
   'sql-server-avancado': { category: 'sql-dados', types: ['estudo', 'engenharia-dados'], tech: ['sql-server'] },
   'engenharia-sistemas-infraestrutura': { category: 'software', types: ['estudo'], tech: [] },
@@ -144,6 +144,8 @@ export const catalog: CatalogEntry[] = [
 export const homeFeatured: string[] = [
   'solution-price',
   'tracker-comercial',
+  'hit-rate-comercial',
+  'inteligencia-comercial-crm',
   'indice-retorno',
   'gestao-coletas-logistica-reversa',
   'automacao-avarias-extravios',

@@ -13,9 +13,9 @@ const coreStudies: Study[] = [
     title: 'Inteligência comercial e CRM',
     domain: 'Business Intelligence Comercial',
     summary:
-      'Como transformar oportunidades, propostas e estágios de um CRM em indicadores comerciais com definição única, do funil ao forecast.',
+      'Como transformar oportunidades, propostas e estágios de um CRM em indicadores comerciais com definição única, do funil ao forecast, e a implementação das regras de negócio no Salesforce.',
     natureLabel: 'Estudo · BI comercial',
-    scope: 'Modelo analítico e demonstração com dados sintéticos. Nenhum dado, número ou marca de empresa real.',
+    scope: 'Modelo analítico e demonstração com dados sintéticos, mais o relato da implementação do Salesforce. Nenhum dado, número ou marca de empresa real.',
     access: 'Dados gerados de forma determinística para a demonstração.',
     sections: [
       {
@@ -115,12 +115,19 @@ const coreStudies: Study[] = [
         ],
       },
       {
+        title: 'Implementação do Salesforce',
+        blocks: [
+          { kind: 'p', text: 'Participei da construção do Salesforce, realizada em conjunto com uma consultoria externa, e implementei as regras de negócio no CRM. Detalhes, dados e configurações não são divulgados.' },
+        ],
+      },
+      {
         title: 'Estado de cada afirmação',
         blocks: [
           {
             kind: 'status',
             items: [
               { label: 'Modelo analítico e definições de indicadores', status: 'conceitual' },
+              { label: 'Construção do Salesforce com consultoria externa e implementação das regras de negócio', status: 'declarado', note: 'Detalhes, dados e configurações não são divulgados.' },
               { label: 'Indicadores de hit rate, tracker, funil, price e rentabilidade em uso na gestão comercial', status: 'declarado', note: 'Atuação em BI comercial; números, telas e dados não são publicados.' },
               { label: 'Segurança por linha (RLS)', status: 'conceitual' },
               { label: 'Demonstração interativa com dados simulados', status: 'sintetico', note: 'Implementada em TypeScript e SVG neste site.' },
@@ -216,7 +223,7 @@ const coreStudies: Study[] = [
             items: [
               { label: 'Padrões de API, autenticação e resiliência', status: 'conceitual' },
               { label: 'APIs construídas com FastAPI e validação tipada', status: 'codigo', note: 'Parte do EasyPrice, cujo código não é público.' },
-              { label: 'Integração com Salesforce', status: 'planejado', note: 'Escopo documentado; não implantado.' },
+              { label: 'Integração com Salesforce', status: 'planejado', note: 'Escopo documentado; não implantado. É distinta da implementação das regras de negócio no próprio Salesforce, descrita em Inteligência comercial e CRM.' },
               { label: 'Fluxos de Power Automate em produção', status: 'declarado', note: 'Detalhes não divulgados.' },
               { label: 'Rotinas, procedures e jobs em SQL Server', status: 'declarado', note: 'Exemplos desta página são didáticos.' },
               { label: 'Integração entre CRM, ERP, TMS e BI como projeto único', status: 'conceitual', note: 'O fluxo é uma visão de referência; não afirmo que foi implantado de ponta a ponta.' },
