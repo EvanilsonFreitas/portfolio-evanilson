@@ -1,0 +1,72 @@
+---
+title: "API REST e integração entre sistemas: contrato, falha e repetição"
+date: "2026-10-24"
+excerpt: "O que separa uma integração que funciona na demonstração de uma que resiste ao uso real: contrato claro, autenticação, tentativas repetidas e idempotência."
+tags: ["API REST", "Integração", "FastAPI", "Arquitetura"]
+author: "Evanilson Freitas"
+---
+
+# API REST e integração entre sistemas: contrato, falha e repetição
+
+Ligar dois sistemas costuma começar com uma chamada que funciona. O trabalho de verdade começa quando essa chamada falha pela metade, chega duplicada ou volta com um formato que ninguém combinou. Este texto reúne os padrões que tornam uma integração previsível. São princípios de engenharia, não a descrição de uma integração específica.
+
+## Comece pelo contrato
+
+Antes de qualquer código, duas partes precisam concordar sobre o que trafega: campos, tipos, obrigatoriedade e códigos de erro. Um contrato tipado transforma divergência em erro imediato, em vez de dado silenciosamente errado.
+
+```python
+from pydantic import BaseModel, Field
+
+
+class SimulacaoEntrada(BaseModel):
+    origem: str = Field(min_length=2)
+    destino: str = Field(min_length=2)
+    peso_kg: float = Field(gt=0)
+    modalidade: str = Field(pattern="^(LTL|FTL)$")
+```
+
+Com FastAPI, esse modelo valida a entrada, gera a documentação e devolve erro 422 com a causa quando algo está fora do combinado.
+
+## O caminho de uma chamada
+
+<Flow id="integracao-api" caption="Chamada autenticada entre sistemas, com validação e retentativa (conceitual)" />
+
+Cada etapa do desenho responde a uma pergunta: quem está chamando, o que ele enviou, o que acontece se o destino não responder e como saber depois o que ocorreu.
+
+## Autenticação e permissão
+
+Tokens de curta duração, como os do OAuth 2.0, evitam que uma credencial vazada dure para sempre. O JWT carrega a identidade e as permissões já assinadas, o que permite ao servidor verificar sem consultar um banco a cada chamada. A regra prática é separar **quem é** (autenticação) de **o que pode fazer** (autorização) e negar por padrão.
+
+## Falhas transitórias e repetição
+
+Redes falham por instantes. Repetir a chamada resolve, desde que se repita com critério:
+
+- esperar um tempo crescente entre as tentativas, para não sobrecarregar o destino;
+- limitar o número de tentativas;
+- repetir apenas erros transitórios (timeout, 503), nunca erros de validação (4xx).
+
+## Idempotência: repetir sem duplicar
+
+Se a primeira chamada chegou, mas a resposta se perdeu, o cliente vai repetir. Sem cuidado, o efeito acontece duas vezes. A solução é uma **chave de idempotência**: o cliente envia um identificador único por operação e o servidor devolve o resultado original quando o reconhece.
+
+```python
+def registrar(db, chave: str, payload: dict) -> dict:
+    existente = db.buscar_por_chave(chave)
+    if existente is not None:
+        return existente.resultado
+    resultado = processar(payload)
+    db.salvar(chave, resultado)
+    return resultado
+```
+
+## Webhooks em vez de consultas repetidas
+
+Quando um sistema precisa saber que algo mudou em outro, perguntar a cada minuto desperdiça chamadas e atrasa a notícia. Um webhook inverte o fluxo: o sistema de origem avisa. Em troca, o receptor precisa validar a assinatura da mensagem e aceitar o mesmo evento mais de uma vez.
+
+## Rastreabilidade
+
+Um identificador de correlação, repassado em todas as chamadas de uma operação, permite reconstruir o caminho entre sistemas quando algo dá errado. Sem ele, cada sistema enxerga só o seu pedaço.
+
+## Em resumo
+
+Uma boa integração é a que se comporta de forma previsível quando as coisas dão errado: contrato validado, credenciais com prazo, repetição com limite e operações idempotentes. O resto é detalhe de ferramenta.

@@ -9,7 +9,7 @@ export default function Contact() {
     <section id="contato" className="section">
       <div className="wrap grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-7">
-          <p className="eyebrow mb-4">05 — Contato</p>
+          <p className="eyebrow mb-4">08 — Contato</p>
           <h2 className="display text-[clamp(2.5rem,6vw,4.75rem)]">
             Vamos conversar sobre dados, tecnologia <em>e negócios?</em>
           </h2>

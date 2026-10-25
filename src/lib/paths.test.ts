@@ -1,7 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { withBasePath } from './paths.ts';
-import { resumeFiles, site } from '../content/site.ts';
+import { diplomaFile, resumeFiles, site } from '../content/site.ts';
+import { studies } from '../content/studies.ts';
 import { existsSync } from 'node:fs';
 import { projects, legacySlugs } from '../content/projects.ts';
 import { expertise } from '../content/expertise.ts';
@@ -23,8 +24,16 @@ test('o GitHub configurado é o oficial', () => {
   assert.equal(site.github, 'https://github.com/EvanilsonFreitas');
 });
 
+test('o diploma configurado existe em /public', () => {
+  assert.ok(existsSync(new URL(`../../public${diplomaFile.path}`, import.meta.url)));
+});
+
+test('a foto do perfil existe em /public', () => {
+  assert.ok(existsSync(new URL(`../../public${site.photo}`, import.meta.url)));
+});
+
 test('links internos de especialidades apontam para rotas existentes', () => {
-  const slugs = new Set(projects.map((p) => p.slug));
+  const slugs = new Set([...projects.map((p) => p.slug), ...studies.map((s) => s.slug)]);
   for (const pillar of expertise) {
     for (const ev of pillar.evidence) {
       const m = ev.href?.match(/^\/projetos\/([^/]+)\/$/);

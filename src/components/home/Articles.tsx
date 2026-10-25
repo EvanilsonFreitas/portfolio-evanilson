@@ -8,7 +8,7 @@ export default function Articles({ posts }: { posts: BlogPostMeta[] }) {
   return (
     <section id="artigos" className="section">
       <div className="wrap">
-        <SectionHead number="04" label="Artigos" title="Notas técnicas.">
+        <SectionHead number="07" label="Artigos" title="Notas técnicas.">
           <Link href="/blog/" className="link-arrow">
             Todos os artigos <Icon name="arrow" />
           </Link>

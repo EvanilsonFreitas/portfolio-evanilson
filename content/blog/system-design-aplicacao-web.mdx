@@ -1,0 +1,46 @@
+---
+title: "System design de uma aplicação web: decidir o que separar e por quê"
+date: "2026-10-22"
+excerpt: "Camadas, cache, filas e instâncias: cada divisão resolve um problema e cobra um custo. Um roteiro para decidir o que separar e o que deixar simples."
+tags: ["System Design", "Arquitetura", "Infraestrutura"]
+author: "Evanilson Freitas"
+---
+
+# System design de uma aplicação web: decidir o que separar e por quê
+
+Desenhar um sistema é decidir onde cada responsabilidade mora. O erro mais comum é separar demais cedo: cada fronteira nova traz contratos, falhas possíveis e operação adicional. Este texto é um roteiro de decisão. Os diagramas são desenhos de referência, não a descrição de um ambiente implantado.
+
+## O ponto de partida: camadas
+
+<Flow id="system-design" caption="Aplicação web em camadas (desenho de referência)" />
+
+A divisão básica separa **interface**, **API com regras de negócio** e **persistência**. Ela já entrega o mais importante: a regra de negócio pode ser testada sem a tela e reaproveitada por outro cliente.
+
+## Quando acrescentar cada peça
+
+| Peça | Resolve | Custo |
+|------|---------|-------|
+| Cache de leitura | Consultas repetidas e caras | Invalidação e dado desatualizado |
+| Fila de tarefas | Trabalho longo que não pode travar o usuário | Estado assíncrono e reprocessamento |
+| Várias instâncias | Capacidade e tolerância a falha | Sessão e estado compartilhados |
+| Proxy reverso | TLS, compressão, roteamento | Mais um componente a operar |
+
+A pergunta de decisão é sempre a mesma: **qual problema concreto isto resolve hoje?** Se a resposta é "talvez no futuro", a peça espera.
+
+## Implantação
+
+<Flow id="infra-app" caption="Implantação de referência com proxy reverso e banco (conceitual)" />
+
+Em uma implantação típica, o proxy reverso recebe o tráfego, encerra o TLS e encaminha para a aplicação. A aplicação fala com o banco por uma conexão controlada, e segredos ficam em variáveis de ambiente, nunca no repositório.
+
+## Estado é o que complica
+
+Escalar para várias instâncias é simples quando elas não guardam estado. O que complica é o que precisa ser compartilhado: sessão do usuário, cache e arquivos enviados. A regra é empurrar o estado para fora da aplicação, no banco ou em um armazenamento dedicado.
+
+## Observabilidade
+
+Sem registro (log) estruturado, métricas e um identificador por requisição, o primeiro problema em produção vira investigação às cegas. Registrar o suficiente para reconstruir o que aconteceu custa pouco e vale mais que qualquer otimização antecipada.
+
+## Em resumo
+
+Comece pelas camadas, adicione cada peça quando um problema real a pedir e mantenha o estado fora da aplicação. A melhor arquitetura é a mais simples que atende à necessidade atual e deixa o caminho aberto para a próxima.

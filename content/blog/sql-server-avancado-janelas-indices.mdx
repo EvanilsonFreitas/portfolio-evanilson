@@ -1,0 +1,109 @@
+---
+title: "SQL Server avançado: funções de janela, índices e plano de execução"
+date: "2026-10-23"
+excerpt: "Consultas analíticas com janelas e CTEs, quando um índice realmente ajuda e como ler um plano de execução antes de sair otimizando."
+tags: ["SQL Server", "T-SQL", "Performance", "Engenharia de Dados"]
+author: "Evanilson Freitas"
+---
+
+# SQL Server avançado: funções de janela, índices e plano de execução
+
+Boa parte das consultas lentas tem a mesma causa: o banco lê mais do que precisa. Entender janelas, índices e plano de execução evita tanto consultas complicadas demais quanto otimizações feitas por tentativa e erro. Os exemplos usam tabelas fictícias.
+
+## Funções de janela
+
+Uma função de janela calcula sobre um conjunto de linhas relacionadas à linha atual, sem colapsar o resultado como o `GROUP BY`. É a ferramenta certa para acumulados, rankings e comparação com o período anterior.
+
+```sql
+WITH mensal AS (
+    SELECT
+        DATEFROMPARTS(YEAR(data_emissao), MONTH(data_emissao), 1) AS mes,
+        SUM(valor) AS valor
+    FROM dbo.proposta
+    WHERE status = 'Fechada'
+    GROUP BY DATEFROMPARTS(YEAR(data_emissao), MONTH(data_emissao), 1)
+)
+SELECT
+    mes,
+    valor,
+    LAG(valor) OVER (ORDER BY mes) AS valor_mes_anterior,
+    SUM(valor) OVER (PARTITION BY YEAR(mes) ORDER BY mes ROWS UNBOUNDED PRECEDING) AS acumulado_ano
+FROM mensal
+ORDER BY mes;
+```
+
+A cláusula `ROWS UNBOUNDED PRECEDING` é explícita de propósito: sem ela, o padrão com `ORDER BY` usa `RANGE`, que se comporta de forma diferente com valores repetidos e costuma ser mais lento.
+
+## Deduplicar com ROW_NUMBER
+
+Manter o registro mais recente por chave é um padrão recorrente em cargas de dados:
+
+```sql
+WITH ranqueado AS (
+    SELECT *,
+           ROW_NUMBER() OVER (PARTITION BY cliente_id ORDER BY atualizado_em DESC) AS rn
+    FROM dbo.cliente_stage
+)
+SELECT *
+FROM ranqueado
+WHERE rn = 1;
+```
+
+## Índices: o que realmente ajuda
+
+Um índice não clusterizado funciona como o índice de um livro. Ele acelera a busca quando a consulta filtra pelas colunas da chave, e ainda mais quando todas as colunas necessárias estão no próprio índice, o que evita voltar à tabela.
+
+```sql
+CREATE NONCLUSTERED INDEX ix_proposta_cliente_data
+    ON dbo.proposta (cliente_id, data_emissao)
+    INCLUDE (valor, status);
+```
+
+Dois cuidados contam mais do que o índice em si:
+
+- **A ordem da chave importa.** A coluna de igualdade (`cliente_id`) vem antes da de intervalo (`data_emissao`).
+- **Cada índice custa escrita.** Todo `INSERT` e `UPDATE` precisa mantê-lo. Índice sem consulta que o use é só custo.
+
+## Ler o plano antes de mudar qualquer coisa
+
+O plano de execução mostra o que o banco fez de fato. Procure, nesta ordem:
+
+1. leituras de tabela inteira (scan) onde se esperava busca pontual (seek);
+2. diferença grande entre linhas estimadas e linhas reais, sinal de estatísticas defasadas;
+3. operadores de ordenação ou junção que consomem a maior parte do custo.
+
+Meça antes e depois com `SET STATISTICS IO ON`: o número de leituras lógicas é uma métrica mais estável que o tempo.
+
+## Funções sobre colunas filtradas
+
+Uma armadilha comum é aplicar função à coluna do filtro:
+
+```sql
+-- Impede o uso de índice em data_emissao
+SELECT * FROM dbo.proposta WHERE YEAR(data_emissao) = 2025;
+
+-- Equivalente que permite busca por intervalo
+SELECT * FROM dbo.proposta
+WHERE data_emissao >= '2025-01-01' AND data_emissao < '2026-01-01';
+```
+
+## Transações
+
+Operações que precisam acontecer juntas ou não acontecer ficam dentro de uma transação, com tratamento de erro que desfaz tudo na falha:
+
+```sql
+BEGIN TRY
+    BEGIN TRANSACTION;
+    UPDATE dbo.conta SET saldo = saldo - @valor WHERE id = @origem;
+    UPDATE dbo.conta SET saldo = saldo + @valor WHERE id = @destino;
+    COMMIT TRANSACTION;
+END TRY
+BEGIN CATCH
+    IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+    THROW;
+END CATCH;
+```
+
+## Em resumo
+
+Janelas respondem perguntas analíticas sem junções repetidas. Índices ajudam quando acompanham o padrão real das consultas. E o plano de execução é o ponto de partida de qualquer otimização, não a intuição.

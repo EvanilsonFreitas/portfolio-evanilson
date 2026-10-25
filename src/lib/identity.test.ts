@@ -55,10 +55,19 @@ test('os currículos (texto extraído de PDF e DOCX) não afirmam atribuições 
   assert.ok(pdf.text.includes('MBA em Data Science') && pdf.text.includes('Uninove'), 'PDF: formação ausente');
   assert.deepEqual(findIncorrectClaims(pdf.text), []);
   assert.equal(pdf.pages, 1);
+  // Marivan Finance permanece no site, mas não entra nos currículos; a foto e o título novo, sim.
+  for (const t of [pdf.text, await docxText(join(dir, 'Evanilson_Freitas_Curriculo.docx')), await docxText(join(dir, 'Evanilson_Freitas_Curriculo_ATS.docx'))]) {
+    assert.ok(!t.includes('Marivan'), 'currículo cita Marivan Finance');
+    assert.ok(t.includes('Business Intelligence'), 'título do currículo ausente');
+    assert.ok(t.includes('Inteligência de Negócios'), 'complemento do título ausente');
+  }
 });
 
 test('o guarda reconhece as atribuições incorretas (sanidade do teste)', () => {
   assert.deepEqual(findIncorrectClaims('Trabalhou na Red Cargas Logística').length, 1);
   assert.equal(findIncorrectClaims('Mestrado em  Engenharia de Software').length, 1);
   assert.equal(findIncorrectClaims('Analista de BI e desenvolvedor').length, 0);
+  assert.equal(findIncorrectClaims('cliente Tragetta').length, 1);
+  assert.equal(findIncorrectClaims('atua como DBA').length, 1);
+  assert.equal(findIncorrectClaims('Tech Lead do time').length, 1);
 });

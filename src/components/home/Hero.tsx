@@ -1,12 +1,11 @@
 import Link from 'next/link';
 import Icon from '../ui/Icon';
-import HeroFigure from './HeroFigure';
 import { resumeFiles, site } from '../../content/site';
 import { withBasePath } from '../../lib/paths';
 
 export default function Hero() {
   return (
-    <section className="wrap pb-20 pt-12 sm:pt-20 lg:pb-28">
+    <section id="inicio" className="wrap pb-20 pt-12 sm:pt-20 lg:pb-28">
       <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-7">
           <p className="eyebrow mb-6">{site.name} / Portfólio</p>
@@ -51,7 +50,21 @@ export default function Hero() {
         </div>
 
         <div className="lg:col-span-5">
-          <HeroFigure />
+          <figure className="mx-auto max-w-sm lg:max-w-none">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={withBasePath(site.photo)}
+              alt={`Retrato de ${site.fullName}`}
+              width={560}
+              height={560}
+              fetchPriority="high"
+              className="aspect-square w-full border border-line object-cover"
+            />
+            <figcaption className="mt-3 flex flex-wrap items-baseline justify-between gap-x-4 text-sm text-muted">
+              <span>{site.fullName}</span>
+              <span className="eyebrow">{site.location}</span>
+            </figcaption>
+          </figure>
         </div>
       </div>
     </section>

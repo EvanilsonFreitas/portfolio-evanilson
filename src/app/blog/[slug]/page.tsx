@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypePrettyCode from 'rehype-pretty-code';
 import Icon from '../../../components/ui/Icon';
+import Flow from '../../../components/diagrams/Flow';
 import { formatDate, getAllSlugs, getPostBySlug, getRelatedPosts } from '../../../lib/blog';
 import { absoluteUrl, jsonLd, pageMetadata } from '../../../lib/seo';
 import { site } from '../../../content/site';
@@ -32,6 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 const mdxComponents = {
+  Flow,
   table: (props: React.ComponentProps<'table'>) => (
     <div className="table-scroll" tabIndex={0} role="region" aria-label="Tabela rolável">
       <table {...props} />

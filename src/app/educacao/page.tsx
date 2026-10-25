@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Icon from '../../components/ui/Icon';
 import { education } from '../../content/education';
+import { diplomaFile } from '../../content/site';
+import { withBasePath } from '../../lib/paths';
 import { pageMetadata } from '../../lib/seo';
 
 export const metadata: Metadata = pageMetadata({
@@ -66,6 +69,16 @@ export default function EducacaoPage() {
                 ))}
               </ul>
             )}
+            {e.id === 'ads' && (
+              <p className="mb-5 flex flex-wrap items-center gap-x-5 gap-y-2">
+                <a href={withBasePath(diplomaFile.path)} target="_blank" rel="noopener noreferrer" className="link-arrow">
+                  Visualizar diploma <Icon name="arrow" />
+                </a>
+                <a href={withBasePath(diplomaFile.path)} download className="text-base text-muted underline underline-offset-4 hover:text-ink">
+                  Baixar diploma (PDF)
+                </a>
+              </p>
+            )}
             {e.appliedIn.length > 0 && (
               <ul className="space-y-3 text-muted">
                 {e.appliedIn.map((t) => (
@@ -81,7 +94,7 @@ export default function EducacaoPage() {
       ))}
 
       <p className="border-t border-rule pt-8 text-sm text-muted">
-        Documentos comprobatórios não são publicados neste site por conterem dados pessoais.
+        O diploma da graduação é publicado por autorização do titular. Demais documentos comprobatórios não são publicados.
       </p>
     </div>
   );

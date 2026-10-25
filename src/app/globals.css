@@ -63,9 +63,15 @@
 /* ==========================================================================
    Base
    ========================================================================== */
+/* Rolagem sempre instantânea: o destino de âncoras e do topo é imediato e previsível. */
 html {
-  scroll-padding-top: 5rem;
-  scroll-behavior: smooth;
+  scroll-padding-top: 0;
+  scroll-behavior: auto;
+}
+
+/* Âncoras da home ficam abaixo do cabeçalho fixo (4rem) ao receber a rolagem. */
+[id] {
+  scroll-margin-top: 4.5rem;
 }
 
 body {
@@ -220,9 +226,39 @@ body {
   animation: beacon 2.4s ease-in-out infinite;
 }
 
+/* Sinal de "falta o próximo": um pulso percorre o último trecho do menu, do item atual ao seguinte. */
+.nav-next {
+  position: relative;
+  overflow: hidden;
+}
+.nav-next::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, var(--text), transparent);
+  animation: nav-next-x 1.6s ease-in-out infinite;
+}
+.nav-next-v::after {
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(180deg, transparent, var(--text), transparent);
+  animation-name: nav-next-y;
+}
+@keyframes nav-next-x {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(250%); }
+}
+@keyframes nav-next-y {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(250%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  .nav-next::after {
+    animation: none;
+    width: 100%;
+    opacity: 0.35;
   }
   *,
   *::before,

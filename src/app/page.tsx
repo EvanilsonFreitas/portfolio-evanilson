@@ -1,4 +1,6 @@
 import Hero from '../components/home/Hero';
+import About from '../components/home/About';
+import Business from '../components/home/Business';
 import ProjectsPreview from '../components/home/ProjectsPreview';
 import Expertise from '../components/home/Expertise';
 import EducationPreview from '../components/home/EducationPreview';
@@ -19,7 +21,7 @@ const person = {
     { '@type': 'CollegeOrUniversity', name: 'Universidade Nove de Julho' },
     { '@type': 'CollegeOrUniversity', name: 'USP/ESALQ' },
   ],
-  knowsAbout: ['Business Intelligence', 'Data Science', 'Engenharia de Software'],
+  knowsAbout: ['Business Intelligence', 'Inteligência de Negócios', 'Engenharia de Software', 'Data Science', 'SQL Server', 'Integração de sistemas'],
   sameAs: [site.github, site.linkedin],
 };
 
@@ -29,9 +31,11 @@ export default function Home() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(person) }} />
       <Hero />
-      <ProjectsPreview />
-      <Expertise />
+      <About />
       <EducationPreview />
+      <Business />
+      <Expertise />
+      <ProjectsPreview />
       <Articles posts={posts} />
       <Contact />
     </>

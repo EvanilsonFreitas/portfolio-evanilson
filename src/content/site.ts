@@ -2,16 +2,20 @@ export const site = {
   name: 'Evanilson Freitas',
   fullName: 'Evanilson Pereira de Freitas',
   location: 'São Paulo — SP, Brasil',
-  areas: 'Business Intelligence · Data Science · Software Engineering',
+  areas: 'Business Intelligence · Inteligência de Negócios · Engenharia de Software',
   email: 'Evanilson.2631@hotmail.com',
+  /** Telefone: preencher aqui, uma única vez, quando houver número confirmado (site e currículos o utilizam). */
+  phone: undefined as string | undefined,
   linkedin: 'https://www.linkedin.com/in/evanilson-p-freitas-303889350/',
   github: 'https://github.com/EvanilsonFreitas',
   headline: 'Transformo desafios de negócio em soluções de dados e software.',
   summary:
-    'Desenvolvo soluções de dados e software, da modelagem e da análise à aplicação web. Graduado em Análise e Desenvolvimento de Sistemas.',
+    'Compreendo os processos de negócio, identifico oportunidades e desenvolvo soluções de dados, automação e software que as transformam em aplicações e em inteligência para decisão.',
   resumeSummary:
-    'Profissional de dados e software, com formação em Análise e Desenvolvimento de Sistemas (Uninove) e MBA em Data Science (USP/ESALQ). Desenvolve soluções de Business Intelligence, análise de dados e aplicações web, com projetos em Python, SQL Server, TypeScript, React e ASP.NET Core.',
-  title: 'Dados e Software',
+    'Profissional de Business Intelligence e Engenharia de Software, com formação em Análise e Desenvolvimento de Sistemas (Uninove) e MBA em Data Science (USP/ESALQ). Conecta processos de negócio a soluções de dados, automação e software: BI comercial e operacional, precificação, integrações entre sistemas e aplicações web, com projetos em Python, FastAPI, SQL Server, TypeScript, React e ASP.NET Core.',
+  title: 'Business Intelligence',
+  titleComplement: 'Data Science · Engenharia de Software · Inteligência de Negócios',
+  photo: '/assets/perfil/evanilson-freitas.jpg',
 } as const;
 
 /** Caminhos dos currículos (relativos a /public). Única fonte para o site e para o gerador. */
@@ -20,6 +24,9 @@ export const resumeFiles = {
   docx: { path: '/resume/Evanilson_Freitas_Curriculo.docx', label: 'Word' },
   ats: { path: '/resume/Evanilson_Freitas_Curriculo_ATS.docx', label: 'Word (ATS)' },
 } as const;
+
+/** Diploma da graduação (publicação autorizada pelo titular). */
+export const diplomaFile = { path: '/documents/diploma-ads-uninove.pdf', label: 'Diploma — Análise e Desenvolvimento de Sistemas (Uninove)' } as const;
 
 /** URL pública do destino do build (definida em next.config.ts; padrão: GitHub Pages). */
 export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://evanilsonfreitas.github.io/portfolio-evanilson').replace(/\/$/, '');

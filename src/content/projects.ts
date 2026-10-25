@@ -3,6 +3,7 @@ import type { Project } from './types.ts';
 export const projects: Project[] = [
   {
     slug: 'simulador-preco-rodoviario',
+    domain: 'Precificação e Rentabilidade',
     number: '01',
     title: 'EasyPrice',
     category: 'Plataforma de precificação',
@@ -70,6 +71,42 @@ export const projects: Project[] = [
         'Apresentação e comparação de cenários',
       ],
     },
+    deepDive: [
+      {
+        title: 'Como o motor de precificação se organiza',
+        blocks: [
+          { kind: 'p', text: 'Uma simulação atravessa quatro responsabilidades separadas: validar a cotação, resolver a rota, aplicar as regras de preço e registrar o resultado. Separá-las permite testar cada uma sem as outras.' },
+          { kind: 'diagram', id: 'pricing-engine', caption: 'Visão conceitual do motor de precificação. Não reproduz estrutura, regras ou parâmetros reais.' },
+          {
+            kind: 'table',
+            title: 'Responsabilidades',
+            head: ['Responsabilidade', 'O que garante'],
+            rows: [
+              ['Validação de entrada', 'Dados da cotação completos e coerentes antes de qualquer cálculo.'],
+              ['Resolução de cidades', 'Nomes digitados de forma livre viram identificadores únicos de origem e destino.'],
+              ['Regras de preço', 'Parâmetros lidos como dados, aplicados de forma determinística e reproduzível.'],
+              ['Acesso e governança', 'Cada perfil consulta ou altera apenas o que lhe cabe.'],
+              ['Registro', 'Cada simulação guarda os parâmetros usados, para revisão posterior.'],
+            ],
+          },
+        ],
+      },
+      {
+        title: 'O que não é publicado',
+        blocks: [
+          { kind: 'p', text: 'Fórmulas, tabelas de custo, parâmetros comerciais, endpoints, nomes de servidores e dados de clientes são confidenciais. As demonstrações do portfólio usam modelos didáticos com dados sintéticos.' },
+          {
+            kind: 'status',
+            items: [
+              { label: 'Aplicação em Python, FastAPI, Next.js e SQL Server', status: 'codigo', note: 'Repositório privado; histórico de código desde maio de 2026.' },
+              { label: 'Conciliação de nomes de cidades', status: 'codigo', note: 'Estudo público separado: normalização de cidades.' },
+              { label: 'Regras e parâmetros comerciais', status: 'declarado', note: 'Não divulgados.' },
+              { label: 'Demonstração de precificação desta página', status: 'sintetico' },
+            ],
+          },
+        ],
+      },
+    ],
     demo: 'pricing',
     challenges: [
       {
@@ -91,6 +128,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'marivan-finance',
+    domain: 'Engenharia de Software',
     number: '02',
     title: 'Marivan Finance',
     category: 'Aplicação web · planejamento financeiro',
@@ -175,6 +213,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'bi-operacional-logistica',
+    domain: 'Business Intelligence Operacional',
     number: '03',
     title: 'BI operacional em logística',
     category: 'Business Intelligence · análise operacional',
@@ -242,6 +281,42 @@ export const projects: Project[] = [
         source: 'SLA % =\nDIVIDE(\n    SUM(fato_entregas[entregas_no_prazo]),\n    SUM(fato_entregas[entregas])\n)',
       },
     },
+    deepDive: [
+      {
+        title: 'Como cada painel é apresentado',
+        blocks: [
+          { kind: 'p', text: 'Um painel operacional só é útil se quem o lê sabe a pergunta que ele responde e a decisão que ele apoia. Cada apresentação de BI deste portfólio segue a mesma estrutura.' },
+          {
+            kind: 'table',
+            head: ['Elemento', 'Aplicação no BI operacional'],
+            rows: [
+              ['Pergunta de negócio', 'A operação está cumprindo o prazo combinado e onde está o desvio?'],
+              ['Indicadores', 'SLA, volume de entregas, ocorrências por mil entregas.'],
+              ['Modelo de dados', 'Fato de entregas no grão região e mês, com dimensões de tempo e região.'],
+              ['Regras de cálculo', 'SLA como razão de somas; períodos de mesma duração; lacunas tratadas como ausência.'],
+              ['Visual', 'Série temporal com comparação de períodos e destaque de cobertura de dados.'],
+              ['Interpretação', 'Queda de SLA em uma região com volume estável aponta problema de processo, não de demanda.'],
+              ['Decisão', 'Priorizar a região desviada e revisar a causa antes de agir no total.'],
+            ],
+          },
+        ],
+      },
+      {
+        title: 'Modelo e fluxo de dados',
+        blocks: [
+          { kind: 'diagram', id: 'star-schema', caption: 'Modelo estrela da demonstração (conceitual)' },
+          { kind: 'diagram', id: 'pipeline-bi', caption: 'Fluxo das fontes ao painel (conceitual)' },
+          {
+            kind: 'status',
+            items: [
+              { label: 'Demonstração interativa com dados simulados', status: 'sintetico' },
+              { label: 'Modelo dimensional e medidas em DAX', status: 'conceitual', note: 'Exemplo didático, sem relação com dados reais.' },
+              { label: 'Painéis operacionais usados em empresa', status: 'declarado', note: 'Detalhes, dados e capturas não são divulgados.' },
+            ],
+          },
+        ],
+      },
+    ],
     demo: 'operations',
     challenges: [
       {

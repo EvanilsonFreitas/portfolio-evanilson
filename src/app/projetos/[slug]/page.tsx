@@ -7,7 +7,9 @@ import LayerDiagram from '../../../components/projects/LayerDiagram';
 import LegacyRedirect from '../../../components/projects/LegacyRedirect';
 import OperationsDemo from '../../../components/demos/OperationsDemo';
 import PricingDemo from '../../../components/demos/PricingDemo';
+import BlockRenderer from '../../../components/studies/BlockRenderer';
 import { getProject, legacySlugs, projects } from '../../../content/projects';
+import { getStudy, studies } from '../../../content/studies';
 import { pageMetadata } from '../../../lib/seo';
 
 interface PageProps {
@@ -15,12 +17,14 @@ interface PageProps {
 }
 
 export function generateStaticParams() {
-  return [...projects.map((p) => p.slug), ...Object.keys(legacySlugs)].map((slug) => ({ slug }));
+  return [...projects.map((p) => p.slug), ...studies.map((s) => s.slug), ...Object.keys(legacySlugs)].map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
+  const study = getStudy(slug);
+  if (study) return pageMetadata({ title: study.title, description: study.summary, path: `/projetos/${slug}/` });
   if (!project) {
     return pageMetadata({ title: 'Projeto atualizado', description: 'Este endereço foi substituído por um projeto atual.', path: `/projetos/${slug}/`, noindex: true });
   }
@@ -43,9 +47,55 @@ function Block({ number, title, children }: { number: string; title: string; chi
   );
 }
 
+
+function entryOf(slug: string) {
+  return getProject(slug) ?? getStudy(slug)!;
+}
+
+function StudyView({ study }: { study: NonNullable<ReturnType<typeof getStudy>> }) {
+  const next = entryOf(study.next);
+  return (
+    <article className="wrap pb-24 pt-12">
+      <nav aria-label="Navegação estrutural" className="mb-10 text-sm text-muted">
+        <Link href="/projetos/" className="inline-flex items-center gap-2 hover:text-ink">
+          <Icon name="arrow" className="rotate-180" /> Projetos
+        </Link>
+      </nav>
+
+      <header className="mb-14">
+        <p className="eyebrow mb-5"><span className="text-accent-ink">{study.domain}</span> — {study.natureLabel}</p>
+        <h1 className="display text-[clamp(2.75rem,7vw,5.5rem)]">{study.title}</h1>
+        <p className="mt-6 max-w-2xl text-xl text-muted">{study.summary}</p>
+        <dl className="mt-8 grid max-w-3xl gap-x-8 gap-y-4 sm:grid-cols-2">
+          <div><dt className="eyebrow mb-1">Escopo</dt><dd>{study.scope}</dd></div>
+          <div><dt className="eyebrow mb-1">Acesso</dt><dd>{study.access}</dd></div>
+        </dl>
+      </header>
+
+      {study.sections.map((sec, i) => (
+        <Block key={sec.title} number={String(i + 1).padStart(2, '0')} title={sec.title}>
+          <BlockRenderer blocks={sec.blocks} />
+        </Block>
+      ))}
+
+      <section className="border-t border-rule pt-12" aria-labelledby="s-next">
+        <h2 id="s-next" className="eyebrow mb-4">Próxima leitura</h2>
+        <Link href={`/projetos/${next.slug}/`} className="group block">
+          <p className="display text-[clamp(2.5rem,6vw,4.5rem)] group-hover:text-accent-ink">
+            {next.title} <Icon name="arrow" size={36} className="inline" />
+          </p>
+          <p className="mt-2 text-muted">{next.summary}</p>
+        </Link>
+      </section>
+    </article>
+  );
+}
+
 export default async function ProjectPage({ params }: PageProps) {
   const { slug } = await params;
   const project = getProject(slug);
+  const study = getStudy(slug);
+  if (study) return <StudyView study={study} />;
 
   if (!project) {
     const target = legacySlugs[slug];
@@ -54,7 +104,7 @@ export default async function ProjectPage({ params }: PageProps) {
     return <LegacyRedirect to={dest.slug} title={dest.title} />;
   }
 
-  const next = getProject(project.next)!;
+  const next = entryOf(project.next);
   const meta: [string, string][] = [
     ['Natureza', project.natureLabel],
     ['Atuação', project.role],
@@ -158,6 +208,12 @@ export default async function ProjectPage({ params }: PageProps) {
           </figure>
         )}
       </Block>
+
+      {project.deepDive?.map((sec, i) => (
+        <Block key={sec.title} number={`05.${i + 1}`} title={sec.title}>
+          <BlockRenderer blocks={sec.blocks} />
+        </Block>
+      ))}
 
       <section className="border-t border-rule py-12" aria-labelledby="s-06">
         <h2 id="s-06" className="mb-8">

@@ -7,23 +7,11 @@ import Icon from '../ui/Icon';
 import ThemeToggle from './ThemeToggle';
 import { resumeFiles, site } from '../../content/site';
 import { withBasePath } from '../../lib/paths';
+import { HOME_SECTIONS, NAV, activeNavId, clickAction, currentSection } from '../../lib/navigation';
 
-const nav = [
-  { label: 'Início', href: '/', match: '/' },
-  { label: 'Projetos', href: '/projetos/', match: '/projetos' },
-  { label: 'Especialidades', href: '/#especialidades', match: '#especialidades' },
-  { label: 'Formação', href: '/educacao/', match: '/educacao' },
-  { label: 'Artigos', href: '/blog/', match: '/blog' },
-];
-
-/** Seção da home → item de navegação destacado ('none' = nenhum). */
-const sectionToNav: Record<string, string> = {
-  projetos: '/projetos',
-  especialidades: '#especialidades',
-  formacao: '/educacao',
-  artigos: '/blog',
-  contato: 'none',
-};
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+/** Linha de leitura (px a partir do topo) que define a seção atual: logo abaixo do cabeçalho. */
+const READING_LINE = 120;
 
 function ResumeMenu() {
   const [open, setOpen] = useState(false);
@@ -87,20 +75,22 @@ export default function Header() {
 
   useEffect(() => {
     if (pathname !== '/') return;
-    const ids = Object.keys(sectionToNav);
-    const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) if (e.isIntersecting) setSection(sectionToNav[e.target.id]);
-      },
-      { rootMargin: '-40% 0px -50% 0px' },
-    );
-    els.forEach((el) => io.observe(el));
-    const onScroll = () => window.scrollY < 300 && setSection('');
-    window.addEventListener('scroll', onScroll, { passive: true });
+    // Leitura barata (9 retângulos): roda direto no evento, sem depender de quadros de animação.
+    const update = () => {
+      const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      if (atBottom) return setSection(HOME_SECTIONS[HOME_SECTIONS.length - 1]);
+      const tops = HOME_SECTIONS.flatMap((id) => {
+        const el = document.getElementById(id);
+        return el ? [{ id, top: el.getBoundingClientRect().top }] : [];
+      });
+      setSection(currentSection(tops, READING_LINE));
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
     return () => {
-      io.disconnect();
-      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
     };
   }, [pathname]);
 
@@ -115,10 +105,28 @@ export default function Header() {
     };
   }, [open]);
 
-  const isActive = (match: string) => {
-    if (match === '/') return pathname === '/' && section === '';
-    if (pathname === '/') return section === match;
-    return !match.startsWith('#') && pathname.startsWith(match);
+  const activeId = activeNavId(pathname, section);
+  const activeIndex = NAV.findIndex((n) => n.id === activeId);
+
+  /** Estratégia única: na home, topo e âncoras rolam sem recarregar; nas demais páginas, o roteador navega. */
+  const go = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    const action = clickAction(pathname, href);
+    setOpen(false);
+    if (action.kind === 'navigate') return;
+    e.preventDefault();
+    const run = () => {
+      if (action.kind === 'top') {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        window.history.pushState(null, '', `${BASE}/`);
+        setSection('inicio');
+      } else {
+        document.getElementById(action.id)?.scrollIntoView({ block: 'start', behavior: 'instant' });
+        window.history.pushState(null, '', `${BASE}/#${action.id}`);
+      }
+    };
+    // A rolagem programática funciona mesmo com o menu móvel aberto (corpo travado): sem adiar.
+    run();
   };
 
   return (
@@ -128,23 +136,34 @@ export default function Header() {
       style={{ background: 'var(--header-bg)' }}
     >
       <div className="wrap flex h-16 items-center justify-between gap-6">
-        <Link href="/" className="flex items-baseline gap-2" aria-label={`${site.name} — início`}>
+        <Link href="/" onClick={(e) => go(e, '/')} className="flex items-baseline gap-2" aria-label={`${site.name} — início`}>
           <span className="display text-2xl">Evanilson Freitas</span>
         </Link>
 
-        <nav aria-label="Principal" className="hidden items-center gap-5 xl:flex">
-          {nav.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              aria-current={isActive(item.match) ? (pathname === '/' ? 'location' : 'page') : undefined}
-              className={`border-b pb-0.5 text-sm transition-colors ${
-                isActive(item.match) ? 'border-ink font-medium text-ink' : 'border-transparent text-muted hover:text-ink'
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+        <nav aria-label="Principal" className="hidden xl:block">
+          <ol className="flex items-start">
+            {NAV.map((item, i) => {
+              const current = activeId === item.id;
+              const reached = i <= activeIndex;
+              const last = i === NAV.length - 1;
+              return (
+                <li key={item.id} className={`flex flex-col ${last ? '' : 'pr-4'}`}>
+                  <Link
+                    href={item.href}
+                    onClick={(e) => go(e, item.href)}
+                    aria-current={current ? (pathname === '/' ? 'location' : 'page') : undefined}
+                    className={`text-sm leading-5 transition-colors ${current ? 'font-semibold text-ink' : 'text-muted hover:text-ink'}`}
+                  >
+                    {item.label}
+                  </Link>
+                  <span className="mt-1.5 flex items-center" aria-hidden="true">
+                    <span className={`h-2 w-2 shrink-0 rounded-full ${reached ? 'bg-muted' : 'bg-line'} ${current ? '!bg-ink' : ''}`} />
+                    {!last && <span className={`ml-2 h-px flex-1 ${i < activeIndex ? 'bg-muted' : 'bg-line'} ${i === activeIndex ? 'nav-next' : ''}`} />}
+                  </span>
+                </li>
+              );
+            })}
+          </ol>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -169,17 +188,29 @@ export default function Header() {
     {open && (
       <div id="menu-mobile" className="fixed inset-x-0 top-16 bottom-0 z-30 overflow-y-auto bg-paper xl:hidden">
         <nav aria-label="Principal (móvel)" className="wrap flex flex-col py-6">
-          {nav.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              onClick={() => setOpen(false)}
-              aria-current={isActive(item.match) ? (pathname === '/' ? 'location' : 'page') : undefined}
-              className="display border-b border-line py-4 text-4xl"
-            >
-              {item.label}
-            </Link>
-          ))}
+          <ol>
+            {NAV.map((item, i) => {
+              const current = activeId === item.id;
+              const reached = i <= activeIndex;
+              const last = i === NAV.length - 1;
+              return (
+                <li key={item.id} className="relative flex gap-5">
+                  <span className="relative flex w-2 shrink-0 flex-col items-center pt-[1.15rem]" aria-hidden="true">
+                    <span className={`h-2 w-2 shrink-0 rounded-full ${current ? 'bg-ink' : reached ? 'bg-muted' : 'bg-line'}`} />
+                    {!last && <span className={`mt-1 w-px flex-1 ${i < activeIndex ? 'bg-muted' : 'bg-line'} ${i === activeIndex ? 'nav-next nav-next-v' : ''}`} />}
+                  </span>
+                  <Link
+                    href={item.href}
+                    onClick={(e) => go(e, item.href)}
+                    aria-current={current ? (pathname === '/' ? 'location' : 'page') : undefined}
+                    className={`display py-2.5 text-3xl ${current ? 'text-ink' : 'text-muted'}`}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ol>
           <div className="mt-8 flex flex-wrap gap-3">
             {[resumeFiles.pdf, resumeFiles.docx].map((f) => (
               <a key={f.path} href={withBasePath(f.path)} download className="btn btn-ghost">

@@ -8,6 +8,14 @@ export const incorrectClaims: { id: string; pattern: RegExp }[] = [
   { id: 'empresa-red-cargas', pattern: /Red\s+Cargas/i },
   { id: 'mestrado-engenharia-software', pattern: /Mestrado\s+em\s+Engenharia\s+de\s+Software/i },
   { id: 'cargo-analista-controladoria', pattern: /Analista\s+de\s+Controladoria/i },
+  // Dados confidenciais: nomes de clientes e sistemas internos não são publicados.
+  { id: 'confidencial-tragetta', pattern: /Tragetta/i },
+  { id: 'confidencial-solistica', pattern: /Solistica/i },
+  { id: 'confidencial-zeus', pattern: /\bZeus\b/ },
+  // Títulos formais que o proprietário não declarou.
+  { id: 'titulo-dba', pattern: /\bDBA\b/ },
+  { id: 'titulo-arquiteto', pattern: /Arquiteto\s+de\s+(Software|Solu[çc][õo]es|Dados)/i },
+  { id: 'titulo-tech-lead', pattern: /\bTech\s+Lead\b|\bHead\s+of\s+[A-Z]/ },
 ];
 
 export function findIncorrectClaims(text: string): string[] {

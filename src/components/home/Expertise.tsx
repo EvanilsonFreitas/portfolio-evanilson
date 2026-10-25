@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Reveal from '../ui/Reveal';
 import SectionHead from '../ui/SectionHead';
+import HeroFigure from './HeroFigure';
 import { expertise } from '../../content/expertise';
 import { evidenceLabels } from '../../content/types';
 
@@ -8,9 +9,18 @@ export default function Expertise() {
   return (
     <section id="especialidades" className="section">
       <div className="wrap">
-        <SectionHead number="02" label="Especialidades" title="O que resolvo, e onde está a evidência.">
+        <SectionHead number="05" label="Especialidades" title="O que resolvo, e onde está a evidência.">
           <p>Cada área aponta para projetos, formação ou artigos. A natureza da evidência está sempre indicada.</p>
         </SectionHead>
+
+        <div className="mb-14 grid items-center gap-8 lg:grid-cols-12">
+          <p className="max-w-xl text-lg text-muted lg:col-span-6">
+            O caminho comum às seis áreas: fontes diversas viram um modelo, o modelo sustenta uma API e uma interface, e o resultado é um indicador para decisão.
+          </p>
+          <div className="lg:col-span-6">
+            <HeroFigure />
+          </div>
+        </div>
 
         <div className="border-t border-rule">
           {expertise.map((p) => (

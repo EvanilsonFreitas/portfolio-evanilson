@@ -1,0 +1,48 @@
+---
+title: "RAG e agentes: como pensar IA aplicada sem prometer o que não existe"
+date: "2026-10-21"
+excerpt: "Recuperação aumentada por geração e agentes com ferramentas, vistos pela ótica de engenharia: arquitetura, avaliação, limites e segurança."
+tags: ["IA Aplicada", "RAG", "Agentes", "Arquitetura"]
+author: "Evanilson Freitas"
+---
+
+# RAG e agentes: como pensar IA aplicada sem prometer o que não existe
+
+Este é um estudo de arquitetura. Não descreve um sistema meu em produção: trata do raciocínio de engenharia necessário antes de colocar um modelo de linguagem para trabalhar com dados de uma organização.
+
+## RAG em duas fases
+
+RAG (recuperação aumentada por geração) separa o conhecimento do modelo. Os documentos são preparados e indexados uma vez; a cada pergunta, apenas os trechos relevantes são entregues ao modelo como contexto.
+
+<Flow id="rag-ingestao" caption="Ingestão: documentos até o índice vetorial (conceitual)" />
+
+Na ingestão, a decisão que mais pesa é o tamanho dos trechos. Trechos longos diluem a relevância; trechos curtos perdem o contexto. Guardar a origem de cada trecho (documento, página, versão) é o que permite citar a fonte depois.
+
+<Flow id="rag-consulta" caption="Consulta: pergunta, recuperação e resposta com fontes (conceitual)" />
+
+Na consulta, o modelo deve responder **apenas** com base no que foi recuperado e dizer quando a recuperação não basta. Uma resposta fluente sem base é pior que uma recusa.
+
+## Agentes com ferramentas
+
+Um agente decide qual ferramenta chamar, observa o resultado e repete até concluir.
+
+<Flow id="agente-ia" caption="Ciclo de um agente com ferramentas (conceitual)" />
+
+Esse poder pede restrição: cada ferramenta com o mínimo de permissão, limite de passos e confirmação humana para ações com efeito, como gravar ou enviar.
+
+## Riscos e mitigações
+
+| Risco | Mitigação |
+|-------|-----------|
+| Resposta sem base nos documentos | Exigir citação do trecho e recusar quando a recuperação for fraca |
+| Instruções escondidas em documentos | Tratar o conteúdo recuperado como dado, nunca como comando |
+| Vazamento de dados sensíveis | Filtrar por permissão antes da recuperação |
+| Qualidade que muda sem aviso | Conjunto fixo de perguntas de teste, reavaliado a cada mudança |
+
+## Avaliar antes de confiar
+
+Sem avaliação, "parece bom" vira critério. O mínimo é um conjunto fixo de perguntas com respostas esperadas e a medição de duas coisas separadas: se a recuperação trouxe o trecho certo e se a resposta o usou corretamente. Quando algo piora, saber qual das duas falhou economiza semanas.
+
+## Em resumo
+
+RAG e agentes são arquitetura, dados e avaliação, com o modelo como uma peça. O que sustenta uma solução confiável é o que está em volta dele: fontes bem preparadas, permissões, limites e testes. Enquanto isso não existe, o honesto é chamar de estudo.
