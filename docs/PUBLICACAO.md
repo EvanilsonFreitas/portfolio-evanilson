@@ -1,14 +1,18 @@
 # Publicação manual
 
-O projeto é um site estático (`output: "export"`). **Não há CI/CD nem deploy automático.** Os comandos abaixo são executados manualmente, em PowerShell, a partir da raiz do repositório. O procedimento de criação da branch foi testado em um clone descartável com remoto local; a publicação real não foi executada.
+O projeto é um site estático (`output: "export"`). **Não há CI/CD, GitHub Actions nem deploy automático**, e a publicação é sempre manual. Comandos em PowerShell (ou Git Bash), a partir da raiz do repositório.
 
-## 1. Situação do GitHub Pages (diagnóstico)
+## 1. Ambientes (V3.2.2)
 
-- Fonte configurada no repositório: branch `master`, pasta `/` (modo legado, com Jekyll).
-- Por isso a URL pública exibe o `README` do repositório: o Pages publica os arquivos do código-fonte, não o build do Next.js.
-- A branch `gh-pages` não existe no remoto.
+| Ambiente | URL | Como é publicado | Origem canônica (`SITE_ORIGIN`) |
+|---|---|---|---|
+| GitHub Pages | https://evanilsonfreitas.github.io/portfolio-evanilson/ | branch `gh-pages` (raiz), com o artefato de `dist/github-pages`; Pages em *Deploy from a branch* | `https://evanilsonfreitas.github.io` (padrão), basePath `/portfolio-evanilson` |
+| Vercel | https://portfolio-evanilson.vercel.app/ | `vercel deploy --prebuilt --prod` com o artefato de `dist/vercel/.vercel/output` | `https://portfolio-evanilson.vercel.app`, sem basePath |
 
-Correção: publicar o build estático em uma branch `gh-pages` e apontar o Pages para ela.
+- O mesmo código gera os dois destinos; muda apenas `DEPLOY_TARGET` (basePath e URL pública).
+- Cada ambiente é canônico de si mesmo (canonical, Open Graph, sitemap e robots usam a própria origem). Não há redirecionamento entre eles.
+- Projeto Vercel: `portfolio-evanilson`, scope `evan-b357` (conta pessoal, plano Hobby). O projeto **não está ligado ao GitHub**, então nada é publicado por push. Outros projetos do scope (por exemplo `marivan-finance`) não fazem parte deste.
+- A vinculação (`.vercel/project.json`) fica só em `dist/vercel/.vercel/` e em uma pasta temporária; não é versionada.
 
 ## 2. Validar e gerar os artefatos
 
@@ -23,123 +27,92 @@ Executa typecheck, lint, testes, os dois builds e a verificação de links e met
 | `npm run build:pages` | `dist/github-pages` (com `.nojekyll`, prefixo `/portfolio-evanilson`) |
 | `npm run check:pages` | confere links, assets, canonical, sitemap e downloads |
 | `npm run preview:pages` | serve o artefato em `http://localhost:4173/portfolio-evanilson/` |
-| `npm run build:vercel` | `dist/vercel/.vercel/output` (sem prefixo) |
+| `npm run build:vercel` | `dist/vercel/.vercel/output` (Build Output API v3, sem prefixo) |
 | `npm run check:vercel` | idem, para o destino Vercel |
 | `npm run preview:vercel` | serve o artefato em `http://localhost:4173/` |
 
-`dist/` não é versionado. O build remove `assets/curriculo` do artefato: a fotografia só existe dentro do PDF e do DOCX, não como arquivo avulso no site. A verificação (`check:*`) falha se ela aparecer.
+`dist/` não é versionado. O build remove dos artefatos os insumos que não devem ser públicos: `assets/curriculo`, `resume/Foto_Curriculo.jpg` e `resume/Logo_Animeted.svg`. A verificação falha se algum aparecer.
 
-## 3. GitHub Pages (branch `gh-pages`)
+## 3. GitHub Pages
 
-Nunca use `--force`. A branch `master` continua sendo a fonte do projeto.
-
-### 3.1 Conferir o remoto
+Nunca use `--force`. A `master` é a fonte do projeto; a `gh-pages` contém só o artefato.
 
 ```powershell
-git fetch origin
-git ls-remote --heads origin gh-pages
-```
-
-Sem saída: a branch não existe (caso A). Com saída: existe (caso B). No caso B, inspecione o conteúdo antes de qualquer substituição:
-
-```powershell
-git ls-tree -r --name-only origin/gh-pages
-```
-
-### 3.2 Caso A: criar a branch (primeira publicação)
-
-Usa um worktree separado, para não tocar no working tree do projeto.
-
-```powershell
-git worktree add --no-checkout --detach ..\portfolio_Evan_pages
-Set-Location ..\portfolio_Evan_pages
-git checkout --orphan gh-pages
-git rm -r -q --cached .   # a branch órfã herda o índice do código-fonte; limpe antes de copiar
-robocopy ..\portfolio_Evan\dist\github-pages . /E /XD .git
-git -c core.autocrlf=false add --all
-git status
-git commit -m "chore(pages): publica build estático"
-git push -u origin gh-pages
-Set-Location ..\portfolio_Evan
-git worktree remove ..\portfolio_Evan_pages
-```
-
-Confira com `git ls-files` que só existem arquivos do build (sem `src`, `public` ou `package.json`) antes de fazer o commit.
-
-`robocopy` retorna códigos de 0 a 7 em caso de sucesso (não é erro).
-
-### 3.3 Caso B: atualizar uma branch existente
-
-```powershell
+npm run check
 git worktree add ..\portfolio_Evan_pages gh-pages
 Set-Location ..\portfolio_Evan_pages
 git rm -r -q .
 robocopy ..\portfolio_Evan\dist\github-pages . /E /XD .git
 git -c core.autocrlf=false add --all
-git status
-git commit -m "chore(pages): atualiza build estático"
+git commit -m "chore(pages): publica <versão>"
 git push origin gh-pages
 Set-Location ..\portfolio_Evan
 git worktree remove ..\portfolio_Evan_pages
 ```
 
-### 3.4 Configurar o Pages (ação remota, requer autorização)
+- `robocopy` retorna códigos de 0 a 7 em caso de sucesso.
+- Confira com `git ls-files` que só existem arquivos do build (sem `src`, `package.json` ou `docs`) antes do commit.
+- A fonte do Pages (**gh-pages**, `/`) já está configurada. Para refazer: `gh api -X PUT repos/EvanilsonFreitas/portfolio-evanilson/pages -f "source[branch]=gh-pages" -f "source[path]=/"`.
+- Estado: `gh api repos/EvanilsonFreitas/portfolio-evanilson/pages/builds/latest` deve retornar `built` no commit publicado.
+- Reverter: `git revert <commit>` na `gh-pages` e push normal.
 
-Interface: **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch `gh-pages`, pasta `/ (root)`**.
+## 4. Vercel (publicação manual por artefato pré-compilado)
 
-Ou pela API (`gh` autenticado):
-
-```powershell
-gh api -X PUT repos/EvanilsonFreitas/portfolio-evanilson/pages -f "source[branch]=gh-pages" -f "source[path]=/"
-```
-
-Depois da publicação, confirme:
+O build usa `DEPLOY_TARGET=vercel` e formato **Build Output API v3** (`.vercel/output/static` e `config.json` com `"version": 3`). Enviar a pasta `out` crua com `--prebuilt` não funciona.
 
 ```powershell
-gh api repos/EvanilsonFreitas/portfolio-evanilson/pages/builds/latest
-curl.exe -s https://evanilsonfreitas.github.io/portfolio-evanilson/ | Select-String "<title>"
-```
-
-O título deve ser o do portfólio, não o do README. Teste também os downloads em `/resume/`.
-
-### 3.5 Reverter
-
-Volte a fonte do Pages para `master` (3.4) ou reverta o commit na `gh-pages` (`git revert <commit>` e push normal).
-
-## 4. Vercel
-
-O build para a Vercel usa a raiz do domínio (sem `/portfolio-evanilson`) e segue o formato **Build Output API v3** (`.vercel/output/static` + `config.json` com `"version": 3`), documentado em vercel.com/docs/build-output-api. O comando `vercel deploy --prebuilt` publica exatamente o conteúdo de `.vercel/output`. Enviar a pasta `out` crua com `--prebuilt` não funciona; por isso o script monta a estrutura.
-
-Antes do build, defina o domínio real (afeta canonical, sitemap e Open Graph). O padrão `https://portfolio-evanilson.vercel.app` é apenas uma suposição:
-
-```powershell
-$env:SITE_ORIGIN = "https://SEU-DOMINIO"
+$env:SITE_ORIGIN = "https://portfolio-evanilson.vercel.app"
 npm run build:vercel
 npm run check:vercel
 ```
 
-Publicação (ações com conta Vercel, requerem autorização):
+Publicação (a CLI precisa estar autenticada: `npx vercel whoami`). O vínculo é copiado para dentro do artefato, pois o `build` recria `dist/vercel`:
 
 ```powershell
-npx vercel@latest login
-Set-Location dist\vercel
-npx vercel link
-npx vercel deploy --prebuilt          # prévia
-npx vercel deploy --prebuilt --prod   # produção
+# vínculo temporário (uma vez por máquina): cria/reaproveita o projeto
+New-Item -ItemType Directory -Force $env:TEMP\vercel-link | Out-Null
+Set-Location $env:TEMP\vercel-link
+npx vercel@latest link --yes --project portfolio-evanilson --scope evan-b357
+
+# depois do build
+Copy-Item $env:TEMP\vercel-link\.vercel\project.json C:\Desenvolvimento\portfolio_Evan\dist\vercel\.vercel\project.json
+Set-Location C:\Desenvolvimento\portfolio_Evan\dist\vercel
+npx vercel@latest deploy --prebuilt --prod --yes --scope evan-b357
 ```
 
-Não conecte o repositório Git à Vercel se a intenção é manter a publicação manual.
+- Não conecte o repositório Git ao projeto (evita deploys automáticos).
+- Não use `--force` sem motivo técnico.
+- Reverter: `npx vercel@latest rollback` (ou promover um deployment anterior no painel).
+- O `.env.local` criado pelo `link` fica na pasta temporária e não deve ser copiado nem versionado.
 
-## 5. Currículo
+## 5. Validar uma publicação
+
+1. `npm run check` sem falhas; artefato gerado a partir do commit publicado (`git status` limpo).
+2. Status: Pages `built` no commit da `gh-pages`; Vercel `Ready` (`npx vercel inspect <url>`).
+3. HTTP e integridade: páginas, `sitemap.xml`, `robots.txt`, `favicon.ico`, `manifest.webmanifest`, `assets/brand/*`, diploma e currículos. Compare o hash dos três currículos com `public/resume/`.
+4. Confirme que `Foto_Curriculo.jpg`, `Logo_Animeted.svg` e `assets/curriculo/*` retornam 404.
+5. No navegador: console sem erros, Experiência com os cargos corretos, navegação (menu, breadcrumbs, Back/Forward) e favicon.
+
+## 6. Currículos
+
+Os três arquivos em `public/resume` são gerados a partir de `src/content` (`site.ts`, `career.ts`, `education.ts`, `projects` do gerador):
 
 ```powershell
 Set-Location tools\resume; npm install; Set-Location ..\..   # uma vez
-npm run resume
+npm run resume                                              # requer Chrome ou Edge para o PDF
 ```
 
-Coloque a fotografia profissional em `public/resume/Foto_Curriculo.jpg` (retrato, ao menos 900 × 1200 px; o gerador usa o recorte quadrado a partir do topo). Ela não é publicada: o build a remove do artefato. e rode `npm run resume` de novo. Sem o arquivo, o PDF e o DOCX são gerados sem foto.
+A fotografia vem de `public/resume/Foto_Curriculo.jpg` (retrato, ao menos 900 × 1200 px; usa-se o recorte quadrado a partir do topo). Ela não é publicada. Para o texto do perfil, edite `resumeSummary` em `src/content/site.ts`.
 
-## 6. Versionamento
+## 7. Histórico profissional
+
+O histórico formal está em `src/content/career.ts` (`employment`: empresas, cargos, períodos, modalidade, competências). Datas em `AAAA-MM`; cargo atual não tem `end`. Durações são calculadas (`src/lib/career.ts`, contagem inclusiva e união de períodos). Depois de editar, rode `npm test` e `npm run resume`.
+
+## 8. Ícones e marca
+
+`npm run brand` deriva os ícones do monograma original (`public/assets/perfil/Monograma EP Preto em Fundo Transparente.png`) e a miniatura do retrato do emblema (`public/resume/Logo_Animeted.svg`) para `public/assets/brand` e `public/favicon.ico`.
+
+## 9. Versionamento
 
 Commits e PRs descrevem apenas a mudança técnica, sem trailers de coautoria. Confira antes de cada commit:
 
