@@ -84,17 +84,18 @@ Power BI está confirmado pelo proprietário para os **sete projetos de BI comer
 
 ### Tecnologia dos painéis em Excel de coleta e extravio (V3.3.1)
 
-O proprietário corrigiu a arquitetura: **Gestão de Coletas e Logística Reversa não foi desenvolvida em Power BI**. É uma solução em Excel (interface analítica), com VBA (automação), Power Query (M) (tratamento e transformação dos dados), Power Pivot (modelagem analítica) e Tabelas Dinâmicas, com atualização automatizada. A inscrição "Power BI · Operacional (Coletas)" exibida na captura é a **fonte de dados** consumida, não a plataforma do painel.
+O proprietário corrigiu a arquitetura: **Gestão de Coletas e Logística Reversa não foi desenvolvida em Power BI**. É uma solução em Excel (interface analítica), com VBA (automação), Power Query (M) (tratamento e transformação dos dados) e Power Pivot (modelagem analítica), com atualização automatizada. A inscrição "Power BI · Operacional (Coletas)" exibida na captura é a **fonte de dados** consumida, não a plataforma do painel.
 
 | Case | Tecnologias atribuídas |
 |---|---|
-| Gestão de Coletas e Logística Reversa | Excel, VBA, Power Query (M), Power Pivot, Tabelas Dinâmicas |
-| Consolidado Operacional e Ranking de Filiais (inclui o Controle de Extravio) | Excel, VBA, Power Query (M), Tabelas Dinâmicas |
+| Gestão de Coletas e Logística Reversa | Excel, VBA, Power Query (M), Power Pivot |
+| Consolidado Operacional e Ranking de Filiais (inclui o Controle de Extravio) | Excel, VBA, Power Query (M) |
+| Índice de Retorno | Excel, VBA, Power Pivot |
 
-- **Power Pivot não é Tabelas Dinâmicas (PivotTable).** Power Pivot só consta onde foi confirmado (Gestão de Coletas); no Consolidado não é atribuído.
+- **Tabelas Dinâmicas** (PivotTable) foram retiradas das tecnologias por decisão do proprietário: não constam em nenhum case, na taxonomia nem nos filtros. Power Pivot só consta onde foi confirmado (Gestão de Coletas e Índice de Retorno); no Consolidado não é atribuído. No Índice de Retorno, o proprietário confirmou VBA e Power Pivot; o Excel é o ambiente que ambos implicam, e Power Query (M) não é atribuído.
 - Os cases separam a **fonte de dados** das **tecnologias de implementação** em uma seção própria. Power BI e DAX não são atribuídos a esses dois cases.
 - "Inteligência operacional" continua sendo a classificação analítica (tipo de solução e categoria "BI Operacional"); não indica a ferramenta Microsoft Power BI.
-- **Não atribuídas** aos demais painéis (Comprovantes Retidos, Índice de Retorno, Ocorrências na Origem, Desvio Operacional · GRU, Pendências de Digitalização) nem aos sete projetos em Excel/VBA, que seguem com as tecnologias já confirmadas. Prazo de Coleta mantém Power BI (identificação do arquivo de evidência, confirmação formal pendente). Qualquer ampliação depende de confirmação individual.
+- **Não atribuídas** aos demais painéis (Comprovantes Retidos, Ocorrências na Origem, Desvio Operacional · GRU, Pendências de Digitalização) nem aos sete projetos em Excel/VBA, que seguem com as tecnologias já confirmadas. Prazo de Coleta mantém Power BI (identificação do arquivo de evidência, confirmação formal pendente). Qualquer ampliação depende de confirmação individual.
 
 ### Entregas independentes confirmadas
 

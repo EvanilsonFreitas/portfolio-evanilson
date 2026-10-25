@@ -36,7 +36,6 @@ export const technologies = [
   { id: 'vba', label: 'VBA' },
   { id: 'power-query', label: 'Power Query (M)' },
   { id: 'power-pivot', label: 'Power Pivot' },
-  { id: 'tabelas-dinamicas', label: 'Tabelas Dinâmicas' },
   { id: 'python', label: 'Python' },
   { id: 'sql-server', label: 'SQL Server' },
   { id: 'sharepoint', label: 'SharePoint' },

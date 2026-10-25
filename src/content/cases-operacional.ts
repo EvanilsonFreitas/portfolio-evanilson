@@ -12,11 +12,10 @@ const IMPLEMENTATION = 'Tecnologias de implementação';
 
 /**
  * Gestão de Coletas e Logística Reversa é uma solução em Excel (não Power BI). "Power BI · Operacional (Coletas)",
- * exibido na captura, é a fonte de dados consumida. Power Pivot (modelo) e Tabelas Dinâmicas (PivotTable) são
- * ferramentas distintas e não se confundem.
+ * exibido na captura, é a fonte de dados consumida.
  */
 const COLETAS_NOTE =
-  'Construído em Excel (interface analítica), confirmado pelo proprietário, com VBA (automação), Power Query (M) (tratamento e transformação), Power Pivot (modelagem analítica) e Tabelas Dinâmicas. "Power BI · Operacional (Coletas)" é a fonte de dados consumida; Power BI não é a plataforma do painel e não é atribuído.';
+  'Construído em Excel (interface analítica), confirmado pelo proprietário, com VBA (automação), Power Query (M) (tratamento e transformação), Power Pivot (modelagem analítica). "Power BI · Operacional (Coletas)" é a fonte de dados consumida; Power BI não é a plataforma do painel e não é atribuído.';
 
 const coletasImplementation = sec(
   IMPLEMENTATION,
@@ -28,15 +27,32 @@ const coletasImplementation = sec(
       ['Automação', 'VBA'],
       ['Tratamento e transformação dos dados', 'Power Query (M)'],
       ['Modelagem analítica', 'Power Pivot'],
-      ['Análise e consolidação', 'Tabelas Dinâmicas'],
       ['Fonte de dados', 'Power BI · Operacional (Coletas)'],
+    ],
+  ),
+);
+
+/** Índice de Retorno: solução em Excel com VBA e Power Pivot; Power Query (M) não está confirmado. */
+const INDICE_NOTE =
+  'VBA (automação) e Power Pivot (modelagem analítica), confirmados pelo proprietário, o que implica Excel como ambiente. Power Query (M) não está confirmado para este case e não são atribuídos. Power BI não é atribuído como plataforma.';
+
+const indiceImplementation = sec(
+  IMPLEMENTATION,
+  p('A solução foi construída em Excel, com automação em VBA e modelagem analítica em Power Pivot. A fonte de dados exibida no cabeçalho do painel é a origem da informação consumida, distinta das tecnologias de implementação.'),
+  table(
+    ['Camada', 'Tecnologia'],
+    [
+      ['Ambiente', 'Excel'],
+      ['Automação', 'VBA'],
+      ['Modelagem analítica', 'Power Pivot'],
+      ['Fonte de dados', 'TMS · Relatório operacional de entregas e coletas não efetuadas'],
     ],
   ),
 );
 
 /** Consolidado (inclui o Controle de Extravio): solução em Excel; Power Pivot não está confirmado para ela. */
 const CONSOLIDADO_NOTE =
-  'Solução em Excel com VBA (automação), Power Query (M) (tratamento e transformação) e Tabelas Dinâmicas, confirmados pelo proprietário para as soluções de extravio. Power Pivot não está confirmado para este case e não é atribuído. Power BI não é atribuído como plataforma.';
+  'Solução em Excel com VBA (automação), e Power Query (M) (tratamento e transformação), confirmados pelo proprietário para as soluções de extravio. Power Pivot não está confirmado para este case e não é atribuído. Power BI não é atribuído como plataforma.';
 
 const consolidadoImplementation = sec(
   IMPLEMENTATION,
@@ -47,7 +63,6 @@ const consolidadoImplementation = sec(
       ['Ambiente', 'Excel'],
       ['Automação', 'VBA'],
       ['Tratamento e transformação dos dados', 'Power Query (M)'],
-      ['Análise e consolidação', 'Tabelas Dinâmicas'],
     ],
   ),
 );
@@ -101,8 +116,8 @@ export const casesOperacional: Case[] = [
       'Percentual de entregas não realizadas sobre as planejadas, frente a uma meta, com comparação por região e filial, evolução anual e tendência diária do mês.',
     category: 'bi-operacional',
     types: ['dashboard', 'inteligencia-operacional'],
-    tech: [],
-    techNote: UNCONFIRMED,
+    tech: ['excel', 'vba', 'power-pivot'],
+    techNote: INDICE_NOTE,
     caseType: 'completo',
     natureLabel: CORPORATE,
     images: [{ id: 'indice-retorno' }],
@@ -141,10 +156,11 @@ export const casesOperacional: Case[] = [
           'Nas visões por filial, as barras acima da meta aparecem em vermelho e as dentro da meta, em verde.',
         ]),
       ),
+      indiceImplementation,
       sec('Aplicação', p('Mostra onde o retorno de entregas está acima da meta, por região, filial e dia, e como o resultado do ano corrente se compara ao do ano anterior.')),
     ],
     related: ['gestao-coletas-logistica-reversa', 'prazo-coleta'],
-    pending: [open('Confirmar a plataforma e a forma de atualização.')],
+    pending: [open('Confirmar a forma de atualização e se Power Query (M) participa da solução.')],
   },
   {
     id: 'ocorrencias-origem',
@@ -198,7 +214,7 @@ export const casesOperacional: Case[] = [
       'Consolidado de ocorrências ativas com ranking de filiais e ranking regional no Brasil, evolução diária e acompanhamento dos casos, em duas apresentações do painel.',
     category: 'bi-operacional',
     types: ['dashboard', 'inteligencia-operacional'],
-    tech: ['excel', 'vba', 'power-query', 'tabelas-dinamicas'],
+    tech: ['excel', 'vba', 'power-query'],
     techNote: CONSOLIDADO_NOTE,
     caseType: 'completo',
     natureLabel: CORPORATE,
@@ -255,7 +271,7 @@ export const casesOperacional: Case[] = [
       'Desempenho das coletas dentro do prazo frente à meta de 96%, por filial, região e semana, com o recorte de logística reversa e a regra de apuração declarada no próprio painel.',
     category: 'bi-operacional',
     types: ['dashboard', 'inteligencia-operacional'],
-    tech: ['excel', 'vba', 'power-query', 'power-pivot', 'tabelas-dinamicas'],
+    tech: ['excel', 'vba', 'power-query', 'power-pivot'],
     techNote: COLETAS_NOTE,
     caseType: 'completo',
     natureLabel: CORPORATE,

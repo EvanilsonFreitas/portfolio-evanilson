@@ -195,13 +195,14 @@ test('as tecnologias atribuídas correspondem às confirmadas pelo autor', () =>
     'painel-frete-kg': ['power-bi'],
     'painel-analise-mercado': ['power-bi'],
     'painel-produtividade-comercial': ['power-bi'],
-    // Soluções em Excel. Power Pivot (modelo) e Tabelas Dinâmicas (PivotTable) são ferramentas distintas.
-    'gestao-coletas-logistica-reversa': ['excel', 'vba', 'power-query', 'power-pivot', 'tabelas-dinamicas'],
-    'consolidado-ranking-filiais-brasil': ['excel', 'vba', 'power-query', 'tabelas-dinamicas'],
+    // Soluções em Excel. Power Pivot só consta onde foi confirmado.
+    'gestao-coletas-logistica-reversa': ['excel', 'vba', 'power-query', 'power-pivot'],
+    'consolidado-ranking-filiais-brasil': ['excel', 'vba', 'power-query'],
+    'indice-retorno': ['excel', 'vba', 'power-pivot'],
   };
   for (const c of cases) assert.deepEqual([...c.tech].sort(), [...(confirmed[c.slug] ?? [])].sort(), `${c.slug}: tecnologias`);
   // Painéis com captura e sem confirmação não recebem ferramenta por parecerem dashboards.
-  for (const slug of ['comprovantes-retidos', 'indice-retorno', 'ocorrencias-origem', 'desvio-operacional-operacao-gru', 'pendencias-digitalizacao']) {
+  for (const slug of ['comprovantes-retidos', 'ocorrencias-origem', 'desvio-operacional-operacao-gru', 'pendencias-digitalizacao']) {
     assert.deepEqual(getCase(slug)!.tech, [], slug);
   }
   // Materiais de comunicação não são software.
@@ -214,28 +215,32 @@ test('as tecnologias atribuídas correspondem às confirmadas pelo autor', () =>
 test('as soluções de coleta e extravio são em Excel; Power BI é só a fonte de dados, nunca a plataforma', () => {
   const slugs = ['gestao-coletas-logistica-reversa', 'consolidado-ranking-filiais-brasil'];
   assert.deepEqual(cases.filter((c) => c.tech.includes('power-query')).map((c) => c.slug).sort(), [...slugs].sort());
-  assert.deepEqual(cases.filter((c) => c.tech.includes('tabelas-dinamicas')).map((c) => c.slug).sort(), [...slugs].sort());
-  assert.deepEqual(cases.filter((c) => c.tech.includes('power-pivot')).map((c) => c.slug), ['gestao-coletas-logistica-reversa']);
+  assert.ok(!technologies.some((t) => (t.id as string) === 'tabelas-dinamicas'), 'Tabelas Dinâmicas não é tecnologia do catálogo');
+  assert.deepEqual(cases.filter((c) => c.tech.includes('power-pivot')).map((c) => c.slug).sort(), ['gestao-coletas-logistica-reversa', 'indice-retorno']);
   assert.equal(technologies.find((t) => t.id === 'power-query')!.label, 'Power Query (M)');
   assert.equal(technologies.find((t) => t.id === 'power-pivot')!.label, 'Power Pivot');
-  assert.equal(technologies.find((t) => t.id === 'tabelas-dinamicas')!.label, 'Tabelas Dinâmicas');
   for (const slug of slugs) {
     const c = getCase(slug)!;
     assert.ok(c.sections.some((s) => s.title === 'Tecnologias de implementação'), `${slug}: sem a seção de tecnologias`);
     const text = caseText(slug);
-    for (const nome of ['Excel', 'VBA', 'Power Query (M)', 'Tabelas Dinâmicas']) assert.ok(text.includes(nome), `${slug}: ${nome}`);
+    for (const nome of ['Excel', 'VBA', 'Power Query (M)']) assert.ok(text.includes(nome), `${slug}: ${nome}`);
     assert.ok(!c.tech.includes('power-bi') && !c.tech.includes('dax'), slug);
     // Fora do rótulo da fonte de dados, Power BI não aparece no texto.
     assert.doesNotMatch(text.replaceAll('Power BI · Operacional (Coletas)', ''), /Power BI/, slug);
   }
-  // Power Pivot e Tabelas Dinâmicas não se confundem: Power Pivot só consta onde foi confirmado.
+  // Power Pivot só consta onde foi confirmado.
   assert.doesNotMatch(caseText('consolidado-ranking-filiais-brasil'), /Power Pivot/);
   assert.match(caseText('gestao-coletas-logistica-reversa'), /Power Pivot/);
   // O rótulo de fonte de dados é distinto da tecnologia de implementação.
   const fonte = getCase('gestao-coletas-logistica-reversa')!.sections.find((s) => s.title === 'Tecnologias de implementação')!;
   assert.match(blocksText(fonte.blocks).join(' '), /não a plataforma em que o painel foi desenvolvido/);
+  // Índice de Retorno: VBA e Power Pivot confirmados; Power Query (M) não.
+  const indice = getCase('indice-retorno')!;
+  assert.deepEqual([...indice.tech].sort(), ['excel', 'power-pivot', 'vba']);
+  assert.ok(indice.sections.some((s) => s.title === 'Tecnologias de implementação'));
+  assert.doesNotMatch(caseText('indice-retorno'), /Power BI|Power Query/);
   // Nenhuma página em Excel ou de coleta atribui Power BI como ferramenta de construção.
-  for (const c of cases.filter((x) => x.category === 'excel-automacao' || slugs.includes(x.slug))) assert.ok(!c.tech.includes('power-bi'), c.slug);
+  for (const c of cases.filter((x) => x.category === 'excel-automacao' || [...slugs, 'indice-retorno'].includes(x.slug))) assert.ok(!c.tech.includes('power-bi'), c.slug);
 });
 
 test('os painéis em Excel são descritos como automatizados, nunca como manuais', () => {

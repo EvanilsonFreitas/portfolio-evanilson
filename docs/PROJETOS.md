@@ -41,10 +41,10 @@ Gerado por `node tools/inventory.mjs` a partir de `src/content/catalog.ts`. A fo
 | Gestão de Seguros | Excel e Automação | Excel, VBA | Novo | `gestao-seguros` | Compacto | — |
 | Gestão de Postos Avançados | Excel e Automação | Excel, VBA | Novo | `gestao-postos-avancados` | Compacto | — |
 | Comprovantes Retidos | BI Operacional | — | Novo | `comprovantes-retidos` | Compacto | `comprovantes-retidos` |
-| Índice de Retorno | BI Operacional | — | Novo | `indice-retorno` | Completo | `indice-retorno` |
+| Índice de Retorno | BI Operacional | Excel, VBA, Power Pivot | Novo | `indice-retorno` | Completo | `indice-retorno` |
 | Ocorrências na Origem | BI Operacional | — | Novo | `ocorrencias-origem` | Compacto | `ocorrencias-origem` |
-| Consolidado Operacional e Ranking de Filiais | BI Operacional | Excel, VBA, Power Query (M), Tabelas Dinâmicas | Novo | `consolidado-ranking-filiais-brasil` | Completo | `consolidado-2025`, `consolidado-2024` |
-| Gestão de Coletas e Logística Reversa | BI Operacional | Excel, VBA, Power Query (M), Power Pivot, Tabelas Dinâmicas | Novo | `gestao-coletas-logistica-reversa` | Completo | `gestao-coletas`, `logistica-reversa` |
+| Consolidado Operacional e Ranking de Filiais | BI Operacional | Excel, VBA, Power Query (M) | Novo | `consolidado-ranking-filiais-brasil` | Completo | `consolidado-2025`, `consolidado-2024` |
+| Gestão de Coletas e Logística Reversa | BI Operacional | Excel, VBA, Power Query (M), Power Pivot | Novo | `gestao-coletas-logistica-reversa` | Completo | `gestao-coletas`, `logistica-reversa` |
 | Desvio Operacional · Operação GRU | BI Operacional | — | Novo | `desvio-operacional-operacao-gru` | Compacto | `desvio-operacional-gru` |
 | Pendências de Digitalização | BI Operacional | — | Novo | `pendencias-digitalizacao` | Compacto | `pendencias-digitalizacao` |
 | Prazo de Coleta | BI Operacional | Power BI | Novo | `prazo-coleta` | Compacto | `prazo-coleta` |
@@ -130,10 +130,10 @@ Tecnologia só é exibida quando confirmada. Quando não está, o campo é omiti
 - **Gestão de Seguros**: Excel com VBA e fluxo automatizado de atualização, confirmados pelo proprietário para todos os painéis em Excel. Python, Access, SharePoint Lists, Power Automate e outras integrações variam por projeto e só são atribuídos com confirmação individual.
 - **Gestão de Postos Avançados**: Excel com VBA e fluxo automatizado de atualização, confirmados pelo proprietário para todos os painéis em Excel. Python, Access, SharePoint Lists, Power Automate e outras integrações variam por projeto e só são atribuídos com confirmação individual.
 - **Comprovantes Retidos**: Plataforma de construção não confirmada; nenhuma tecnologia atribuída. Os elementos visíveis na captura (fonte de dados, botões, filtros) não bastam para inferir a ferramenta.
-- **Índice de Retorno**: Plataforma de construção não confirmada; nenhuma tecnologia atribuída. Os elementos visíveis na captura (fonte de dados, botões, filtros) não bastam para inferir a ferramenta. Fonte exibida no painel: TMS · Relatório operacional de entregas e coletas não efetuadas.
+- **Índice de Retorno**: VBA (automação) e Power Pivot (modelagem analítica), confirmados pelo proprietário, o que implica Excel como ambiente. Power Query (M) não está confirmado para este case e não são atribuídos. Power BI não é atribuído como plataforma. Fonte exibida no painel: TMS · Relatório operacional de entregas e coletas não efetuadas.
 - **Ocorrências na Origem**: Plataforma de construção não confirmada; nenhuma tecnologia atribuída. Os elementos visíveis na captura (fonte de dados, botões, filtros) não bastam para inferir a ferramenta. Fonte exibida no painel: TMS · Relatório operacional de ocorrências.
-- **Consolidado Operacional e Ranking de Filiais**: Solução em Excel com VBA (automação), Power Query (M) (tratamento e transformação) e Tabelas Dinâmicas, confirmados pelo proprietário para as soluções de extravio. Power Pivot não está confirmado para este case e não é atribuído. Power BI não é atribuído como plataforma.
-- **Gestão de Coletas e Logística Reversa**: Construído em Excel (interface analítica), confirmado pelo proprietário, com VBA (automação), Power Query (M) (tratamento e transformação), Power Pivot (modelagem analítica) e Tabelas Dinâmicas. "Power BI · Operacional (Coletas)" é a fonte de dados consumida; Power BI não é a plataforma do painel e não é atribuído. Fonte exibida no painel: Power BI · Operacional (Coletas).
+- **Consolidado Operacional e Ranking de Filiais**: Solução em Excel com VBA (automação), e Power Query (M) (tratamento e transformação), confirmados pelo proprietário para as soluções de extravio. Power Pivot não está confirmado para este case e não é atribuído. Power BI não é atribuído como plataforma.
+- **Gestão de Coletas e Logística Reversa**: Construído em Excel (interface analítica), confirmado pelo proprietário, com VBA (automação), Power Query (M) (tratamento e transformação), Power Pivot (modelagem analítica). "Power BI · Operacional (Coletas)" é a fonte de dados consumida; Power BI não é a plataforma do painel e não é atribuído. Fonte exibida no painel: Power BI · Operacional (Coletas).
 - **Desvio Operacional · Operação GRU**: Plataforma de construção não confirmada; nenhuma tecnologia atribuída. Os elementos visíveis na captura (fonte de dados, botões, filtros) não bastam para inferir a ferramenta.
 - **Pendências de Digitalização**: Plataforma de construção não confirmada; nenhuma tecnologia atribuída. Os elementos visíveis na captura (fonte de dados, botões, filtros) não bastam para inferir a ferramenta.
 - **Prazo de Coleta**: Power BI, conforme a identificação do arquivo de evidência feita pelo proprietário. Confirmação formal pendente.
@@ -165,17 +165,18 @@ Power BI está confirmado pelo proprietário para os **sete projetos de BI comer
 
 ### Tecnologia dos painéis em Excel de coleta e extravio (V3.3.1)
 
-O proprietário corrigiu a arquitetura: **Gestão de Coletas e Logística Reversa não foi desenvolvida em Power BI**. É uma solução em Excel (interface analítica), com VBA (automação), Power Query (M) (tratamento e transformação dos dados), Power Pivot (modelagem analítica) e Tabelas Dinâmicas, com atualização automatizada. A inscrição "Power BI · Operacional (Coletas)" exibida na captura é a **fonte de dados** consumida, não a plataforma do painel.
+O proprietário corrigiu a arquitetura: **Gestão de Coletas e Logística Reversa não foi desenvolvida em Power BI**. É uma solução em Excel (interface analítica), com VBA (automação), Power Query (M) (tratamento e transformação dos dados) e Power Pivot (modelagem analítica), com atualização automatizada. A inscrição "Power BI · Operacional (Coletas)" exibida na captura é a **fonte de dados** consumida, não a plataforma do painel.
 
 | Case | Tecnologias atribuídas |
 |---|---|
-| Gestão de Coletas e Logística Reversa | Excel, VBA, Power Query (M), Power Pivot, Tabelas Dinâmicas |
-| Consolidado Operacional e Ranking de Filiais (inclui o Controle de Extravio) | Excel, VBA, Power Query (M), Tabelas Dinâmicas |
+| Gestão de Coletas e Logística Reversa | Excel, VBA, Power Query (M), Power Pivot |
+| Consolidado Operacional e Ranking de Filiais (inclui o Controle de Extravio) | Excel, VBA, Power Query (M) |
+| Índice de Retorno | Excel, VBA, Power Pivot |
 
-- **Power Pivot não é Tabelas Dinâmicas (PivotTable).** Power Pivot só consta onde foi confirmado (Gestão de Coletas); no Consolidado não é atribuído.
+- **Tabelas Dinâmicas** (PivotTable) foram retiradas das tecnologias por decisão do proprietário: não constam em nenhum case, na taxonomia nem nos filtros. Power Pivot só consta onde foi confirmado (Gestão de Coletas e Índice de Retorno); no Consolidado não é atribuído. No Índice de Retorno, o proprietário confirmou VBA e Power Pivot; o Excel é o ambiente que ambos implicam, e Power Query (M) não é atribuído.
 - Os cases separam a **fonte de dados** das **tecnologias de implementação** em uma seção própria. Power BI e DAX não são atribuídos a esses dois cases.
 - "Inteligência operacional" continua sendo a classificação analítica (tipo de solução e categoria "BI Operacional"); não indica a ferramenta Microsoft Power BI.
-- **Não atribuídas** aos demais painéis (Comprovantes Retidos, Índice de Retorno, Ocorrências na Origem, Desvio Operacional · GRU, Pendências de Digitalização) nem aos sete projetos em Excel/VBA, que seguem com as tecnologias já confirmadas. Prazo de Coleta mantém Power BI (identificação do arquivo de evidência, confirmação formal pendente). Qualquer ampliação depende de confirmação individual.
+- **Não atribuídas** aos demais painéis (Comprovantes Retidos, Ocorrências na Origem, Desvio Operacional · GRU, Pendências de Digitalização) nem aos sete projetos em Excel/VBA, que seguem com as tecnologias já confirmadas. Prazo de Coleta mantém Power BI (identificação do arquivo de evidência, confirmação formal pendente). Qualquer ampliação depende de confirmação individual.
 
 ### Entregas independentes confirmadas
 
@@ -223,7 +224,7 @@ Não há decisões editoriais em aberto: os agrupamentos, as duas separações a
 - **Gestão de Seguros**: Complementar com as funcionalidades e indicadores comprovados.
 - **Gestão de Postos Avançados**: Complementar com os indicadores comprovados.
 - **Comprovantes Retidos**: Confirmar a plataforma (Excel/VBA, Power BI ou outra) e a fonte de dados.
-- **Índice de Retorno**: Confirmar a plataforma e a forma de atualização.
+- **Índice de Retorno**: Confirmar a forma de atualização e se Power Query (M) participa da solução.
 - **Ocorrências na Origem**: Confirmar a plataforma de construção do painel.
 - **Consolidado Operacional e Ranking de Filiais**: Confirmar se Power Pivot participa da solução e detalhar o fluxo de atualização.
 - **Gestão de Coletas e Logística Reversa**: Confirmar a origem e a frequência de atualização da fonte "Power BI · Operacional (Coletas)" consumida pela solução.
